@@ -10,7 +10,7 @@ import com.mogujie.tt.R;
 import com.mogujie.tt.config.IntentConstant;
 import com.mogujie.tt.ui.helper.Emoparser;
 import com.mogujie.tt.ui.helper.GifAnimationDrawable;
-import com.mogujie.tt.ui.widget.GifLoadTask;
+//import com.mogujie.tt.ui.widget.GifLoadTask;
 import com.mogujie.tt.ui.widget.GifView;
 
 import java.io.IOException;
@@ -50,17 +50,17 @@ public class PreviewGifActivity extends Activity implements View.OnClickListener
         }
         else
         {
-            new GifLoadTask() {
-                @Override
-                protected void onPostExecute(byte[] bytes) {
-                    gifView.setBytes(bytes);
-                    gifView.startAnimation();
-                }
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
-                }
-            }.execute(content);
+//            new GifLoadTask() {
+//                @Override
+//                protected void onPostExecute(byte[] bytes) {
+//                    gifView.setBytes(bytes);
+//                    gifView.startAnimation();
+//                }
+//                @Override
+//                protected void onPreExecute() {
+//                    super.onPreExecute();
+//                }
+//            }.execute(content);
         }
 
 

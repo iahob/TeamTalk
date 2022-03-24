@@ -54,7 +54,7 @@ public class IMSocketManager extends IMManager {
     private ListenerQueue listenerQueue = ListenerQueue.instance();
 
     // 请求消息服务器地址
-    private AsyncHttpClient client = new AsyncHttpClient();
+    //private AsyncHttpClient client = new AsyncHttpClient();
 
     /**底层socket*/
     private SocketThread msgServerThread;
@@ -172,34 +172,35 @@ public class IMSocketManager extends IMManager {
      */
     public void reqMsgServerAddrs() {
         logger.d("socket#reqMsgServerAddrs.");
-        client.setUserAgent("Android-TT");
-        client.get(SystemConfigSp.instance().getStrConfig(SystemConfigSp.SysCfgDimension.LOGINSERVER), new BaseJsonHttpResponseHandler(){
-            @Override
-            public void onSuccess(int i, Header[] headers, String s, Object o) {
-                logger.d("socket#req msgAddress onSuccess, response:%s", s);
-                MsgServerAddrsEntity msgServer = (MsgServerAddrsEntity) o;
-                if(msgServer == null){
-                    triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
-                    return;
-                }
-                connectMsgServer(msgServer);
-                triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_SUCCESS);
-            }
-
-            @Override
-            public void onFailure(int i, Header[] headers, Throwable throwable, String responseString, Object o) {
-                logger.d("socket#req msgAddress Failure, errorResponse:%s", responseString);
-                triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
-            }
-
-            @Override
-            protected Object parseResponse(String s, boolean b) throws Throwable {
-                /*子类需要提供实现，将请求结果解析成需要的类型 异常怎么处理*/
-                JSONObject jsonObject = new JSONObject(s);
-                MsgServerAddrsEntity msgServerAddrsEntity = onRepLoginServerAddrs(jsonObject);
-                return msgServerAddrsEntity;
-            }
-        });
+        //client.setUserAgent("Android-TT");
+//        client.get(SystemConfigSp.instance().getStrConfig(SystemConfigSp.SysCfgDimension.LOGINSERVER), new BaseJsonHttpResponseHandler(){
+//            @Override
+//            public void onSuccess(int i, Header[] headers, String s, Object o) {
+//                logger.d("socket#req msgAddress onSuccess, response:%s", s);
+//                MsgServerAddrsEntity msgServer = (MsgServerAddrsEntity) o;
+//                if(msgServer == null){
+//                    triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
+//                    return;
+//                }
+//                connectMsgServer(msgServer);
+//                triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_SUCCESS);
+//            }
+//
+//            @Override
+//            public void onFailure(int i, Header[] headers, Throwable throwable, String responseString, Object o) {
+//                logger.d("socket#req msgAddress Failure, errorResponse:%s", responseString);
+//                triggerEvent(SocketEvent.REQ_MSG_SERVER_ADDRS_FAILED);
+//            }
+//
+//            @Override
+//            protected Object parseResponse(String s, boolean b) throws Throwable {
+//                /*子类需要提供实现，将请求结果解析成需要的类型 异常怎么处理*/
+//                JSONObject jsonObject = new JSONObject(s);
+//                MsgServerAddrsEntity msgServerAddrsEntity = onRepLoginServerAddrs(jsonObject);
+//                return msgServerAddrsEntity;
+//            }
+//        });
+//
     }
 
     /**

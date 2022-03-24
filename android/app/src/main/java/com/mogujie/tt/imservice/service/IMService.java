@@ -76,7 +76,7 @@ public class IMService extends Service {
 		// make the service foreground, so stop "360 yi jian qingli"(a clean
 		// tool) to stop our app
 		// todo eric study wechat's mechanism, use a better solution
-		startForeground((int) System.currentTimeMillis(), new Notification());
+	//	startForeground((int) System.currentTimeMillis(), new Notification());
 	}
 
 	@Override

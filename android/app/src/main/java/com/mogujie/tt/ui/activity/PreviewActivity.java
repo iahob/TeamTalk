@@ -3,14 +3,15 @@ package com.mogujie.tt.ui.activity;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.mogujie.tt.R;
 import com.mogujie.tt.ui.adapter.album.ImageGridAdapter;
@@ -30,7 +31,7 @@ import java.util.Map;
  */
 public class PreviewActivity extends Activity
         implements
-        OnPageChangeListener {
+	ViewPager.OnPageChangeListener {
 
     private CustomViewPager viewPager;
     private ImageView[] tips;
@@ -54,7 +55,7 @@ public class PreviewActivity extends Activity
     }
 
     private void initView() {
-        viewPager = (CustomViewPager) findViewById(R.id.viewPager);
+        viewPager = findViewById(R.id.viewPager);
         group = (ViewGroup) findViewById(R.id.viewGroup);
         back = (ImageView) findViewById(R.id.back_btn);
         select = (ImageView) findViewById(R.id.select_btn);
