@@ -10,7 +10,7 @@ import com.mogujie.tt.DB.entity.MessageEntity;
 import com.mogujie.tt.DB.entity.UserEntity;
 import com.mogujie.tt.R;
 import com.mogujie.tt.imservice.entity.ImageMessage;
-import com.mogujie.tt.ui.widget.GifLoadTask;
+//import com.mogujie.tt.ui.widget.GifLoadTask;
 import com.mogujie.tt.ui.widget.GifView;
 
 /**
@@ -49,17 +49,17 @@ public class GifImageRenderView extends  BaseMsgRenderView {
         super.render(messageEntity, userEntity,context);
         ImageMessage imageMessage = (ImageMessage) messageEntity;
         String url = imageMessage.getUrl();
-        new GifLoadTask() {
-            @Override
-            protected void onPostExecute(byte[] bytes) {
-                messageContent.setBytes(bytes);
-                messageContent.startAnimation();
-            }
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
-        }.execute(url);
+//        new GifLoadTask() {
+//            @Override
+//            protected void onPostExecute(byte[] bytes) {
+//                messageContent.setBytes(bytes);
+//                messageContent.startAnimation();
+//            }
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//            }
+//        }.execute(url);
     }
 
     @Override

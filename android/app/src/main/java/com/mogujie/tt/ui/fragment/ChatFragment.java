@@ -75,11 +75,6 @@ public class ChatFragment extends MainFragment
     //是否是手动点击重练。fasle:不显示各种弹出小气泡. true:显示小气泡直到错误出现
     private volatile boolean isManualMConnect = false;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-    }
-
     private IMServiceConnector imServiceConnector = new IMServiceConnector(){
 
         @Override
@@ -106,7 +101,7 @@ public class ChatFragment extends MainFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        imServiceConnector.connect(getActivity());
+        imServiceConnector.connect(imService.getApplicationContext());
         logger.d("chatfragment#onCreate");
     }
 

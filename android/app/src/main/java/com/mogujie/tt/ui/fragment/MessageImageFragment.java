@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import androidx.fragment.app.Fragment;
+
 import com.mogujie.tt.R;
 import com.mogujie.tt.imservice.entity.ImageMessage;
 import com.mogujie.tt.imservice.service.IMService;
@@ -23,7 +25,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.polites.android.GestureImageView;
 
 
-public class MessageImageFragment extends android.support.v4.app.Fragment {
+public class MessageImageFragment extends Fragment {
     private View curView = null;
     protected GestureImageView view;
     protected GestureImageView newView;

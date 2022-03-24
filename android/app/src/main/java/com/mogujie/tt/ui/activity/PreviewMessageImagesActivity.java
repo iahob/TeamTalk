@@ -1,14 +1,15 @@
 package com.mogujie.tt.ui.activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import com.mogujie.tt.R;
 import com.mogujie.tt.config.IntentConstant;
@@ -26,7 +27,7 @@ public class PreviewMessageImagesActivity extends FragmentActivity implements Vi
     private int curImagePosition = -1;
     private ImageMessage messageInfo;
     ArrayList<ImageView> tips=new ArrayList<ImageView>();
-    ArrayList<android.support.v4.app.Fragment> fragments=new ArrayList<>();
+    ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<ImageMessage> imageList= null;
     public IMService imService;
 
@@ -179,7 +180,7 @@ public class PreviewMessageImagesActivity extends FragmentActivity implements Vi
 
     public class FragmentAdapter  extends FragmentPagerAdapter {
         ArrayList<Fragment> list;
-        public FragmentAdapter(FragmentManager fm,ArrayList<Fragment> list) {
+        public FragmentAdapter(FragmentManager fm, ArrayList<Fragment> list) {
             super(fm);
             this.list = list;
         }
@@ -190,7 +191,7 @@ public class PreviewMessageImagesActivity extends FragmentActivity implements Vi
         }
 
         @Override
-        public android.support.v4.app.Fragment getItem(int arg0) {
+        public Fragment getItem(int arg0) {
             return list.get(arg0);
         }
     }

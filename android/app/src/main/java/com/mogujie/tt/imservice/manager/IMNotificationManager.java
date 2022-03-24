@@ -7,8 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
+
 import android.view.View;
 
 import com.mogujie.tt.DB.entity.GroupEntity;
@@ -230,7 +229,7 @@ public class IMNotificationManager extends IMManager{
 			return;
 		}
 
-		Builder builder = new NotificationCompat.Builder(ctx);
+		Notification.Builder builder = new Notification.Builder(ctx);
 		builder.setContentTitle(title);
 		builder.setContentText(ticker);
 		builder.setSmallIcon(R.drawable.tt_small_icon);
