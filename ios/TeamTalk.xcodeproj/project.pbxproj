@@ -9,6 +9,17 @@
 /* Begin PBXBuildFile section */
 		21E6AB7CC2E7B8CD0E71A57C /* libPods-TeamTalkTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 17C111C8D72909986F95547A /* libPods-TeamTalkTests.a */; };
 		64B4720BCC863E274A95C23F /* libPods-TeamTalk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DB22244C565FA68A5EE3B0A5 /* libPods-TeamTalk.a */; };
+		7F61A77727EC54EB00155805 /* MWPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76527EC54EB00155805 /* MWPhotoBrowser.m */; };
+		7F61A77827EC54EB00155805 /* MWCaptionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76627EC54EB00155805 /* MWCaptionView.m */; };
+		7F61A77927EC54EB00155805 /* MWZoomingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76927EC54EB00155805 /* MWZoomingScrollView.m */; };
+		7F61A77A27EC54EB00155805 /* MWTapDetectingImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76B27EC54EB00155805 /* MWTapDetectingImageView.m */; };
+		7F61A77B27EC54EB00155805 /* MWPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76C27EC54EB00155805 /* MWPhoto.m */; };
+		7F61A77C27EC54EB00155805 /* MWTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76D27EC54EB00155805 /* MWTapDetectingView.m */; };
+		7F61A77D27EC54EB00155805 /* MWGridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A76F27EC54EB00155805 /* MWGridViewController.m */; };
+		7F61A77E27EC54EB00155805 /* MWGridCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7F61A77227EC54EB00155805 /* MWGridCell.m */; };
+		7F61A77F27EC54EB00155805 /* MWPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7F61A77427EC54EB00155805 /* MWPhotoBrowser.bundle */; };
+		7F61A78027EC54EB00155805 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 7F61A77527EC54EB00155805 /* LICENCE.txt */; };
+		7F61A78127EC54EB00155805 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 7F61A77627EC54EB00155805 /* README.md */; };
 		810D52181B50ECFA004DF7B4 /* bgImage_HL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 810D52141B50ECFA004DF7B4 /* bgImage_HL@2x.png */; };
 		810D52191B50ECFA004DF7B4 /* cellLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 810D52151B50ECFA004DF7B4 /* cellLine@2x.png */; };
 		810D521A1B50ECFA004DF7B4 /* LCActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 810D52171B50ECFA004DF7B4 /* LCActionSheet.m */; };
@@ -397,6 +408,28 @@
 /* Begin PBXFileReference section */
 		17C111C8D72909986F95547A /* libPods-TeamTalkTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TeamTalkTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		641CC6659ADF79A87D5581C1 /* Pods-TeamTalk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TeamTalk.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk.debug.xcconfig"; sourceTree = "<group>"; };
+		7F61A76127EC54EB00155805 /* MWTapDetectingImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingImageView.h; sourceTree = "<group>"; };
+		7F61A76227EC54EB00155805 /* MWPhoto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhoto.h; sourceTree = "<group>"; };
+		7F61A76327EC54EB00155805 /* MWPhotoProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoProtocol.h; sourceTree = "<group>"; };
+		7F61A76427EC54EB00155805 /* MWGridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWGridViewController.h; sourceTree = "<group>"; };
+		7F61A76527EC54EB00155805 /* MWPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhotoBrowser.m; sourceTree = "<group>"; };
+		7F61A76627EC54EB00155805 /* MWCaptionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWCaptionView.m; sourceTree = "<group>"; };
+		7F61A76727EC54EB00155805 /* MWTapDetectingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWTapDetectingView.h; sourceTree = "<group>"; };
+		7F61A76827EC54EB00155805 /* MWPhotoBrowserPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoBrowserPrivate.h; sourceTree = "<group>"; };
+		7F61A76927EC54EB00155805 /* MWZoomingScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWZoomingScrollView.m; sourceTree = "<group>"; };
+		7F61A76A27EC54EB00155805 /* MWGridCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWGridCell.h; sourceTree = "<group>"; };
+		7F61A76B27EC54EB00155805 /* MWTapDetectingImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingImageView.m; sourceTree = "<group>"; };
+		7F61A76C27EC54EB00155805 /* MWPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWPhoto.m; sourceTree = "<group>"; };
+		7F61A76D27EC54EB00155805 /* MWTapDetectingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWTapDetectingView.m; sourceTree = "<group>"; };
+		7F61A76E27EC54EB00155805 /* MWCaptionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCaptionView.h; sourceTree = "<group>"; };
+		7F61A76F27EC54EB00155805 /* MWGridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWGridViewController.m; sourceTree = "<group>"; };
+		7F61A77027EC54EB00155805 /* MWPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWPhotoBrowser.h; sourceTree = "<group>"; };
+		7F61A77127EC54EB00155805 /* MWCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWCommon.h; sourceTree = "<group>"; };
+		7F61A77227EC54EB00155805 /* MWGridCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWGridCell.m; sourceTree = "<group>"; };
+		7F61A77327EC54EB00155805 /* MWZoomingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWZoomingScrollView.h; sourceTree = "<group>"; };
+		7F61A77427EC54EB00155805 /* MWPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MWPhotoBrowser.bundle; sourceTree = "<group>"; };
+		7F61A77527EC54EB00155805 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
+		7F61A77627EC54EB00155805 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		810D52141B50ECFA004DF7B4 /* bgImage_HL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bgImage_HL@2x.png"; sourceTree = "<group>"; };
 		810D52151B50ECFA004DF7B4 /* cellLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cellLine@2x.png"; sourceTree = "<group>"; };
 		810D52161B50ECFA004DF7B4 /* LCActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LCActionSheet.h; sourceTree = "<group>"; };
@@ -1095,6 +1128,51 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		7F61A75E27EC54EB00155805 /* MWPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				7F61A75F27EC54EB00155805 /* MWPhotoBrowser */,
+				7F61A77527EC54EB00155805 /* LICENCE.txt */,
+				7F61A77627EC54EB00155805 /* README.md */,
+			);
+			path = MWPhotoBrowser;
+			sourceTree = "<group>";
+		};
+		7F61A75F27EC54EB00155805 /* MWPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				7F61A76027EC54EB00155805 /* Classes */,
+				7F61A77427EC54EB00155805 /* MWPhotoBrowser.bundle */,
+			);
+			path = MWPhotoBrowser;
+			sourceTree = "<group>";
+		};
+		7F61A76027EC54EB00155805 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				7F61A76127EC54EB00155805 /* MWTapDetectingImageView.h */,
+				7F61A76227EC54EB00155805 /* MWPhoto.h */,
+				7F61A76327EC54EB00155805 /* MWPhotoProtocol.h */,
+				7F61A76427EC54EB00155805 /* MWGridViewController.h */,
+				7F61A76527EC54EB00155805 /* MWPhotoBrowser.m */,
+				7F61A76627EC54EB00155805 /* MWCaptionView.m */,
+				7F61A76727EC54EB00155805 /* MWTapDetectingView.h */,
+				7F61A76827EC54EB00155805 /* MWPhotoBrowserPrivate.h */,
+				7F61A76927EC54EB00155805 /* MWZoomingScrollView.m */,
+				7F61A76A27EC54EB00155805 /* MWGridCell.h */,
+				7F61A76B27EC54EB00155805 /* MWTapDetectingImageView.m */,
+				7F61A76C27EC54EB00155805 /* MWPhoto.m */,
+				7F61A76D27EC54EB00155805 /* MWTapDetectingView.m */,
+				7F61A76E27EC54EB00155805 /* MWCaptionView.h */,
+				7F61A76F27EC54EB00155805 /* MWGridViewController.m */,
+				7F61A77027EC54EB00155805 /* MWPhotoBrowser.h */,
+				7F61A77127EC54EB00155805 /* MWCommon.h */,
+				7F61A77227EC54EB00155805 /* MWGridCell.m */,
+				7F61A77327EC54EB00155805 /* MWZoomingScrollView.h */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		810D52121B50ECFA004DF7B4 /* LCActionSheet */ = {
 			isa = PBXGroup;
 			children = (
@@ -1370,6 +1448,7 @@
 		C054EC311B3270D900078809 /* TeamTalk */ = {
 			isa = PBXGroup;
 			children = (
+				7F61A75E27EC54EB00155805 /* MWPhotoBrowser */,
 				C054EC361B3270D900078809 /* AppDelegate.h */,
 				C054EC371B3270D900078809 /* AppDelegate.m */,
 				C054EC3F1B3270D900078809 /* Images.xcassets */,
@@ -2530,7 +2609,6 @@
 				C054EC2B1B3270D900078809 /* Sources */,
 				C054EC2C1B3270D900078809 /* Frameworks */,
 				C054EC2D1B3270D900078809 /* Resources */,
-				847342FFBE7D348F5800871F /* [CP] Embed Pods Frameworks */,
 				21CDA4B1CC87B2AD79220504 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
@@ -2550,8 +2628,6 @@
 				C054EC441B3270D900078809 /* Sources */,
 				C054EC451B3270D900078809 /* Frameworks */,
 				C054EC461B3270D900078809 /* Resources */,
-				5AD004D0E7831CEE86420C1B /* [CP] Embed Pods Frameworks */,
-				47D2315E7380668A10602ACE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2574,7 +2650,7 @@
 				TargetAttributes = {
 					C054EC2E1B3270D900078809 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = X5X6ZXN55A;
+						DevelopmentTeam = ATLM62N4EW;
 					};
 					C054EC471B3270D900078809 = {
 						CreatedOnToolsVersion = 6.3;
@@ -2588,6 +2664,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -2624,6 +2701,7 @@
 				C07E658B1B3283FB00A5102C /* password.png in Resources */,
 				81EEE3DB1B553FB900584AA1 /* pick_bg@2x.png in Resources */,
 				C07E65451B3283FB00A5102C /* dd_album@2x.png in Resources */,
+				7F61A77F27EC54EB00155805 /* MWPhotoBrowser.bundle in Resources */,
 				810D52181B50ECFA004DF7B4 /* bgImage_HL@2x.png in Resources */,
 				81EEE3E21B55474700584AA1 /* chat_shake_pc@2x.png in Resources */,
 				C07E653A1B3283FB00A5102C /* chat.png in Resources */,
@@ -2636,6 +2714,7 @@
 				C07E65691B3283FB00A5102C /* dd_right_voice_one@2x.png in Resources */,
 				8157DB831B47DED800043E0F /* chatBg.png in Resources */,
 				812CAA1C1B4284730066983C /* chat_bubble_incomming@3x.png in Resources */,
+				7F61A78127EC54EB00155805 /* README.md in Resources */,
 				C07E65941B3283FB00A5102C /* left.png in Resources */,
 				C07E65751B3283FB00A5102C /* dd_utility@2x.png in Resources */,
 				C07E65851B3283FB00A5102C /* loginlogo.jpg in Resources */,
@@ -2721,6 +2800,7 @@
 				C07E65671B3283FB00A5102C /* dd_recording@2x.png in Resources */,
 				810D52611B523E42004DF7B4 /* search_back@2x.png in Resources */,
 				C07E653F1B3283FB00A5102C /* contact@2x.png in Resources */,
+				7F61A78027EC54EB00155805 /* LICENCE.txt in Resources */,
 				C07E65501B3283FB00A5102C /* dd_input_normal.png in Resources */,
 				C07E65801B3283FB00A5102C /* jiantou.png in Resources */,
 				81103F011B69F9AE00FB93F1 /* ScanQR4@2x.png in Resources */,
@@ -2779,8 +2859,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-resources.sh",
-				"${PODS_ROOT}/MWPhotoBrowser/MWPhotoBrowser/MWPhotoBrowser.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-resources.sh",
 				"${PODS_ROOT}/SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack.png",
 				"${PODS_ROOT}/SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerBack@2x.png",
 				"${PODS_ROOT}/SVWebViewController/SVWebViewController/SVWebViewController.bundle/SVWebViewControllerNext.png",
@@ -2800,7 +2879,6 @@
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MWPhotoBrowser.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVWebViewControllerBack.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVWebViewControllerBack@2x.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVWebViewControllerNext.png",
@@ -2820,7 +2898,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		468A16201B3937150093C314 /* ShellScript */ = {
@@ -2835,51 +2913,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ \"${CONFIGURATION}\" = \"Release\" ] || [ \"${CONFIGURATION}\" = \"CI\" ]; then\n\nBUILD_NUMBER=`curl http://www.mogujie.com/mobile/build/increase -F \"identifier=im.teamtalk.tt\" -F \"sign=f41b3c980d33d9d51a0a0df685b20bb9\"`\n\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $BUILD_NUMBER\" \"${INFOPLIST_FILE}\"\nfi";
-		};
-		47D2315E7380668A10602ACE /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalkTests/Pods-TeamTalkTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5AD004D0E7831CEE86420C1B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalkTests/Pods-TeamTalkTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		847342FFBE7D348F5800871F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		9920D0C412367CAC80F2B779 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2933,6 +2966,7 @@
 				C0AE3A0C1B32C68200B67232 /* DDPersonEditCollectionCell.m in Sources */,
 				812429781B33E99A00E13E23 /* MTTEditSignViewController.m in Sources */,
 				C07E66AA1B32A9C600A5102C /* LoginModule.m in Sources */,
+				7F61A77827EC54EB00155805 /* MWCaptionView.m in Sources */,
 				C07E64941B3280E700A5102C /* NSDate+DDAddition.m in Sources */,
 				C0AE3A0D1B32C68200B67232 /* DDChattingEditViewController.m in Sources */,
 				C07E64BA1B3281F200A5102C /* DDTcpServer.m in Sources */,
@@ -2951,6 +2985,7 @@
 				C0AE3A051B32C68200B67232 /* ChattingMainViewController.m in Sources */,
 				C07E67481B32B4F500A5102C /* ChattingEditModule.m in Sources */,
 				810D521A1B50ECFA004DF7B4 /* LCActionSheet.m in Sources */,
+				7F61A77D27EC54EB00155805 /* MWGridViewController.m in Sources */,
 				C07E65CB1B328AFE00A5102C /* DDClientState.m in Sources */,
 				C07E66741B3292E200A5102C /* DataOutputStream+Addition.m in Sources */,
 				C07E668D1B329AB300A5102C /* MTTLoginViewController.m in Sources */,
@@ -2977,6 +3012,7 @@
 				81B6F4DD1B3A43B80058C911 /* MTTSignNotifyAPI.m in Sources */,
 				C0AE39FE1B32C68200B67232 /* DDChatBaseCell.m in Sources */,
 				C07E646B1B32791D00A5102C /* AQGridViewUpdateItem.m in Sources */,
+				7F61A77927EC54EB00155805 /* MWZoomingScrollView.m in Sources */,
 				C07E66471B328F1A00A5102C /* DDUnrequestSuperAPI.m in Sources */,
 				C07E66591B328F1A00A5102C /* ReceiveKickoffAPI.m in Sources */,
 				A8565855209326BF00E92931 /* ImGroup.pbobjc.m in Sources */,
@@ -3032,7 +3068,9 @@
 				C054EC351B3270D900078809 /* main.m in Sources */,
 				A83733461F56A466009A85D8 /* info.c in Sources */,
 				C07E64BC1B3281F200A5102C /* DDMessageSendManager.mm in Sources */,
+				7F61A77C27EC54EB00155805 /* MWTapDetectingView.m in Sources */,
 				C07E66751B3292E200A5102C /* DDDataInputStream.m in Sources */,
+				7F61A77E27EC54EB00155805 /* MWGridCell.m in Sources */,
 				C07E65BD1B32894800A5102C /* MTTBaseEntity.m in Sources */,
 				A837334A1F56A466009A85D8 /* wincerts.c in Sources */,
 				C07E66361B328F1A00A5102C /* DDAddMemberToGroupAPI.m in Sources */,
@@ -3049,6 +3087,7 @@
 				C0AE39CE1B32BEFE00B67232 /* MTTURLProtocal.m in Sources */,
 				C00078451B3A552200E7E5B8 /* UITabBar+SubView.m in Sources */,
 				C07FEC641B3BE3AF0068F67D /* UIAlertView+Block.m in Sources */,
+				7F61A77727EC54EB00155805 /* MWPhotoBrowser.m in Sources */,
 				C07E64C21B32824300A5102C /* DDGroupModule.m in Sources */,
 				81B962741B4BF05F00CD1278 /* MTTSearchResultCell.m in Sources */,
 				C054ED461B3276DE00078809 /* RawAudioDataPlayer.m in Sources */,
@@ -3079,6 +3118,7 @@
 				C07E66421B328F1A00A5102C /* DDReceiveGroupAddMemberAPI.m in Sources */,
 				C054ED431B3276DE00078809 /* CADebugMacros.cpp in Sources */,
 				C054ED3E1B3276DE00078809 /* AQRecorder.mm in Sources */,
+				7F61A77A27EC54EB00155805 /* MWTapDetectingImageView.m in Sources */,
 				C07E66461B328F1A00A5102C /* DDTcpProtocolHeader.m in Sources */,
 				C07E649C1B3280E700A5102C /* UIButton+JSMessagesView.m in Sources */,
 				C07E64BB1B3281F200A5102C /* DDMessageModule.m in Sources */,
@@ -3114,6 +3154,7 @@
 				8157DB7C1B46C8CC00043E0F /* MTTBubbleCollectionViewCell.m in Sources */,
 				818654921B3424E3006AFD8F /* MTTUserInfoCell.m in Sources */,
 				C000784E1B3A77E000E7E5B8 /* NSObject+Block.m in Sources */,
+				7F61A77B27EC54EB00155805 /* MWPhoto.m in Sources */,
 				A83733761F56BEF9009A85D8 /* lpc.c in Sources */,
 				C07E67501B32B52F00A5102C /* DDContactsCell.m in Sources */,
 				C07E65AA1B32846E00A5102C /* RuntimeStatus.m in Sources */,
@@ -3212,7 +3253,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "1dd25775-aa31-495c-8786-0e68b755cc50";
@@ -3253,7 +3294,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "1dd25775-aa31-495c-8786-0e68b755cc50";
 				SDKROOT = iphoneos;
@@ -3270,7 +3311,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
-				DEVELOPMENT_TEAM = X5X6ZXN55A;
+				DEVELOPMENT_TEAM = ATLM62N4EW;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3300,7 +3341,7 @@
 					"\"$(PROJECT_DIR)/TeamTalk/Exist/GPB\"",
 				);
 				INFOPLIST_FILE = TeamTalk/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3322,7 +3363,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
-				DEVELOPMENT_TEAM = X5X6ZXN55A;
+				DEVELOPMENT_TEAM = ATLM62N4EW;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -3351,7 +3392,7 @@
 					"\"$(PROJECT_DIR)/TeamTalk/Exist/GPB\"",
 				);
 				INFOPLIST_FILE = TeamTalk/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
