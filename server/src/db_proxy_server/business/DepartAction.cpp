@@ -8,10 +8,12 @@
 *   描    述：
 *
 ================================================================*/
-#include "DepartAction.h"
-#include "DepartModel.h"
+#include "business/DepartAction.h"
+#include "business/DepartModel.h"
 #include "IM.Buddy.pb.h"
-#include "../ProxyConn.h"
+#include "ProxyConn.h"
+#include "base/slog.h"
+
 
 namespace DB_PROXY{
     void getChgedDepart(CImPdu* pPdu, uint32_t conn_uuid)
@@ -40,7 +42,7 @@ namespace DB_PROXY{
                 pDeptInfo->set_parent_dept_id(it->parent_dept_id());
                 pDeptInfo->set_dept_status(it->dept_status());
             }
-            log("userId=%u, last_update=%u, cnt=%u", nUserId, nLastUpdate, lsDeparts.size());
+            SPDLOG_ERROR("userId={}, last_update={}, cnt={}", nUserId, nLastUpdate, lsDeparts.size());
             msgResp.set_attach_data(msg.attach_data());
             pPduRes->SetPBMsg(&msgResp);
             pPduRes->SetSeqNum(pPdu->GetSeqNum());
@@ -51,7 +53,7 @@ namespace DB_PROXY{
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
 }

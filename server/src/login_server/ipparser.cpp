@@ -10,7 +10,7 @@
 #include "ipparser.h"
 ================================================================*/
 #include "ipparser.h"
-
+#include "base/util.h"
 IpParser::IpParser()
 {
 }

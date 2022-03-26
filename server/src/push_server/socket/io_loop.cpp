@@ -132,14 +132,14 @@ void CIOLoop::Run()
 							{     
 								//连接失败
 								//linux的超时失败是也是根据这个可以判断
-								SOCKET_IO_WARN("socket connect failed, nCode: %d, nError: %d.", nCode,
+								SPDLOG_WARN("socket connect failed, nCode: {}, nError: {}.", nCode,
                                                nError);
 								pIOStream->OnConnect(FALSE);
 							}
 							else
 							{
 								//连接成功
-								//SOCKET_IO_WARN("socket connect successed.", nCode, nError);
+								//SPDLOG_WARN("socket connect successed.", nCode, nError);
 								pIOStream->OnConnect(TRUE);
 							}
 #endif
@@ -158,13 +158,13 @@ void CIOLoop::Run()
 						//都是超时错误
 						if (pIOStream->CheckConnect() == TRUE)
 						{
-							SOCKET_IO_WARN("socket connect time out, remote ip: %s, port: %d.",
+							SPDLOG_WARN("socket connect time out, remote ip: {}, port: {}.",
                                            pIOStream->GetRemoteIP(), pIOStream->GetRemotePort());
 							pIOStream->OnConnect(FALSE);
 						}
 						else
 						{
-							SOCKET_IO_WARN("err_fds, %d.", (int32_t)pIOStream->GetSockType());
+							SPDLOG_WARN("err_fds, {}.", (int32_t)pIOStream->GetSockType());
 						}
 					}
 				}//error
@@ -190,7 +190,7 @@ void CIOLoop::Run()
 		{
 			//TODO
 			//Error
-			SOCKET_IO_ERROR("socket select error");
+			SPDLOG_ERROR("socket select error");
             break;
 		}
 	}

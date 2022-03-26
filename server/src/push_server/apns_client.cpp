@@ -130,7 +130,7 @@ BOOL CAPNSClient::_GetAPNSServerAddress()
     }
     else
     {
-        PUSH_SERVER_WARN("parse gateway host failed, %s.", s_apn_servers[gateway_index].host);
+        SPDLOG_WARN("parse gateway host failed, {}.", s_apn_servers[gateway_index].host);
         return bRet;
     }
     
@@ -142,7 +142,7 @@ BOOL CAPNSClient::_GetAPNSServerAddress()
     }
     else
     {
-        PUSH_SERVER_WARN("parse feedback host failed, %s.", s_apn_servers[feedback_index].host);
+        SPDLOG_WARN("parse feedback host failed, {}.", s_apn_servers[feedback_index].host);
         return bRet;
     }
     bRet = TRUE;
@@ -160,7 +160,7 @@ BOOL CAPNSClient::ConnectGateway()
     
     if (m_pGatewayClient->InitSSL(GetCertPath().c_str(), GetKeyPath().c_str(), GetKeyPassword().c_str()) == FALSE)
     {
-        PUSH_SERVER_ERROR("gateway client init ssl failed.");
+        SPDLOG_ERROR("gateway client init ssl failed.");
         return bRet;
     }
     
@@ -183,7 +183,7 @@ BOOL CAPNSClient::ConnectFeedback()
     
     if (m_pFeedbackClient->InitSSL(GetCertPath().c_str(), GetKeyPath().c_str(), GetKeyPassword().c_str()) == FALSE)
     {
-        PUSH_SERVER_ERROR("feedback client init ssl failed.");
+        SPDLOG_ERROR("feedback client init ssl failed.");
         return bRet;
     }
     
@@ -202,7 +202,7 @@ BOOL CAPNSClient::ReConnectGateway()
     if (m_pGatewayClient)
     {
         _GetAPNSServerAddress();
-        PUSH_SERVER_INFO("gateway client begin to reconnect...");
+        SPDLOG_INFO("gateway client begin to reconnect...");
         m_pGatewayClient->SetRemoteIP(GetGatewayIP().c_str());
         m_pGatewayClient->SetRemotePort(GetGatewayPort());
         m_pFeedbackClient->SetRemoteIP(GetFeedbackIP().c_str());
@@ -221,7 +221,7 @@ BOOL CAPNSClient::ReConnectFeedback()
     StopFeedBackClient();
     if (m_pFeedbackClient)
     {
-        PUSH_SERVER_INFO("feedback client begin to reconnect...");
+        SPDLOG_INFO("feedback client begin to reconnect...");
         m_pFeedbackClient->ReConnectAsync();
         StopReConnectFeedback();
         StartCheckConnectFeedback();
@@ -234,7 +234,7 @@ void CAPNSClient::CheckConnectGateway()
     StopCheckConnectGateway();
     //在规定得时间内没有连上，则可能是openssl连接又出现问题，强制关闭
     if (m_pGatewayClient->GetSSLConnectStatus() == FALSE) {
-        PUSH_SERVER_ERROR("gateway client ssl connect timeout.");
+        SPDLOG_ERROR("gateway client ssl connect timeout.");
         m_pGatewayClient->Close();
     }
 }
@@ -244,7 +244,7 @@ void CAPNSClient::CheckConnectFeedback()
     StopCheckConnectFeedback();
     //在规定得时间内没有连上，则可能是openssl连接又出现问题，强制关闭
     if (m_pFeedbackClient->GetSSLConnectStatus() == FALSE) {
-        PUSH_SERVER_ERROR("feedback client ssl connect timeout.");
+        SPDLOG_ERROR("feedback client ssl connect timeout.");
         m_pFeedbackClient->Close();
     }
 }
@@ -297,7 +297,7 @@ BOOL CAPNSClient::SendPushMsgToGateway(const char* szBuf, uint32_t nBufLen)
     }
     else
     {
-        PUSH_SERVER_ERROR("gateway client ssl connection error, discard the msg.");
+        SPDLOG_ERROR("gateway client ssl connection error, discard the msg.");
     }
     return TRUE;
 }

@@ -2650,7 +2650,7 @@
 				TargetAttributes = {
 					C054EC2E1B3270D900078809 = {
 						CreatedOnToolsVersion = 6.3;
-						DevelopmentTeam = ATLM62N4EW;
+						DevelopmentTeam = 8S6349HKC4;
 					};
 					C054EC471B3270D900078809 = {
 						CreatedOnToolsVersion = 6.3;
@@ -3311,7 +3311,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
-				DEVELOPMENT_TEAM = ATLM62N4EW;
+				DEVELOPMENT_TEAM = 8S6349HKC4;
 				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
@@ -3363,7 +3363,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_RESOURCE_RULES_PATH = "$(SDKROOT)/ResourceRules.plist";
-				DEVELOPMENT_TEAM = ATLM62N4EW;
+				DEVELOPMENT_TEAM = 8S6349HKC4;
 				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (

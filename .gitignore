@@ -14,3 +14,4 @@ win-client/src/GifSmiley/GifSmiley2003.vcxproj.user
 win-client/src/Modules/Modules.vcxproj.user
 win-client/src/teamtalk/teamtalk.vcxproj.user
 win-client/obj/
+server/cmake-build-debug

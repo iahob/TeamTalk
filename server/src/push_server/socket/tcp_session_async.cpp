@@ -58,7 +58,7 @@ void CTCPSessionAsync::OnRecv()
 	else if (nRet == 0)		
 	{
 		//对方关闭socket
-        SOCKET_IO_WARN("recv tcp data error, peer closed.");
+        SPDLOG_WARN("recv tcp data error, peer closed.");
 		DoException(GetSocketID(), SOCKET_IO_TCP_RECV_FAILED);
 	}
 	else
@@ -71,13 +71,13 @@ void CTCPSessionAsync::OnRecv()
 		if (nErrorCode != EAGAIN)
 #endif
 		{
-			SOCKET_IO_ERROR("recv tcp data error, errno: %d.", nErrorCode);
+			SPDLOG_ERROR("recv tcp data error, errno: {}.", nErrorCode);
 			DoException(GetSocketID(), SOCKET_IO_TCP_RECV_FAILED);
 		}
 		else
 		{
 			//用select/epoll/iocp的方式应该很少会有这个情况出现
-			SOCKET_IO_DEBUG("recv tcp data error, buffer is blocking.");
+			SPDLOG_DEBUG("recv tcp data error, buffer is blocking.");
 		}
 	}
 }
@@ -115,19 +115,19 @@ int32_t CTCPSessionAsync::SendBufferAsync()
 		if (EAGAIN == nError)
 #endif
 		{
-			SOCKET_IO_DEBUG("send tcp data, buffer is blocking.")
+			SPDLOG_DEBUG("send tcp data, buffer is blocking.")
 		}
 		else
 		{
             _ClearSendBuffer();
-			SOCKET_IO_ERROR("send tcp data error, errno: %d.", nError);
+			SPDLOG_ERROR("send tcp data error, errno: {}.", nError);
 			DoException(GetSocketID(), SOCKET_IO_TCP_SEND_FAILED);
 		}
 	}
 	else if (nRet == 0)
 	{
         _ClearSendBuffer();
-		SOCKET_IO_WARN("send tcp data error, peer closed.");
+		SPDLOG_WARN("send tcp data error, peer closed.");
 		DoException(GetSocketID(), SOCKET_IO_TCP_SEND_FAILED);
 	}
 	else if (nRet != pBufferLoop->GetWriteOffset())
@@ -135,7 +135,7 @@ int32_t CTCPSessionAsync::SendBufferAsync()
 		int32_t nSize = 0;
 		//将未成功的数据重新放置buffer loop中，待下次发送
         pBufferLoop->Read(NULL, nRet);
-        SOCKET_IO_INFO("send tcp data, send size: %d, less than %d.", nRet, pBufferLoop->GetWriteOffset());
+        SPDLOG_INFO("send tcp data, send size: {}, less than {}.", nRet, pBufferLoop->GetWriteOffset());
 	}
 	else
 	{
@@ -163,16 +163,16 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
     {
         if (_GetWaitForCloseStatus() == TRUE)
         {
-            SOCKET_IO_DEBUG("send tcp data error, socket will be closed.");
+            SPDLOG_DEBUG("send tcp data error, socket will be closed.");
         }
         else
         {
             if (m_sendqueue.size() >= MAX_SEND_QUEUE_SIZE) {
-                SOCKET_IO_WARN("send tcp data error, buffer is overload.");
+                SPDLOG_WARN("send tcp data error, buffer is overload.");
             }
             else
             {
-                SOCKET_IO_DEBUG("send tcp data, push data to buffer.");
+                SPDLOG_DEBUG("send tcp data, push data to buffer.");
                 CSimpleBuffer* pBufferLoop = new CSimpleBuffer();
                 pBufferLoop->Write(szBuf, nBufSize);
                 m_sendqueue.push(pBufferLoop);
@@ -202,17 +202,17 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
 			m_sendqueuemutex.Unlock();
 			//有数据放入待发送队列，则注册为写事件
 			m_pio->Add_WriteEvent(this);
-			SOCKET_IO_INFO("send tcp data, buffer is blocking.")
+			SPDLOG_INFO("send tcp data, buffer is blocking.")
 		}
 		else
 		{
-			SOCKET_IO_ERROR("send tcp data error, errno: %d.", nError);
+			SPDLOG_ERROR("send tcp data error, errno: {}.", nError);
 			DoException(GetSocketID(), SOCKET_IO_TCP_SEND_FAILED);
 		}
 	}
 	else if (nRet == 0)
 	{
-		SOCKET_IO_WARN("send tcp data error, peer closed.");
+		SPDLOG_WARN("send tcp data error, peer closed.");
 		DoException(GetSocketID(), SOCKET_IO_TCP_SEND_FAILED);
 	}
 	else if (nRet != nBufSize)
@@ -225,7 +225,7 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
 		m_sendqueuemutex.Unlock();
 		//有数据放入待发送队列，则注册为写事件
 		m_pio->Add_WriteEvent(this);
-		SOCKET_IO_INFO("send tcp data, send size: %d, less than %d.", nRet, nBufSize);
+		SPDLOG_INFO("send tcp data, send size: {}, less than %d.", nRet, nBufSize);
 	}
 	return nErrorCode;
 }
@@ -243,7 +243,7 @@ void CTCPSessionAsync::_Close()
             m_pio->Remove_Handler(this);
         }
         S_CloseSocket(GetSocket());
-        SOCKET_IO_WARN("close socket, sock %d, real sock: %d.", GetSocketID(), GetSocket());
+        SPDLOG_WARN("close socket, sock %d, real sock: %d.", GetSocketID(), GetSocket());
         m_socket = S_INVALID_SOCKET;
         DoClose(GetSocketID());
         _ClearSendBuffer();

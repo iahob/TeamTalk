@@ -5,15 +5,15 @@
  *      Author: ziteng
  */
 
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
-#include "ThreadPool.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
+#include "base/ThreadPool.h"
 #include "DBPool.h"
 #include "CachePool.h"
 #include "ProxyConn.h"
-#include "HttpClient.h"
-#include "EncDec.h"
+#include "base/HttpClient.h"
+#include "base/EncDec.h"
 #include "business/AudioModel.h"
 #include "business/MessageModel.h"
 #include "business/SessionModel.h"
@@ -23,6 +23,8 @@
 #include "business/GroupMessageModel.h"
 #include "business/FileModel.h"
 #include "SyncCenter.h"
+#include "base/slog.h"
+
 
 string strAudioEnc;
 // this callback will be replaced by imconn_callback() in OnConnect()
@@ -35,7 +37,7 @@ void proxy_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void
 	}
 	else
 	{
-		log("!!!error msg: %d", msg);
+		SPDLOG_ERROR("!!!error msg: {}", msg);
 	}
 }
 
@@ -52,13 +54,13 @@ int main(int argc, char* argv[])
 
 	CacheManager* pCacheManager = CacheManager::getInstance();
 	if (!pCacheManager) {
-		log("CacheManager init failed");
+		SPDLOG_ERROR("CacheManager init failed");
 		return -1;
 	}
 
 	CDBManager* pDBManager = CDBManager::getInstance();
 	if (!pDBManager) {
-		log("DBManager init failed");
+		SPDLOG_ERROR("DBManager init failed");
 		return -1;
 	}
 puts("db init success");
@@ -106,13 +108,13 @@ puts("db init success");
     char* str_aes_key = config_file.GetConfigName("aesKey");
 
 	if (!listen_ip || !str_listen_port || !str_thread_num || !str_file_site || !str_aes_key) {
-		log("missing ListenIP/ListenPort/ThreadNum/MsfsSite/aesKey, exit...");
+		SPDLOG_ERROR("missing ListenIP/ListenPort/ThreadNum/MsfsSite/aesKey, exit...");
 		return -1;
 	}
     
     if(strlen(str_aes_key) != 32)
     {
-        log("aes key is invalied");
+        SPDLOG_ERROR("aes key is invalied");
         return -2;
     }
     string strAesKey(str_aes_key, 32);
@@ -154,7 +156,7 @@ puts("db init success");
 			return ret;
 	}
 
-	printf("server start listen on: %s:%d\n", listen_ip,  listen_port);
+	printf("server start listen on: %s:{}\n", listen_ip,  listen_port);
 	printf("now enter the event loop...\n");
     writePid();
 	netlib_eventloop(10);

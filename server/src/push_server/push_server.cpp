@@ -28,14 +28,13 @@ BOOL CPushServer::Start()
     
     if (m_pServer->Bind(GetListenIP().c_str(), GetPort()) == FALSE)
     {
-        PUSH_SERVER_ERROR("push server bind failed, ip: %s, port: %u.", GetListenIP().c_str(),
+        SPDLOG_ERROR("push server bind failed, ip: {}, port: {}.", GetListenIP().c_str(),
                           GetPort());
         return FALSE;
     }
     
     m_pServer->Listen();
-    PUSH_SERVER_DEBUG("push server start successed, ip: %s, port: %u.", GetListenIP().c_str(),
-                      GetPort());
+    SPDLOG_DEBUG("push server start successed, ip: {}, port: {}.", GetListenIP().c_str(),GetPort());
     return TRUE;
 }
 

@@ -8,8 +8,8 @@
 #ifndef IMUSER_H_
 #define IMUSER_H_
 
-#include "imconn.h"
-#include "public_define.h"
+#include "base/imconn.h"
+#include "base/public_define.h"
 #define MAX_ONLINE_FRIEND_CNT		100	//通知好友状态通知的最多个数
 
 class CMsgConn;
@@ -22,13 +22,13 @@ public:
     
     void SetUserId(uint32_t user_id) { m_user_id = user_id; }
     uint32_t GetUserId() { return m_user_id; }
-    string GetLoginName() { return m_login_name; }
+    string GetloginName() { return m_login_name; }
     void SetNickName(string nick_name) { m_nick_name = nick_name; }
     string GetNickName() { return m_nick_name; }
     bool IsValidate() { return m_bValidate; }
     void SetValidated() { m_bValidate = true; }
-    uint32_t GetPCLoginStatus() { return m_pc_login_status; }
-    void SetPCLoginStatus(uint32_t pc_login_status) { m_pc_login_status = pc_login_status; }
+    uint32_t GetPCloginStatus() { return m_pc_login_status; }
+    void SetPCloginStatus(uint32_t pc_login_status) { m_pc_login_status = pc_login_status; }
     
     
     user_conn_t GetUserConn();
@@ -80,11 +80,11 @@ public:
     
     static CImUserManager* GetInstance();
     CImUser* GetImUserById(uint32_t user_id);
-    CImUser* GetImUserByLoginName(string login_name);
+    CImUser* GetImUserByloginName(string login_name);
     
     CMsgConn* GetMsgConnByHandle(uint32_t user_id, uint32_t handle);
-    bool AddImUserByLoginName(string login_name, CImUser* pUser);
-    void RemoveImUserByLoginName(string login_name);
+    bool AddImUserByloginName(string login_name, CImUser* pUser);
+    void RemoveImUserByloginName(string login_name);
     
     bool AddImUserById(uint32_t user_id, CImUser* pUser);
     void RemoveImUserById(uint32_t user_id);

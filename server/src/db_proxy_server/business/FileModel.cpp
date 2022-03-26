@@ -8,8 +8,10 @@
 *   描    述：
 *
 ================================================================*/
-#include "FileModel.h"
-#include "../DBPool.h"
+#include "business/FileModel.h"
+#include "DBPool.h"
+#include "base/slog.h"
+
 
 CFileModel* CFileModel::m_pInstance = NULL;
 
@@ -54,13 +56,13 @@ void CFileModel::getOfflineFile(uint32_t userId, list<IM::BaseDefine::OfflineFil
         }
         else
         {
-            log("no result for:%s", strSql.c_str());
+            SPDLOG_ERROR("no result for:{}", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 
@@ -93,7 +95,7 @@ void CFileModel::addOfflineFile(uint32_t fromId, uint32_t toId, string& taskId, 
             
             if (!bRet)
             {
-                log("insert message failed: %s", strSql.c_str());
+                SPDLOG_ERROR("insert message failed: {}", strSql.c_str());
             }
         }
         delete pStmt;
@@ -101,7 +103,7 @@ void CFileModel::addOfflineFile(uint32_t fromId, uint32_t toId, string& taskId, 
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
 }
 
@@ -114,16 +116,16 @@ void CFileModel::delOfflineFile(uint32_t fromId, uint32_t toId, string& taskId)
         string strSql = "delete from IMTransmitFile where  fromId=" + int2string(fromId) + " and toId="+int2string(toId) + " and taskId='" + taskId + "'";
         if(pDBConn->ExecuteUpdate(strSql.c_str()))
         {
-            log("delete offline file success.%d->%d:%s", fromId, toId, taskId.c_str());
+            SPDLOG_ERROR("delete offline file success.{}->{}:{}", fromId, toId, taskId.c_str());
         }
         else
         {
-            log("delete offline file failed.%d->%d:%s", fromId, toId, taskId.c_str());
+            SPDLOG_ERROR("delete offline file failed.{}->{}:{}", fromId, toId, taskId.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
 }

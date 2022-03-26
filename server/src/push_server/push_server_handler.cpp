@@ -14,7 +14,7 @@
 
 void CPushServerHandler::OnClose(uint32_t nsockid)
 {
-    PUSH_SERVER_DEBUG("push server closed, sockid: %u.", nsockid);
+    SPDLOG_DEBUG("push server closed, sockid: {}.", nsockid);
 }
 
 void CPushServerHandler::OnAccept(uint32_t nsockid, S_SOCKET sock, const char *szIP,int32_t nPort)
@@ -22,6 +22,6 @@ void CPushServerHandler::OnAccept(uint32_t nsockid, S_SOCKET sock, const char *s
     push_server_ptr pServer = CSessionManager::GetInstance()->GetPushServer();
     push_session_ptr pSession(new CPushSession(pServer->GetIOLoop(), sock));
     CSessionManager::GetInstance()->AddPushSessionBySockID(pSession->GetSocketID(), pSession);
-    PUSH_SERVER_INFO("push server accept session, remote ip: %s, port: %u, sockid: %u, real socket: %u.", szIP, nPort, pSession->GetSocketID(), sock);
+    SPDLOG_INFO("push server accept session, remote ip: {}, port: {}, sockid: {}, real socket: {}.", szIP, nPort, pSession->GetSocketID(), sock);
     pSession->Start();
 }

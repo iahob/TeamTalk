@@ -10,7 +10,7 @@
 #define FILE_SERVER_FILE_CLIENT_CONN_H_
 
 #include "base/imconn.h"
-#include "file_server/transfer_task.h"
+#include "transfer_task.h"
 
 // TODO
 // 异常情况处理
@@ -44,7 +44,7 @@ public:
 private:
     void _HandleHeartBeat(CImPdu* pdu);
     
-    void _HandleClientFileLoginReq(CImPdu* pdu);
+    void _HandleClientFileloginReq(CImPdu* pdu);
     void _HandleClientFileStates(CImPdu* pdu);
     void _HandleClientFilePullFileReq(CImPdu* pdu);
     void _HandleClientFilePullFileRsp(CImPdu *pdu);

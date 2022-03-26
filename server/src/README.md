@@ -210,7 +210,7 @@ root      7544     1  0 16:38 ?        00:00:00 ./websocket_server
 
 1. 下载客户端，这里已经编译好了windows版本：[百度网盘](https://pan.baidu.com/s/1tjlN_BF1H9QcEEykGbwDbw) 提取码：kt6e
 2. 解压，双击bin/teamtalk.exe
-3. 点击“设置”按钮，把默认的“http://access.teamtalk.im:8080/msg_server”更改为“http://IpAdr1:8080/msg_server”（LoginServer部署的机器IP，不是MsgServer）
+3. 点击“设置”按钮，把默认的“http://access.teamtalk.im:8080/msg_server”更改为“http://IpAdr1:8080/msg_server”（loginServer部署的机器IP，不是MsgServer）
 4. 输入账号和密码（上面插入了gaozz和hanmm共2个测试用户，密码为123456）
 5. 点击登录，如果失败，去服务端查看log。主要看login_server,msg_server,db_proxy_server。（tail -f login_server/log/default.log）
 
@@ -357,7 +357,7 @@ $ vim im.com.conf # 把80改为如8080                           # 更改web访�
 ```bash
 $ systemctl start nginx  
 $ systemctl status nginx    # 查看nginx启动状态
-$ tail -f /var/log/nginx/error.log # 查看nginx错误Log
+$ tail -f /var/log/nginx/error.log # 查看nginx错误log
 ```
 
 5. 如果要启动php-fmp [https://www.cnblogs.com/hnhycnlc888/p/9434309.html](参考)

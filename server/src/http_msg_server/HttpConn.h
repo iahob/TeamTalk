@@ -8,9 +8,9 @@
 #ifndef __HTTP_CONN_H__
 #define __HTTP_CONN_H__
 
-#include "netlib.h"
-#include "util.h"
-#include "HttpParserWrapper.h"
+#include "base/netlib.h"
+#include "base/util.h"
+#include "base/HttpParserWrapper.h"
 
 #define HTTP_CONN_TIMEOUT			60000
 
@@ -60,7 +60,7 @@ protected:
     CHttpParserWrapper m_HttpParser;
 };
 
-typedef hash_map<uint32_t, CHttpConn*> HttpConnMap_t;
+typedef unordered_map<uint32_t, CHttpConn*> HttpConnMap_t;
 
 CHttpConn* FindHttpConnByHandle(uint32_t handle);
 void init_http_conn();

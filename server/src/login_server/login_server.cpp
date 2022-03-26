@@ -5,12 +5,13 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "LoginConn.h"
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
+#include "loginConn.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
 #include "HttpConn.h"
 #include "ipparser.h"
+#include "base/slog.h"
 
 IpParser* pIpParser = NULL;
 string strMsfsUrl;
@@ -19,28 +20,28 @@ void client_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pP
 {
 	if (msg == NETLIB_MSG_CONNECT)
 	{
-		CLoginConn* pConn = new CLoginConn();
-		pConn->OnConnect2(handle, LOGIN_CONN_TYPE_CLIENT);
+		CloginConn* pConn = new CloginConn();
+		pConn->OnConnect2(handle, logIN_CONN_TYPE_CLIENT);
 	}
 	else
 	{
-		log("!!!error msg: %d ", msg);
+		SPDLOG_ERROR("!!!error msg: {} ", msg);
 	}
 }
 
 // this callback will be replaced by imconn_callback() in OnConnect()
 void msg_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
 {
-    log("msg_server come in");
+    SPDLOG_ERROR("msg_server come in");
 
 	if (msg == NETLIB_MSG_CONNECT)
 	{
-		CLoginConn* pConn = new CLoginConn();
-		pConn->OnConnect2(handle, LOGIN_CONN_TYPE_MSG_SERV);
+		CloginConn* pConn = new CloginConn();
+		pConn->OnConnect2(handle, logIN_CONN_TYPE_MSG_SERV);
 	}
 	else
 	{
-		log("!!!error msg: %d ", msg);
+		SPDLOG_ERROR("!!!error msg: {} ", msg);
 	}
 }
 
@@ -54,15 +55,15 @@ void http_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pPar
     }
     else
     {
-        log("!!!error msg: %d ", msg);
+        SPDLOG_ERROR("!!!error msg: {} ", msg);
     }
 }
 
 int main(int argc, char* argv[])
 {
 	if ((argc == 2) && (strcmp(argv[1], "-v") == 0)) {
-		printf("Server Version: LoginServer/%s\n", VERSION);
-		printf("Server Build: %s %s\n", __DATE__, __TIME__);
+		printf("Server Version: loginServer/{}\n", VERSION);
+		printf("Server Build: {} {}\n", __DATE__, __TIME__);
 		return 0;
 	}
 
@@ -81,7 +82,7 @@ int main(int argc, char* argv[])
 
 	if (!msg_server_listen_ip || !str_msg_server_port || !http_listen_ip
         || !str_http_port || !str_msfs_url || !str_discovery) {
-		log("config item missing, exit... ");
+		SPDLOG_ERROR("config item missing, exit... ");
 		return -1;
 	}
 
@@ -120,8 +121,8 @@ int main(int argc, char* argv[])
     }
     
 
-			printf("server start listen on:\nFor client %s:%d\nFor MsgServer: %s:%d\nFor http:%s:%d\n",
-			client_listen_ip, client_port, msg_server_listen_ip, msg_server_port, http_listen_ip, http_port);
+    SPDLOG_INFO("server start listen on:\nFor client {}:{}\nFor MsgServer: {}:{}\nFor http:{}:{}\n",
+           client_listen_ip, client_port, msg_server_listen_ip, msg_server_port, http_listen_ip, http_port);
 	init_login_conn();
     init_http_conn();
 

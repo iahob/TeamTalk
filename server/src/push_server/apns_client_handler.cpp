@@ -12,7 +12,7 @@
 
 void CAPNSClientHandler::OnClose(uint32_t nsockid)
 {
-    PUSH_SERVER_WARN("apns gateway client closed, sockid: %u", nsockid);
+    SPDLOG_WARN("apns gateway client closed, sockid: {}", nsockid);
     m_Msg.Clear();
     apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
     if (pClient)
@@ -24,7 +24,7 @@ void CAPNSClientHandler::OnClose(uint32_t nsockid)
 
 void CAPNSClientHandler::OnException(uint32_t nsockid, int32_t nErrorCode)
 {
-    PUSH_SERVER_WARN("apns gateway client has exception, sockid: %u, error code: %d.", nsockid, nErrorCode);
+    SPDLOG_WARN("apns gateway client has exception, sockid: {}, error code: {}.", nsockid, nErrorCode);
     apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
     if (pClient)
     {
@@ -38,7 +38,7 @@ void CAPNSClientHandler::OnConnect(uint32_t nsockid)
 
 void CAPNSClientHandler::OnSSLConnect(uint32_t nsockid)
 {
-    PUSH_SERVER_INFO("apns gateway ssl connect successed.");
+    SPDLOG_INFO("apns gateway ssl connect successed.");
 }
 
 void CAPNSClientHandler::OnRecvData(const char* szBuf, int32_t nBufSize)
@@ -49,7 +49,7 @@ void CAPNSClientHandler::OnRecvData(const char* szBuf, int32_t nBufSize)
         CAPNSGateWayResMsg msg;
         if (msg.ParseFromArray(m_Msg.Data(), m_Msg.GetResMsgLength()))
         {
-            PUSH_SERVER_INFO("apns gateway client recv resp, cmd id: %u, status: %u, notification id: %u", (uint32_t)msg.GetCommandID(), (uint32_t)msg.GetStatus(), msg.GetNotificationID());
+            SPDLOG_INFO("apns gateway client recv resp, cmd id: {}, status: {}, notification id: {}", (uint32_t)msg.GetCommandID(), (uint32_t)msg.GetStatus(), msg.GetNotificationID());
             //apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
             //if (pClient)
             //{
@@ -58,7 +58,7 @@ void CAPNSClientHandler::OnRecvData(const char* szBuf, int32_t nBufSize)
         }
         else
         {
-            PUSH_SERVER_ERROR("CAPNSGateWayResMsg, msg parse failed.");
+            SPDLOG_ERROR("CAPNSGateWayResMsg, msg parse failed.");
             apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
             if (pClient)
             {

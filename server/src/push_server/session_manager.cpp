@@ -139,7 +139,7 @@ void CSessionManager::CheckPushSessionTimeOut()
         uint64_t last_time = pSession->GetLastHeartBeat();
         if (cur_time - last_time >= TIMEOUT_PUSHSESSION)
         {
-            PUSH_SERVER_WARN("push session time out, remote ip: %s, port: %d.", pSession->GetRemoteIP(),
+            SPDLOG_WARN("push session time out, remote ip: {}, port: {}.", pSession->GetRemoteIP(),
                              pSession->GetRemotePort());
             pSession->Stop();
         }

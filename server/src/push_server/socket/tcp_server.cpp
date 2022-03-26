@@ -52,7 +52,7 @@ void CTCPServer::Close()
             m_pio->Remove_Handler(this);
         }
         S_CloseSocket(GetSocket());
-        SOCKET_IO_WARN("close socket, sock id %d, real sock: %d.", m_sock_id, m_socket);
+        SPDLOG_WARN("close socket, sock id {}, real sock: {}.", m_sock_id, m_socket);
         m_socket = S_INVALID_SOCKET;
 		DoClose(GetSocketID());
 	}

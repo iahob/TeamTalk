@@ -12,7 +12,7 @@
 
 void CAPNSFeedBackHandler::OnClose(uint32_t nsockid)
 {
-    PUSH_SERVER_WARN("apns feedback client closed, sockid: %u", nsockid);
+    SPDLOG_WARN("apns feedback client closed, sockid: {}", nsockid);
     m_Msg.Clear();
     apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
     if (pClient)
@@ -24,7 +24,7 @@ void CAPNSFeedBackHandler::OnClose(uint32_t nsockid)
 
 void CAPNSFeedBackHandler::OnException(uint32_t nsockid, int32_t nErrorCode)
 {
-    PUSH_SERVER_WARN("apns feedback client has exception, sockid: %u, error code: %u.", nsockid, nErrorCode);
+    SPDLOG_WARN("apns feedback client has exception, sockid: {}, error code: {}.", nsockid, nErrorCode);
     apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
     if (pClient)
     {
@@ -38,7 +38,7 @@ void CAPNSFeedBackHandler::OnConnect(uint32_t nsockid)
 
 void CAPNSFeedBackHandler::OnSSLConnect(uint32_t nsockid)
 {
-    PUSH_SERVER_INFO("apns feedback ssl connect successed.");    
+    SPDLOG_INFO("apns feedback ssl connect successed.");
 }
 
 void CAPNSFeedBackHandler::OnRecvData(const char* szBuf, int32_t nBufSize)
@@ -52,11 +52,11 @@ void CAPNSFeedBackHandler::OnRecvData(const char* szBuf, int32_t nBufSize)
         {
             uint32_t time = msg.GetTime();
             string token = msg.GetToken();
-            PUSH_SERVER_INFO("apns feedback client recv resp, token: %s.", token.c_str());
+            SPDLOG_INFO("apns feedback client recv resp, token: {}.", token.c_str());
         }
         else
         {
-            PUSH_SERVER_ERROR("CAPNSFeedBackResMsg, msg parse failed.");
+            SPDLOG_ERROR("CAPNSFeedBackResMsg, msg parse failed.");
             apns_client_ptr pClient = CSessionManager::GetInstance()->GetAPNSClient();
             if (pClient)
             {

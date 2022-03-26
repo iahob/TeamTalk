@@ -1,5 +1,5 @@
 /*
- * LoginConn.cpp
+ * loginConn.cpp
  *
  *  Created on: 2013-6-21
  *      Author: ziteng@mogujie.com
@@ -9,7 +9,8 @@
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
 #include "IM.Login.pb.h"
-#include "public_define.h"
+#include "base/public_define.h"
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 static ConnMap_t g_client_conn_map;
 static ConnMap_t g_msg_serv_conn_map;
@@ -23,7 +24,7 @@ void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle
 		ConnMap_t::iterator it_old = it;
 		it++;
 
-		CLoginConn* pConn = (CLoginConn*)it_old->second;
+		CloginConn* pConn = (CloginConn*)it_old->second;
 		pConn->OnTimer(cur_time);
 	}
 
@@ -31,7 +32,7 @@ void login_conn_timer_callback(void* callback_data, uint8_t msg, uint32_t handle
 		ConnMap_t::iterator it_old = it;
 		it++;
 
-		CLoginConn* pConn = (CLoginConn*)it_old->second;
+		CloginConn* pConn = (CloginConn*)it_old->second;
 		pConn->OnTimer(cur_time);
 	}
 }
@@ -41,20 +42,20 @@ void init_login_conn()
 	netlib_register_timer(login_conn_timer_callback, NULL, 1000);
 }
 
-CLoginConn::CLoginConn()
+CloginConn::CloginConn()
 {
 }
 
-CLoginConn::~CLoginConn()
+CloginConn::~CloginConn()
 {
 
 }
 
-void CLoginConn::Close()
+void CloginConn::Close()
 {
 	if (m_handle != NETLIB_INVALID_HANDLE) {
 		netlib_close(m_handle);
-		if (m_conn_type == LOGIN_CONN_TYPE_CLIENT) {
+		if (m_conn_type == logIN_CONN_TYPE_CLIENT) {
 			g_client_conn_map.erase(m_handle);
 		} else {
 			g_msg_serv_conn_map.erase(m_handle);
@@ -65,7 +66,7 @@ void CLoginConn::Close()
 				msg_serv_info_t* pMsgServInfo = it->second;
 
 				g_total_online_user_cnt -= pMsgServInfo->cur_conn_cnt;
-				log("onclose from MsgServer: %s:%u ", pMsgServInfo->hostname.c_str(), pMsgServInfo->port);
+				SPDLOG_ERROR("onclose from MsgServer: {}:{} ", pMsgServInfo->hostname.c_str(), pMsgServInfo->port);
 				delete pMsgServInfo;
 				g_msg_serv_info.erase(it);
 			}
@@ -75,12 +76,12 @@ void CLoginConn::Close()
 	ReleaseRef();
 }
 
-void CLoginConn::OnConnect2(net_handle_t handle, int conn_type)
+void CloginConn::OnConnect2(net_handle_t handle, int conn_type)
 {
 	m_handle = handle;
 	m_conn_type = conn_type;
 	ConnMap_t* conn_map = &g_msg_serv_conn_map;
-	if (conn_type == LOGIN_CONN_TYPE_CLIENT) {
+	if (conn_type == logIN_CONN_TYPE_CLIENT) {
 		conn_map = &g_client_conn_map;
 	}else
 
@@ -90,14 +91,14 @@ void CLoginConn::OnConnect2(net_handle_t handle, int conn_type)
 	netlib_option(handle, NETLIB_OPT_SET_CALLBACK_DATA, (void*)conn_map);
 }
 
-void CLoginConn::OnClose()
+void CloginConn::OnClose()
 {
 	Close();
 }
 
-void CLoginConn::OnTimer(uint64_t curr_tick)
+void CloginConn::OnTimer(uint64_t curr_tick)
 {
-	if (m_conn_type == LOGIN_CONN_TYPE_CLIENT) {
+	if (m_conn_type == logIN_CONN_TYPE_CLIENT) {
 		if (curr_tick > m_last_recv_tick + CLIENT_TIMEOUT) {
 			Close();
 		}
@@ -112,13 +113,13 @@ void CLoginConn::OnTimer(uint64_t curr_tick)
 		}
 
 		if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-			log("connection to MsgServer timeout ");
+			SPDLOG_ERROR("connection to MsgServer timeout ");
 			Close();
 		}
 	}
 }
 
-void CLoginConn::HandlePdu(CImPdu* pPdu)
+void CloginConn::HandlePdu(CImPdu* pPdu)
 {
 	switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
@@ -134,12 +135,12 @@ void CLoginConn::HandlePdu(CImPdu* pPdu)
             break;
 
         default:
-            log("wrong msg, cmd id=%d ", pPdu->GetCommandId());
+            SPDLOG_ERROR("wrong msg, cmd id={} ", pPdu->GetCommandId());
             break;
 	}
 }
 
-void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
+void CloginConn::_HandleMsgServInfo(CImPdu* pPdu)
 {
 	msg_serv_info_t* pMsgServInfo = new msg_serv_info_t;
     IM::Server::IMMsgServInfo msg;
@@ -155,13 +156,13 @@ void CLoginConn::_HandleMsgServInfo(CImPdu* pPdu)
 
 	g_total_online_user_cnt += pMsgServInfo->cur_conn_cnt;
 
-	log("MsgServInfo, ip_addr1=%s, ip_addr2=%s, port=%d, max_conn_cnt=%d, cur_conn_cnt=%d, "\
-		"hostname: %s. ",
+	SPDLOG_ERROR("MsgServInfo, ip_addr1={}, ip_addr2={}, port={}, max_conn_cnt={}, cur_conn_cnt={}, "\
+		"hostname: {}. ",
 		pMsgServInfo->ip_addr1.c_str(), pMsgServInfo->ip_addr2.c_str(), pMsgServInfo->port,pMsgServInfo->max_conn_cnt,
 		pMsgServInfo->cur_conn_cnt, pMsgServInfo->hostname.c_str());
 }
 
-void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
+void CloginConn::_HandleUserCntUpdate(CImPdu* pPdu)
 {
 	map<uint32_t, msg_serv_info_t*>::iterator it = g_msg_serv_info.find(m_handle);
 	if (it != g_msg_serv_info.end()) {
@@ -178,17 +179,17 @@ void CLoginConn::_HandleUserCntUpdate(CImPdu* pPdu)
 			g_total_online_user_cnt--;
 		}
 
-		log("%s:%d, cur_cnt=%u, total_cnt=%u ", pMsgServInfo->hostname.c_str(),
+		SPDLOG_ERROR("{}:{}, cur_cnt={}, total_cnt={} ", pMsgServInfo->hostname.c_str(),
             pMsgServInfo->port, pMsgServInfo->cur_conn_cnt, g_total_online_user_cnt);
 	}
 }
 
-void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
+void CloginConn::_HandleMsgServRequest(CImPdu* pPdu)
 {
     IM::Login::IMMsgServReq msg;
     msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength());
 
-	log("HandleMsgServReq. ");
+	SPDLOG_ERROR("HandleMsgServReq. ");
 
 	// no MessageServer available
 	if (g_msg_serv_info.size() == 0) {
@@ -220,7 +221,7 @@ void CLoginConn::_HandleMsgServRequest(CImPdu* pPdu)
 	}
 
 	if (it_min_conn == g_msg_serv_info.end()) {
-		log("All TCP MsgServer are full ");
+		SPDLOG_ERROR("All TCP MsgServer are full ");
         IM::Login::IMMsgServRsp msg;
         msg.set_result_code(::IM::BaseDefine::REFUSE_REASON_MSG_SERVER_FULL);
         CImPdu pdu;

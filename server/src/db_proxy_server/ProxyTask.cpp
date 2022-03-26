@@ -11,6 +11,8 @@
 ================================================================*/
 #include "ProxyTask.h"
 #include "ProxyConn.h"
+#include "base/slog.h"
+
 
 CProxyTask::CProxyTask(uint32_t conn_uuid, pdu_handler_t pdu_handler, CImPdu* pPdu)
 {

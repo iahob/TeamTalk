@@ -6,13 +6,14 @@
 //  Copyright (c) 2015年 benqi. All rights reserved.
 //
 
-#include "file_server/transfer_task_manager.h"
+#include "transfer_task_manager.h"
 
-#include "base/pb/protocol/IM.BaseDefine.pb.h"
+#include "IM.BaseDefine.pb.h"
 #include "base/util.h"
 
-#include "file_server/config_util.h"
-#include "file_server/file_client_conn.h"
+#include "config_util.h"
+#include "file_client_conn.h"
+#include "base/slog.h"
 
 using namespace IM::BaseDefine;
 
@@ -60,14 +61,14 @@ BaseTransferTask* TransferTaskManager::NewTransferTask(uint32_t trans_mode, cons
         } else if (trans_mode == IM::BaseDefine::FILE_TYPE_OFFLINE) {
             transfer_task = new OfflineTransferTask(task_id, from_user_id, to_user_id, file_name, file_size);
         } else {
-            log("Invalid trans_mode = %d", trans_mode);
+            SPDLOG_ERROR("Invalid trans_mode = {}", trans_mode);
         }
         
         if (transfer_task) {
             transfer_tasks_.insert(std::make_pair(task_id, transfer_task));
         }
     } else {
-        log("Task existed by task_id=%s, why?????", task_id.c_str());
+        SPDLOG_ERROR("Task existed by task_id={}, why?????", task_id.c_str());
     }
     
     return transfer_task;

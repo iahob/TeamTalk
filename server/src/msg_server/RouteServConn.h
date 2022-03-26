@@ -8,8 +8,8 @@
 #ifndef ROUTESERVCONN_H_
 #define ROUTESERVCONN_H_
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 
 class CRouteServConn : public CImConn
 {
@@ -35,7 +35,7 @@ private:
 	void _HandleMsgData(CImPdu* pPdu);
 	void _HandleP2PMsg(CImPdu* pPdu);
 	void _HandleUsersStatusResponse(CImPdu* pPdu);
-    void _HandlePCLoginStatusNotify(CImPdu* pPdu);
+    void _HandlePCloginStatusNotify(CImPdu* pPdu);
     void _HandleRemoveSessionNotify(CImPdu* pPdu);
     void _HandleSignInfoChangedNotify(CImPdu* pPdu);
 private:

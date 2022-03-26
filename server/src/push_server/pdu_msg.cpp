@@ -104,7 +104,7 @@ BOOL CPduMsg::SerializeToArray(google::protobuf::MessageLite* msg)
     uchar_t* szData = new uchar_t[msg_size];
     if (!msg->SerializeToArray(szData, msg_size))
     {
-        PUSH_SERVER_WARN("pb msg miss required fields.");
+        SPDLOG_WARN("pb msg miss required fields.");
     }
     else
     {

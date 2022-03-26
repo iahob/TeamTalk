@@ -13,8 +13,9 @@
 #define __USERMODEL_H__
 
 #include "IM.BaseDefine.pb.h"
-#include "ImPduBase.h"
-#include "public_define.h"
+#include "base/ImPduBase.h"
+#include "base/public_define.h"
+#include "base/util.h"
 class CUserModel
 {
 public:

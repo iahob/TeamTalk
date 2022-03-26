@@ -11,7 +11,7 @@
 
 #include "base/util.h"
 
-#include "file_server/offline_file_util.h"
+#include "offline_file_util.h"
 
 class CImConn;
 
@@ -373,12 +373,12 @@ struct TransferTask {
     }
     
     void lock(int n) {
-        //    	log("++++++++++++++++++++++ lock %d %s\n", n, task_id.c_str());
+        //    	SPDLOG_ERROR("++++++++++++++++++++++ lock {} %s\n", n, task_id.c_str());
         pthread_rwlock_wrlock(&task_lock);
     }
     
     void unlock(int n) {
-        //    	log("++++++++++++++++++++++unlock %d %s\n", n, task_id.c_str());
+        //    	SPDLOG_ERROR("++++++++++++++++++++++unlock {} %s\n", n, task_id.c_str());
         pthread_rwlock_unlock(&task_lock);
     }
     

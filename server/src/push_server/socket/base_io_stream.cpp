@@ -2,7 +2,6 @@
 #include "socket_io_define.h"
 #include "io_loop.h"
 
-CSLog g_socketlog = CSLog(LOG_MODULE_SOCKET);
 
 CBaseIOStream::CBaseIOStream(CIOLoop* pio)
 {

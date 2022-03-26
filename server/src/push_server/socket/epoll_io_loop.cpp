@@ -74,7 +74,7 @@ void CEpollIOLoop::Run()
 			}
             if (events[i].events & EPOLLIN)
 			{
-                SOCKET_IO_DEBUG("socket read event.");
+                SPDLOG_DEBUG("socket read event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
 				if (pIOStream != NULL)
 				{
@@ -85,7 +85,7 @@ void CEpollIOLoop::Run()
 					else
 					{
 						pIOStream->OnRecv();
-                        SOCKET_IO_TRACE("socket recv data, sock id: %d.", pIOStream->GetSocketID());
+                        SPDLOG_TRACE("socket recv data, sock id: {}.", pIOStream->GetSocketID());
 					}
 				}
 				else
@@ -97,7 +97,7 @@ void CEpollIOLoop::Run()
 			}//EPOLLIN
             if (events[i].events & EPOLLOUT)
 			{
-                SOCKET_IO_DEBUG("socket write event.");
+                SPDLOG_DEBUG("socket write event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
 				if (pIOStream != NULL)
 				{
@@ -111,7 +111,7 @@ void CEpollIOLoop::Run()
 			}//EPOLLOUT
             if (events[i].events & EPOLLERR)
 			{
-                SOCKET_IO_DEBUG("socket error event.");
+                SPDLOG_DEBUG("socket error event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
                 if (pIOStream != NULL)
                 {
@@ -124,7 +124,7 @@ void CEpollIOLoop::Run()
                         if (nCode < 0 || nError)
                         {
                             //连接失败
-                            SOCKET_IO_WARN("socket connect failed, nCode: %d, nError: %d.", nCode, nError);
+                            SPDLOG_WARN("socket connect failed, nCode: {}, nError: {}.", nCode, nError);
                             pIOStream->OnConnect(FALSE);
                         }
                     }
@@ -135,7 +135,7 @@ void CEpollIOLoop::Run()
                         nLen = sizeof(nError);
                         nCode = getsockopt(pIOStream->GetSocket(), SOL_SOCKET, SO_ERROR, &nError, &nLen);
                         //连接失败
-                        SOCKET_IO_WARN("socket error event, nCode: %d, nError: %d.", nCode, nError);
+                        SPDLOG_WARN("socket error event, nCode: {}, nError: {}.", nCode, nError);
                         pIOStream->ShutDown();
                     }
                 }
@@ -201,7 +201,7 @@ void CEpollIOLoop::Add_WriteEvent( CBaseIOStream* piostream )
 		ev.data.fd=piostream->GetSocket();
 		if (piostream->GetSockType() == SOCK_TCP_CLIENT && piostream->CheckConnect())
 		{
-            SOCKET_IO_DEBUG("add write event for check connect.");
+            SPDLOG_DEBUG("add write event for check connect.");
 			//用于判断是否connect成功
 			//对于111(Connection refused)(即连接一个不存在的IP)错误或者110(Connection timed out)
 			//(即连接一个IP存在，PORT未开放)来说,没有定义EPOLLERR,
@@ -212,7 +212,7 @@ void CEpollIOLoop::Add_WriteEvent( CBaseIOStream* piostream )
 		}
 		else
 		{
-            SOCKET_IO_DEBUG("add write event.");
+            SPDLOG_DEBUG("add write event.");
 			//可写事件
 			ev.events=EPOLLIN | EPOLLOUT | EPOLLERR;
 			epoll_ctl(m_eid, EPOLL_CTL_MOD, piostream->GetSocket(), &ev);

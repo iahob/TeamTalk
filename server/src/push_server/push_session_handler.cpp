@@ -15,7 +15,7 @@
 
 void CPushSessionHandler::OnClose(uint32_t nsockid)
 {
-    PUSH_SERVER_WARN("push session closed, sockid: %u.", nsockid);
+    SPDLOG_WARN("push session closed, sockid: {}.", nsockid);
     m_Msg.Clear();
     CSessionManager::GetInstance()->RemovePushSessionBySockID(nsockid);
 }
@@ -23,7 +23,7 @@ void CPushSessionHandler::OnClose(uint32_t nsockid)
 
 void CPushSessionHandler::OnException(uint32_t nsockid, int32_t nErrorCode)
 {
-    PUSH_SERVER_WARN("push session has exception, sockid: %u, error code: %u.", nsockid, nErrorCode);
+    SPDLOG_WARN("push session has exception, sockid: {}, error code: {}.", nsockid, nErrorCode);
     push_session_ptr pSession = CSessionManager::GetInstance()->GetPushSessionBySockID(nsockid);
     if (pSession)
     {
@@ -45,7 +45,7 @@ void CPushSessionHandler::OnRecvData(const char *szBuf, int32_t nBufSize)
                 _HandlePushMsg(m_Msg.Data(), m_Msg.GetPduLength());
                 break;
             default:
-                PUSH_SERVER_WARN("push session recv undefind msg, cmd id: %u.", cmd_id);
+                SPDLOG_WARN("push session recv undefind msg, cmd id: {}.", cmd_id);
                 push_session_ptr pSession = CSessionManager::GetInstance()->GetPushSessionBySockID(_GetSockID());
                 if (pSession)
                 {
@@ -59,7 +59,7 @@ void CPushSessionHandler::OnRecvData(const char *szBuf, int32_t nBufSize)
 
 void CPushSessionHandler::_HandleHeartBeat(const char *szBuf, int32_t nBufSize)
 {
-    PUSH_SERVER_TRACE("HeartBeat");
+    SPDLOG_DEBUG("HeartBeat");
     push_session_ptr pSession = CSessionManager::GetInstance()->GetPushSessionBySockID(_GetSockID());
     if (pSession == nullptr)
     {
@@ -74,7 +74,7 @@ void CPushSessionHandler::_HandlePushMsg(const char* szBuf, int32_t nBufSize)
     CPduMsg pdu_msg;
     if (!pdu_msg.ParseFromArray(szBuf, nBufSize))
     {
-        PUSH_SERVER_ERROR("HandlePushMsg, msg parse failed.");
+        SPDLOG_ERROR("HandlePushMsg, msg parse failed.");
         return;
     }
     
@@ -87,7 +87,7 @@ void CPushSessionHandler::_HandlePushMsg(const char* szBuf, int32_t nBufSize)
     IM::Server::IMPushToUserReq msg;
     if (!msg.ParseFromArray(pdu_msg.Body(), pdu_msg.GetBodyLength()))
     {
-        PUSH_SERVER_ERROR("HandlePushMsg, msg parse failed.");
+        SPDLOG_ERROR("HandlePushMsg, msg parse failed.");
         pSession->Stop();
         return;
     }
@@ -108,7 +108,7 @@ void CPushSessionHandler::_HandlePushMsg(const char* szBuf, int32_t nBufSize)
             }
             m_NotificationID++;
             
-            PUSH_SERVER_INFO("HandlePushMsg, token: %s, push count: %d, push_type:%d, notification id: %u.", user_token.token().c_str(), user_token.push_count(),
+            SPDLOG_INFO("HandlePushMsg, token: {}, push count: {}, push_type:{}, notification id: {}.", user_token.token().c_str(), user_token.push_count(),
                               user_token.push_type(), m_NotificationID);
             CAPNSGateWayMsg msg;
             msg.SetAlterBody(strFlash);
@@ -135,7 +135,7 @@ void CPushSessionHandler::_HandlePushMsg(const char* szBuf, int32_t nBufSize)
             else
             {
                 push_result->set_result_code(1);
-                PUSH_SERVER_WARN("HandlePushMsg, serialize CAPNSGateWayMsg failed.");
+                SPDLOG_WARN("HandlePushMsg, serialize CAPNSGateWayMsg failed.");
             }
             push_result->set_user_token(user_token.token());
         }
@@ -150,7 +150,7 @@ void CPushSessionHandler::_HandlePushMsg(const char* szBuf, int32_t nBufSize)
         }
         else
         {
-            PUSH_SERVER_WARN("HandlePushMsg, serialize IMPushToUserRsp failed.");
+            SPDLOG_WARN("HandlePushMsg, serialize IMPushToUserRsp failed.");
         }
     }
 }

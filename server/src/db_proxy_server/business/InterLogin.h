@@ -9,15 +9,15 @@
 *
 #pragma once
 ================================================================*/
-#ifndef __INTERLOGIN_H__
-#define __INTERLOGIN_H__
+#ifndef __INTERlogIN_H__
+#define __INTERlogIN_H__
 
-#include "LoginStrategy.h"
+#include "loginStrategy.h"
 
-class CInterLoginStrategy :public CLoginStrategy
+class CInterloginStrategy :public CloginStrategy
 {
 public:
-    virtual bool doLogin(const std::string& strName, const std::string& strPass, IM::BaseDefine::UserInfo& user);
+    virtual bool dologin(const std::string& strName, const std::string& strPass, IM::BaseDefine::UserInfo& user);
 };
 
-#endif /*defined(__INTERLOGIN_H__) */
+#endif /*defined(__INTERlogIN_H__) */

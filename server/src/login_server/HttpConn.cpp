@@ -7,13 +7,13 @@
 
 #include "HttpConn.h"
 #include "json/json.h"
-#include "LoginConn.h"
-#include "HttpParserWrapper.h"
+ #include "base/HttpParserWrapper.h"
 #include "ipparser.h"
-
+#include "base/slog.h"
+#include "LoginConn.h"
 static HttpConnMap_t g_http_conn_map;
 
-extern map<uint32_t, msg_serv_info_t*>  g_msg_serv_info;
+ extern map<uint32_t, msg_serv_info_t*>  g_msg_serv_info;
 
 extern IpParser* pIpParser;
 extern string strMsfsUrl;
@@ -57,7 +57,7 @@ void httpconn_callback(void* callback_data, uint8_t msg, uint32_t handle, uint32
 		pConn->OnClose();
 		break;
 	default:
-		log("!!!httpconn_callback error msg: %d ", msg);
+		SPDLOG_ERROR("!!!httpconn_callback error msg: {} ", msg);
 		break;
 	}
 }
@@ -95,12 +95,12 @@ CHttpConn::CHttpConn()
 		m_conn_handle = ++g_conn_handle_generator;
 	}
 
-	//log("CHttpConn, handle=%u\n", m_conn_handle);
+	//SPDLOG_ERROR("CHttpConn, handle=%u\n", m_conn_handle);
 }
 
 CHttpConn::~CHttpConn()
 {
-	//log("~CHttpConn, handle=%u\n", m_conn_handle);
+	//SPDLOG_ERROR("~CHttpConn, handle=%u\n", m_conn_handle);
 }
 
 int CHttpConn::Send(void* data, int len)
@@ -121,7 +121,7 @@ int CHttpConn::Send(void* data, int len)
 	{
 		m_out_buf.Write((char*)data + ret, len - ret);
 		m_busy = true;
-		//log("not send all, remain=%d\n", m_out_buf.GetWriteOffset());
+		//SPDLOG_ERROR("not send all, remain={}\n", m_out_buf.GetWriteOffset());
 	}
     else
     {
@@ -143,7 +143,7 @@ void CHttpConn::Close()
 
 void CHttpConn::OnConnect(net_handle_t handle)
 {
-    printf("OnConnect, handle=%d\n", handle);
+    SPDLOG_INFO("OnConnect, handle={}\n", handle);
     m_sock_handle = handle;
     m_state = CONN_STATE_CONNECTED;
     g_http_conn_map.insert(make_pair(m_conn_handle, this));
@@ -179,12 +179,12 @@ void CHttpConn::OnRead()
     // 正常的url最大长度为2048，我们接受的所有数据长度不得大于1K
     if(buf_len > 1024)
     {
-        log("get too much data:%s ", in_buf);
+        SPDLOG_ERROR("get too much data:{} ", in_buf);
         Close();
         return;
     }
 
-	//log("OnRead, buf_len=%u, conn_handle=%u\n", buf_len, m_conn_handle); // for debug
+	//SPDLOG_ERROR("OnRead, buf_len=%u, conn_handle=%u\n", buf_len, m_conn_handle); // for debug
 
 	
 	m_cHttpParser.ParseHttpContent(in_buf, buf_len);
@@ -195,7 +195,7 @@ void CHttpConn::OnRead()
             string content = m_cHttpParser.GetBodyContent();
             _HandleMsgServRequest(url, content);
 		} else {
-			log("url unknown, url=%s ", url.c_str());
+			SPDLOG_ERROR("url unknown, url={} ", url.c_str());
 			Close();
 		}
 	}
@@ -217,7 +217,7 @@ void CHttpConn::OnWrite()
 	if (ret < out_buf_size)
 	{
 		m_busy = true;
-		log("not send all, remain=%d ", m_out_buf.GetWriteOffset());
+		SPDLOG_ERROR("not send all, remain={} ", m_out_buf.GetWriteOffset());
 	}
 	else
 	{
@@ -234,7 +234,7 @@ void CHttpConn::OnClose()
 void CHttpConn::OnTimer(uint64_t curr_tick)
 {
 	if (curr_tick > m_last_recv_tick + HTTP_CONN_TIMEOUT) {
-		log("HttpConn timeout, handle=%d ", m_conn_handle);
+		SPDLOG_ERROR("HttpConn timeout, handle={} ", m_conn_handle);
 		Close();
 	}
 }
@@ -269,7 +269,7 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
     }
     
     if (it_min_conn == g_msg_serv_info.end()) {
-        log("All TCP MsgServer are full ");
+        SPDLOG_ERROR("All TCP MsgServer are full ");
         Json::Value value;
         value["code"] = 2;
         value["msg"] = "负载过高";
@@ -311,7 +311,7 @@ void CHttpConn::_HandleMsgServRequest(string& url, string& post_data)
 
 void CHttpConn::OnWriteComlete()
 {
-    log("write complete ");
+    SPDLOG_INFO("write complete ");
     Close();
 }
 

@@ -5,16 +5,17 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "netlib.h"
-#include "EncDec.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/EncDec.h"
+#include "base/ConfigFileReader.h"
 #include "MsgConn.h"
 #include "LoginServConn.h"
 #include "RouteServConn.h"
 #include "DBServConn.h"
 #include "PushServConn.h"
 #include "FileServConn.h"
-//#include "version.h"
+#include "base/slog.h"
+#include "base/ServInfo.h"
 
 #define DEFAULT_CONCURRENT_DB_CONN_CNT  10
 
@@ -30,7 +31,7 @@ void msg_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* 
 	}
 	else
 	{
-		log("!!!error msg: %d ", msg);
+		SPDLOG_ERROR("!!!error msg: {} ", msg);
 	}
 }
 
@@ -38,15 +39,15 @@ void msg_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* 
 int main(int argc, char* argv[])
 {
 	if ((argc == 2) && (strcmp(argv[1], "-v") == 0)) {
-//		printf("Server Version: MsgServer/%s\n", VERSION);
-		printf("Server Build: %s %s\n", __DATE__, __TIME__);
+//		printf("Server Version: MsgServer/{}\n", VERSION);
+		printf("Server Build: {} {}\n", __DATE__, __TIME__);
 		return 0;
 	}
 
 	signal(SIGPIPE, SIG_IGN);
 	srand(time(NULL));
 
-	log("MsgServer max files can open: %d ", getdtablesize());
+	SPDLOG_DEBUG("MsgServer max files can open: {} ", getdtablesize());
 
 	CConfigFileReader config_file("msgserver.conf");
 
@@ -60,7 +61,7 @@ int main(int argc, char* argv[])
 	serv_info_t* db_server_list = read_server_config(&config_file, "DBServerIP", "DBServerPort", db_server_count);
 
 	uint32_t login_server_count = 0;
-	serv_info_t* login_server_list = read_server_config(&config_file, "LoginServerIP", "LoginServerPort", login_server_count);
+	serv_info_t* login_server_list = read_server_config(&config_file, "loginServerIP", "loginServerPort", login_server_count);
 
 	uint32_t route_server_count = 0;
 	serv_info_t* route_server_list = read_server_config(&config_file, "RouteServerIP", "RouteServerPort", route_server_count);
@@ -74,7 +75,7 @@ int main(int argc, char* argv[])
                                                        "FileServerPort", file_server_count);
     
     if (!str_aes_key || strlen(str_aes_key)!=32) {
-        log("aes key is invalied");
+        SPDLOG_ERROR("aes key is invalied");
         return -1;
     }
  
@@ -84,7 +85,7 @@ int main(int argc, char* argv[])
 	// 这样当其他业务量非常繁忙时，也不会影响客服端的登录验证
 	// 建议配置4个实例，这样更新BusinessServer时，不会影响业务
 	if (db_server_count < 2) {
-		log("DBServerIP need 2 instance at lest ");
+		SPDLOG_ERROR("DBServerIP need 2 instance at lest ");
 		return 1;
 	}
 
@@ -104,7 +105,7 @@ int main(int argc, char* argv[])
 	}
 
 	if (!listen_ip || !str_listen_port || !ip_addr1) {
-		log("config file miss, exit... ");
+		SPDLOG_ERROR("config file miss, exit... ");
 		return -1;
 	}
 
@@ -128,7 +129,7 @@ int main(int argc, char* argv[])
 			return ret;
 	}
 
-	printf("server start listen on: %s:%d\n", listen_ip, listen_port);
+	printf("server start listen on: {}:{}\n", listen_ip, listen_port);
 
 	init_msg_conn();
 

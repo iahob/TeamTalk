@@ -28,6 +28,6 @@
 #define IM_PDU_HEADER_LEN   16
 #define IM_PDU_VERSION      13
 
-#define SERVER_ADDR                             @"http://xiaominfc.com:8080/msg_server"
+#define SERVER_ADDR                             @"http://127.0.0.1:8080/msg_server"
 
 #define _(x)                                NSLocalizedString(x,@"")

@@ -18,6 +18,8 @@
 #include "AudioModel.h"
 #include "SessionModel.h"
 #include "RelationModel.h"
+#include "base/slog.h"
+
 
 using namespace std;
 
@@ -80,14 +82,14 @@ void CMessageModel::getMessage(uint32_t nUserId, uint32_t nPeerId, uint32_t nMsg
                     }
                     else
                     {
-                        log("invalid msgType. userId=%u, peerId=%u, msgId=%u, msgCnt=%u, msgType=%u", nUserId, nPeerId, nMsgId, nMsgCnt, nMsgType);
+                        SPDLOG_ERROR("invalid msgType. userId={}, peerId={}, msgId={}, msgCnt={}, msgType={}", nUserId, nPeerId, nMsgId, nMsgCnt, nMsgType);
                     }
                 }
                 delete pResultSet;
             }
             else
             {
-                log("no result set: %s", strSql.c_str());
+                SPDLOG_ERROR("no result set: {}", strSql.c_str());
             }
             pDBManager->RelDBConn(pDBConn);
             if (!lsMsg.empty())
@@ -97,12 +99,12 @@ void CMessageModel::getMessage(uint32_t nUserId, uint32_t nPeerId, uint32_t nMsg
         }
         else
         {
-            log("no db connection for teamtalk_slave");
+            SPDLOG_ERROR("no db connection for teamtalk_slave");
         }
 	}
     else
     {
-        log("no relation between %lu and %lu", nUserId, nPeerId);
+        SPDLOG_ERROR("no relation between %lu and %lu", nUserId, nPeerId);
     }
 }
 
@@ -117,7 +119,7 @@ bool CMessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t n
 {
     bool bRet =false;
     if (nFromId == 0 || nToId == 0) {
-        log("invalied userId.%u->%u", nFromId, nToId);
+        SPDLOG_ERROR("invalied userId.{}->{}", nFromId, nToId);
         return bRet;
     }
 
@@ -154,12 +156,12 @@ bool CMessageModel::sendMessage(uint32_t nRelateId, uint32_t nFromId, uint32_t n
         }
         else
         {
-            log("insert message failed: %s", strSql.c_str());
+            SPDLOG_ERROR("insert message failed: {}", strSql.c_str());
         }
 	}
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
 	return bRet;
 }
@@ -193,7 +195,7 @@ void CMessageModel::incMsgCount(uint32_t nFromId, uint32_t nToId)
 		pCacheConn->hincrBy("unread_" + int2string(nToId), int2string(nFromId), 1);
 		pCacheManager->RelCacheConn(pCacheConn);
 	} else {
-		log("no cache connection to increase unread count: %d->%d", nFromId, nToId);
+		SPDLOG_ERROR("no cache connection to increase unread count: {}->{}", nFromId, nToId);
 	}
 }
 
@@ -229,18 +231,18 @@ void CMessageModel::getUnreadMsgCount(uint32_t nUserId, uint32_t &nTotalCnt, lis
                 }
                 else
                 {
-                    log("invalid msgType. userId=%u, peerId=%u, msgType=%u", nUserId, cUnreadInfo.session_id(), nMsgType);
+                    SPDLOG_ERROR("invalid msgType. userId={}, peerId={}, msgType={}", nUserId, cUnreadInfo.session_id(), nMsgType);
                 }
             }
         }
         else
         {
-            log("hgetall %s failed!", strKey.c_str());
+            SPDLOG_ERROR("hgetall {} failed!", strKey.c_str());
         }
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
 }
 
@@ -303,18 +305,18 @@ void CMessageModel::getLastMsg(uint32_t nFromId, uint32_t nToId, uint32_t& nMsgI
             }
             else
             {
-                log("no result set: %s", strSql.c_str());
+                SPDLOG_ERROR("no result set: {}", strSql.c_str());
             }
             pDBManager->RelDBConn(pDBConn);
         }
         else
         {
-            log("no db connection_slave");
+            SPDLOG_ERROR("no db connection_slave");
         }
     }
     else
     {
-        log("no relation between %lu and %lu", nFromId, nToId);
+        SPDLOG_ERROR("no relation between %lu and %lu", nFromId, nToId);
     }
 }
 
@@ -337,12 +339,12 @@ void CMessageModel::getUnReadCntAll(uint32_t nUserId, uint32_t &nTotalCnt)
         }
         else
         {
-            log("hgetall %s failed!", strKey.c_str());
+            SPDLOG_ERROR("hgetall {} failed!", strKey.c_str());
         }
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
 }
 
@@ -357,7 +359,7 @@ void CMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nPeerId, const list
 
     if(nRelateId == INVALID_VALUE)
     {
-        log("invalid relation id between %u and %u", nUserId, nPeerId);
+        SPDLOG_ERROR("invalid relation id between {} and {}", nUserId, nPeerId);
         return;
     }
 
@@ -399,14 +401,14 @@ void CMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nPeerId, const list
                 }
                 else
                 {
-                    log("invalid msgType. userId=%u, peerId=%u, msgType=%u, msgId=%u", nUserId, nPeerId, nMsgType, msg.msg_id());
+                    SPDLOG_ERROR("invalid msgType. userId={}, peerId={}, msgType={}, msgId={}", nUserId, nPeerId, nMsgType, msg.msg_id());
                 }
             }
             delete pResultSet;
         }
         else
         {
-            log("no result set for sql:%s", strSql.c_str());
+            SPDLOG_ERROR("no result set for sql:%s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
         if(!lsMsg.empty())
@@ -416,7 +418,7 @@ void CMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nPeerId, const list
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 

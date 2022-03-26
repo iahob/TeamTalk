@@ -12,9 +12,7 @@
 #include "session_manager.h"
 #include <openssl/ssl.h>
 #include <openssl/err.h>
-#include "slog_api.h"
 
-CSLog g_pushlog = CSLog(LOG_MODULE_PUSH);
 
 CPushApp::CPushApp()
 {
@@ -41,11 +39,11 @@ BOOL CPushApp::Init()
         SSL_load_error_strings();
         
         m_bInit = TRUE;
-        PUSH_SERVER_DEBUG("push app init successed.");
+        SPDLOG_DEBUG("push app init successed.");
     }
     else
     {
-        PUSH_SERVER_WARN("warning: push app has inited.");
+        SPDLOG_WARN("warning: push app has inited.");
     }
     
     return TRUE;
@@ -57,11 +55,11 @@ BOOL CPushApp::UnInit()
     if (m_bInit)
     {
         m_bInit = FALSE;
-        PUSH_SERVER_DEBUG("push app uninit successed.");
+        SPDLOG_DEBUG("push app uninit successed.");
     }
     else
     {
-        PUSH_SERVER_WARN("warning: push app has uninited.");
+        SPDLOG_WARN("warning: push app has uninited.");
     }
     return TRUE;
 }
@@ -80,13 +78,13 @@ BOOL CPushApp::Start()
         char* sand_box = config_file.GetConfigName("SandBox");
         if (!listen_ip || !str_listen_port || !cert_path || !key_path || !sand_box || !key_password)
         {
-            PUSH_SERVER_ERROR("push app config file: %s not exist or miss required parameter obtained.", file_name.c_str());
+            SPDLOG_ERROR("push app config file: {} not exist or miss required parameter obtained.", file_name.c_str());
             return FALSE;
         }
         uint32_t nsand_box = atoi(sand_box);
         if (nsand_box != 1 && nsand_box != 0)
         {
-            PUSH_SERVER_ERROR("push app config parameter: sand_box has invaid value: %u.", nsand_box)
+            SPDLOG_ERROR("push app config parameter: sand_box has invaid value: {}.", nsand_box);
             return FALSE;
         }
         apns_client_ptr pAPNSClient(new CAPNSClient(m_io));
@@ -117,11 +115,11 @@ BOOL CPushApp::Start()
                 return FALSE;
             }
         }
-        PUSH_SERVER_DEBUG("push app start successed.");
+        SPDLOG_DEBUG("push app start successed.");
     }
     else
     {
-        PUSH_SERVER_WARN("push app not init before.");
+        SPDLOG_WARN("push app not init before.");
     }
     
     return TRUE;
@@ -148,11 +146,11 @@ BOOL CPushApp::Stop()
         CSessionManager::GetInstance()->RemoveAPNSClient();
         CSessionManager::GetInstance()->RemovePushServer();
         CSessionManager::GetInstance()->ClearPushSession();
-        PUSH_SERVER_DEBUG("push app stop successed.");
+        SPDLOG_DEBUG("push app stop successed.");
     }
     else
     {
-        PUSH_SERVER_WARN("push app not init before.");
+        SPDLOG_WARN("push app not init before.");
     }
     return TRUE;
 }

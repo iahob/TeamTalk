@@ -9,14 +9,14 @@
 *
 #pragma once
 ================================================================*/
-#ifndef __EXTERLOGIN_H__
-#define __EXTERLOGIN_H__
+#ifndef __EXTERlogIN_H__
+#define __EXTERlogIN_H__
 
-#include "LoginStrategy.h"
+#include "loginStrategy.h"
 
-class CExterLoginStrategy:public CLoginStrategy
+class CExterloginStrategy:public CloginStrategy
 {
 public:
-    virtual bool doLogin(const std::string& strName, const std::string& strPass, IM::BaseDefine::UserInfo& user);
+    virtual bool dologin(const std::string& strName, const std::string& strPass, IM::BaseDefine::UserInfo& user);
 };
-#endif /*defined(__EXTERLOGIN_H__) */
+#endif /*defined(__EXTERlogIN_H__) */

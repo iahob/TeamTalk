@@ -6,16 +6,17 @@
 //  Copyright (c) 2013年 ziteng. All rights reserved.
 //
 
-#include "netlib.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
 #include "RouteServConn.h"
 #include "DBServConn.h"
-#include "version.h"
-#include "ServInfo.h"
+#include "base/version.h"
+#include "base/ServInfo.h"
 #include "HttpConn.h"
 #include "HttpQuery.h"
 #include "util.h"
-#include "EncDec.h"
+#include "base/EncDec.h"
+#include "base/slog.h"
 
 CAes* pAes;
 
@@ -31,7 +32,7 @@ void http_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pPar
 	}
 	else
 	{
-		log("!!!error msg: %d ", msg);
+		SPDLOG_ERROR("!!!error msg: %d ", msg);
 	}
 }
 
@@ -47,7 +48,7 @@ int main(int argc, char* argv[])
 	signal(SIGPIPE, SIG_IGN);
 	srand(time(NULL));
     
-	log("MsgServer max files can open: %d ", getdtablesize());
+	SPDLOG_ERROR("MsgServer max files can open: %d ", getdtablesize());
     
 	CConfigFileReader config_file("httpmsgserver.conf");
     
@@ -81,13 +82,13 @@ int main(int argc, char* argv[])
 
 	char* str_aes_key = config_file.GetConfigName("aesKey");
 	if (!str_aes_key || strlen(str_aes_key)!=32) {
-       	   	 log("aes key is invalied");
+       	   	 SPDLOG_ERROR("aes key is invalied");
        		 return -1;
     }
     pAes = new CAes(str_aes_key);
 
 	if (!listen_ip || !str_listen_port) {
-		log("config file miss, exit... ");
+		SPDLOG_ERROR("config file miss, exit... ");
 		return -1;
 	}
     

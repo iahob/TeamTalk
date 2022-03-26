@@ -1,18 +1,20 @@
 /*================================================================
 *     Copyright (c) 2015年 lanhu. All rights reserved.
 *   
-*   文件名称：InterLogin.cpp
+*   文件名称：Interlogin.cpp
 *   创 建 者：Zhang Yuanhao
 *   邮    箱：bluefoxah@gmail.com
 *   创建日期：2015年03月09日
 *   描    述：
 *
 ================================================================*/
-#include "InterLogin.h"
+#include "Interlogin.h"
 #include "../DBPool.h"
-#include "EncDec.h"
+#include "base/EncDec.h"
+#include "base/slog.h"
 
-bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string &strPass, IM::BaseDefine::UserInfo& user)
+
+bool CInterloginStrategy::dologin(const std::string &strName, const std::string &strPass, IM::BaseDefine::UserInfo& user)
 {
     bool bRet = false;
     CDBManager* pDBManger = CDBManager::getInstance();
@@ -62,7 +64,7 @@ bool CInterLoginStrategy::doLogin(const std::string &strName, const std::string 
                 char szMd5[33];
                 CMd5::MD5_Calculate(strInPass.c_str(), strInPass.length(), szMd5);
 		
-		log("doLogin name=%s,inputPassMd5=%s,dbPassMd5=%s",tmpName.c_str(),szMd5,strResult.c_str());
+		SPDLOG_ERROR("dologin name={},inputPassMd5={},dbPassMd5=%s",tmpName.c_str(),szMd5,strResult.c_str());
 
                 string strOutPass(szMd5);
                 if(strOutPass == strResult)

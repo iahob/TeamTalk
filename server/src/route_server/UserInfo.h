@@ -12,7 +12,7 @@
 #include <iostream>
 #include <set>
 #include <map>
-#include "ostype.h"
+#include "base/ostype.h"
 class CRouteConn;
 
 using namespace std;

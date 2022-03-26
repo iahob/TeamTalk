@@ -5,7 +5,7 @@
  *      Author: ziteng@mogujie.com
  */
 
-#include "netlib.h"
+#include "base/netlib.h"
 #include "RouteConn.h"
 #include "UserInfo.h"
 #include "IM.Buddy.pb.h"
@@ -14,12 +14,12 @@
 #include "IM.Other.pb.h"
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
-#include "public_define.h"
+#include "base/public_define.h"
 using namespace IM::BaseDefine;
 
 //typedef hash_map<uint32_t /* user_id */, UserStat_t> UserStatMap_t;
 static ConnMap_t g_route_conn_map;
-typedef hash_map<uint32_t, CUserInfo*> UserInfoMap_t;
+typedef unordered_map<uint32_t, CUserInfo*> UserInfoMap_t;
 static UserInfoMap_t g_user_map;
 
 CUserInfo* GetUserInfo(uint32_t user_id)
@@ -100,7 +100,7 @@ void CRouteConn::OnConnect(net_handle_t handle)
 
 void CRouteConn::OnClose()
 {
-	log("MsgServer onclose: handle=%d ", m_handle);
+	SPDLOG_ERROR("MsgServer onclose: handle={} ", m_handle);
 	Close();
 }
 
@@ -117,7 +117,7 @@ void CRouteConn::OnTimer(uint64_t curr_tick)
 	}
 
 	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("message server timeout ");
+		SPDLOG_ERROR("message server timeout ");
 		Close();
 	}
 }
@@ -154,7 +154,7 @@ void CRouteConn::HandlePdu(CImPdu* pPdu)
             break;
         
 	default:
-		log("CRouteConn::HandlePdu, wrong cmd id: %d ", pPdu->GetCommandId());
+		SPDLOG_ERROR("CRouteConn::HandlePdu, wrong cmd id: {} ", pPdu->GetCommandId());
 		break;
 	}
 }
@@ -166,7 +166,7 @@ void CRouteConn::_HandleOnlineUserInfo(CImPdu* pPdu)
 
 	uint32_t user_count = msg.user_stat_list_size();
 
-	log("HandleOnlineUserInfo, user_cnt=%u ", user_count);
+	SPDLOG_ERROR("HandleOnlineUserInfo, user_cnt={} ", user_count);
 
 	for (uint32_t i = 0; i < user_count; i++) {
         IM::BaseDefine::ServerUserStat server_user_stat = msg.user_stat_list(i);
@@ -182,7 +182,7 @@ void CRouteConn::_HandleUserStatusUpdate(CImPdu* pPdu)
 	uint32_t user_status = msg.user_status();
 	uint32_t user_id = msg.user_id();
     uint32_t client_type = msg.client_type();
-	log("HandleUserStatusUpdate, status=%u, uid=%u, client_type=%u ", user_status, user_id, client_type);
+	SPDLOG_ERROR("HandleUserStatusUpdate, status={}, uid={}, client_type={} ", user_status, user_id, client_type);
 
 	_UpdateUserStatus(user_id, user_status, client_type);
     
@@ -263,7 +263,7 @@ void CRouteConn::_HandleRoleSet(CImPdu* pPdu)
 
 	uint32_t master = msg.master();
 
-	log("HandleRoleSet, master=%u, handle=%u ", master, m_handle);
+	SPDLOG_ERROR("HandleRoleSet, master={}, handle={} ", master, m_handle);
 	if (master == 1) {
 		m_bMaster = true;
 	} else {
@@ -278,7 +278,7 @@ void CRouteConn::_HandleUsersStatusRequest(CImPdu* pPdu)
 
 	uint32_t request_id = msg.user_id();
 	uint32_t query_count = msg.user_id_list_size();
-	log("HandleUserStatusReq, req_id=%u, query_count=%u ", request_id, query_count);
+	SPDLOG_ERROR("HandleUserStatusReq, req_id={}, query_count={} ", request_id, query_count);
 
     IM::Buddy::IMUsersStatRsp msg2;
     msg2.set_user_id(request_id);
@@ -356,7 +356,7 @@ void CRouteConn::_UpdateUserStatus(uint32_t user_id, uint32_t status, uint32_t c
             }
             else
             {
-                log("new UserInfo failed. ");
+                SPDLOG_ERROR("new UserInfo failed. ");
             }
         }
     }

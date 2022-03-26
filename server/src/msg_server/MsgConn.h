@@ -8,18 +8,18 @@
 #ifndef MSGCONN_H_
 #define MSGCONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 
 
 
 #define KICK_FROM_ROUTE_SERVER 		1
 #define MAX_ONLINE_FRIEND_CNT		100	//通知好友状态通知的最多个数
 
-typedef struct {
+struct msg_ack_t {
 	uint32_t msg_id;
 	uint32_t from_id;
 	uint64_t timestamp;
-} msg_ack_t;
+} ;
 
 class CImUser;
 
@@ -29,7 +29,7 @@ public:
 	CMsgConn();
 	virtual ~CMsgConn();
 
-    string GetLoginName() { return m_login_name; }
+    string GetloginName() { return m_login_name; }
     uint32_t GetUserId() { return m_user_id; }
     void SetUserId(uint32_t user_id) { m_user_id = user_id; }
     uint32_t GetHandle() { return m_handle; }
@@ -58,8 +58,8 @@ public:
 	void DelFromSendList(uint32_t msg_id, uint32_t from_id);
 private:
     void _HandleHeartBeat(CImPdu* pPdu);
-	void _HandleLoginRequest(CImPdu* pPdu);
-    void _HandleLoginOutRequest(CImPdu* pPdu);
+	void _HandleloginRequest(CImPdu* pPdu);
+    void _HandleloginOutRequest(CImPdu* pPdu);
     void _HandleClientRecentContactSessionRequest(CImPdu* pPdu);
 	void _HandleClientMsgData(CImPdu* pPdu);
 	void _HandleClientMsgDataAck(CImPdu* pPdu);

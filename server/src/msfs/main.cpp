@@ -12,12 +12,12 @@
 
 #include <iostream>
 #include <signal.h>
-#include "netlib.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
 #include "HttpConn.h"
 #include "FileManager.h"
-#include "ThreadPool.h"
-
+#include "base/ThreadPool.h"
+#include "base/slog.h"
 using namespace std;
 using namespace msfs;
 
@@ -85,33 +85,30 @@ void http_callback(void* callback_data, uint8_t msg, uint32_t handle,
         pConn->OnConnect(handle);
     } else
     {
-        log("!!!error msg: %d", msg);
+        SPDLOG_ERROR("!!!error msg: {}", msg);
     }
 }
 
-void doQuitJob()
-{
-	char fileCntBuf[20] = {0};
-	snprintf(fileCntBuf, 20, "%llu", g_fileManager->getFileCntCurr());
-    	config_file.SetConfigValue("FileCnt", fileCntBuf);
-	FileManager::destroyInstance();
-netlib_destroy();
-    log("I'm ready quit...");
+void doQuitJob() {
+    char fileCntBuf[20] = {0};
+    snprintf(fileCntBuf, 20, "%llu", g_fileManager->getFileCntCurr());
+    config_file.SetConfigValue("FileCnt", fileCntBuf);
+    FileManager::destroyInstance();
+    netlib_destroy();
+    SPDLOG_ERROR("I'm ready quit...");
 }
-void Stop(int signo)
-{
-    log("receive signal:%d", signo);
-    switch(signo)
-    {
-    case SIGINT:
-    case SIGTERM:
-    case SIGQUIT:
-        doQuitJob();
-        _exit(0);
-        break;
-    default:
-        cout<< "unknown signal"<<endl;
-        _exit(0);
+void Stop(int signo) {
+    SPDLOG_ERROR("receive signal:{}", signo);
+    switch (signo) {
+        case SIGINT:
+        case SIGTERM:
+        case SIGQUIT:
+            doQuitJob();
+            _exit(0);
+            break;
+        default:
+            SPDLOG_ERROR("unknown signal");
+            _exit(0);
     }
 }
 int main(int argc, char* argv[])
@@ -122,13 +119,13 @@ int main(int argc, char* argv[])
            {
                if(daemon(1, 0, 1) < 0)
                {
-                   cout<<"daemon error"<<endl;
+                    SPDLOG_ERROR("daemon error");
                    return -1;
                }
                break;
            }
        }
-    log("MsgServer max files can open: %d", getdtablesize());
+    SPDLOG_ERROR("MsgServer max files can open: {}", getdtablesize());
 
 
     char* listen_ip = config_file.GetConfigName("ListenIP");
@@ -141,11 +138,11 @@ int main(int argc, char* argv[])
 
     if (!listen_ip || !str_listen_port || !base_dir || !str_file_cnt || !str_files_per_dir || !str_post_thread_count || !str_get_thread_count)
     {
-        log("config file miss, exit...");
+        SPDLOG_ERROR("config file miss, exit...");
         return -1;
     }
     
-    log("%s,%s",listen_ip, str_listen_port);
+    SPDLOG_ERROR("{},{}",listen_ip, str_listen_port);
     uint16_t listen_port = atoi(str_listen_port);
     long long int  fileCnt = atoll(str_file_cnt);
     int filesPerDir = atoi(str_files_per_dir);
@@ -153,7 +150,7 @@ int main(int argc, char* argv[])
     int nGetThreadCount = atoi(str_get_thread_count);
     if(nPostThreadCount <= 0 || nGetThreadCount <= 0)
     {
-        log("thread count is invalied");
+        SPDLOG_ERROR("thread count is invalied");
         return -1;
     }
     g_PostThreadPool.Init(nPostThreadCount);
@@ -162,7 +159,7 @@ int main(int argc, char* argv[])
     g_fileManager = FileManager::getInstance(listen_ip, base_dir, fileCnt, filesPerDir);
 	int ret = g_fileManager->initDir();
 	if (ret) {
-		printf("The BaseDir is set incorrectly :%s\n",base_dir);
+        SPDLOG_ERROR("The BaseDir is set incorrectly :{}\n",base_dir);
 		return ret;
     }
 	ret = netlib_init();
@@ -184,9 +181,9 @@ int main(int argc, char* argv[])
     signal(SIGPIPE, SIG_IGN);
     signal (SIGHUP, SIG_IGN);
 
-    printf("server start listen on: %s:%d\n", listen_ip, listen_port);
+    SPDLOG_INFO("server start listen on: {}:{}\n", listen_ip, listen_port);
     init_http_conn();
-    printf("now enter the event loop...\n");
+    SPDLOG_INFO("now enter the event loop...\n");
     writePid();
 
     netlib_eventloop();
