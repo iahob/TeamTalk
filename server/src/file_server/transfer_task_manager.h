@@ -11,7 +11,7 @@
 
 #include "base/singleton.h"
 
-#include "file_server/transfer_task.h"
+#include "transfer_task.h"
 
 class TransferTaskManager : public Singleton<TransferTaskManager> {
 public:

@@ -12,14 +12,16 @@
 #include <map>
 #include <set>
 
-#include "../DBPool.h"
-#include "../CachePool.h"
+#include "DBPool.h"
+#include "CachePool.h"
 #include "GroupMessageModel.h"
 #include "AudioModel.h"
 #include "SessionModel.h"
 #include "MessageCounter.h"
 #include "Common.h"
 #include "GroupModel.h"
+#include "base/slog.h"
+
 
 using namespace std;
 
@@ -106,7 +108,7 @@ bool CGroupMessageModel::sendMessage(uint32_t nFromId, uint32_t nGroupId, IM::Ba
                     incMessageCount(nFromId, nGroupId);
                     clearMessageCount(nFromId, nGroupId);
                 } else {
-                    log("insert message failed: %s", strSql.c_str());
+                    SPDLOG_ERROR("insert message failed: %s", strSql.c_str());
                 }
             }
             delete pStmt;
@@ -114,12 +116,12 @@ bool CGroupMessageModel::sendMessage(uint32_t nFromId, uint32_t nGroupId, IM::Ba
         }
         else
         {
-            log("no db connection for teamtalk_master");
+            SPDLOG_ERROR("no db connection for teamtalk_master");
         }
     }
     else
     {
-        log("not in the group.fromId=%u, groupId=%u", nFromId, nGroupId);
+        SPDLOG_ERROR("not in the group.fromId=%u, groupId=%u", nFromId, nGroupId);
     }
     return bRet;
 }
@@ -146,7 +148,7 @@ bool CGroupMessageModel::sendAudioMessage(uint32_t nFromId, uint32_t nGroupId, I
 
     if(!CGroupModel::getInstance()->isInGroup(nFromId, nGroupId))
     {
-        log("not in the group.fromId=%u, groupId=%u", nFromId, nGroupId);
+        SPDLOG_ERROR("not in the group.fromId=%u, groupId=%u", nFromId, nGroupId);
         return false;
     }
     
@@ -189,7 +191,7 @@ bool CGroupMessageModel::clearMessageCount(uint32_t nUserId, uint32_t nGroupId)
             string strReply = pCacheConn->hmset(strUserKey, mapGroupCount);
             if(strReply.empty())
             {
-                log("hmset %s failed !", strUserKey.c_str());
+                SPDLOG_ERROR("hmset %s failed !", strUserKey.c_str());
             }
             else
             {
@@ -198,12 +200,12 @@ bool CGroupMessageModel::clearMessageCount(uint32_t nUserId, uint32_t nGroupId)
         }
         else
         {
-            log("hgetAll %s failed !", strGroupKey.c_str());
+            SPDLOG_ERROR("hgetAll %s failed !", strGroupKey.c_str());
         }
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
     return bRet;
 }
@@ -237,18 +239,18 @@ bool CGroupMessageModel::incMessageCount(uint32_t nUserId, uint32_t nGroupId)
             }
             else
             {
-                log("hmset %s failed !", strUserKey.c_str());
+                SPDLOG_ERROR("hmset %s failed !", strUserKey.c_str());
             }
         }
         else
         {
-            log("hgetAll %s failed!", strGroupKey.c_str());
+            SPDLOG_ERROR("hgetAll %s failed!", strGroupKey.c_str());
         }
         pCacheManager->RelCacheConn(pCacheConn);
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
     return bRet;
 }
@@ -300,14 +302,14 @@ void CGroupMessageModel::getMessage(uint32_t nUserId, uint32_t nGroupId, uint32_
                 }
                 else
                 {
-                    log("invalid msgType. userId=%u, groupId=%u, msgType=%u", nUserId, nGroupId, nMsgType);
+                    SPDLOG_ERROR("invalid msgType. userId=%u, groupId=%u, msgType=%u", nUserId, nGroupId, nMsgType);
                 }
             }
             delete pResultSet;
         }
         else
         {
-            log("no result set for sql: %s", strSql.c_str());
+            SPDLOG_ERROR("no result set for sql: %s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
         if (!lsMsg.empty()) {
@@ -316,7 +318,7 @@ void CGroupMessageModel::getMessage(uint32_t nUserId, uint32_t nGroupId, uint32_
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 
@@ -344,7 +346,7 @@ void CGroupMessageModel::getUnreadMsgCount(uint32_t nUserId, uint32_t &nTotalCnt
             string strGroupCnt = pCacheConn->hget(strGroupKey, GROUP_COUNTER_SUBKEY_COUNTER_FIELD);
             if(strGroupCnt.empty())
             {
-//                log("hget %s : count failed !", strGroupKey.c_str());
+//                SPDLOG_ERROR("hget %s : count failed !", strGroupKey.c_str());
                 continue;
             }
             uint32_t nGroupCnt = (uint32_t)(atoi(strGroupCnt.c_str()));
@@ -378,7 +380,7 @@ void CGroupMessageModel::getUnreadMsgCount(uint32_t nUserId, uint32_t &nTotalCnt
                 }
                 else
                 {
-                    log("invalid msgType. userId=%u, groupId=%u, msgType=%u, msgId=%u", nUserId, nGroupId, nType, nMsgId);
+                    SPDLOG_ERROR("invalid msgType. userId=%u, groupId=%u, msgType=%u, msgId=%u", nUserId, nGroupId, nType, nMsgId);
                 }
             }
         }
@@ -386,7 +388,7 @@ void CGroupMessageModel::getUnreadMsgCount(uint32_t nUserId, uint32_t &nTotalCnt
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
 }
 
@@ -411,7 +413,7 @@ uint32_t CGroupMessageModel::getMsgId(uint32_t nGroupId)
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
     return nMsgId;
 }
@@ -455,13 +457,13 @@ void CGroupMessageModel::getLastMsg(uint32_t nGroupId, uint32_t &nMsgId, string 
         }
         else
         {
-            log("no result set for sql: %s", strSql.c_str());
+            SPDLOG_ERROR("no result set for sql: %s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 
@@ -488,7 +490,7 @@ void CGroupMessageModel::getUnReadCntAll(uint32_t nUserId, uint32_t &nTotalCnt)
             string strGroupCnt = pCacheConn->hget(strGroupKey, GROUP_COUNTER_SUBKEY_COUNTER_FIELD);
             if(strGroupCnt.empty())
             {
-//                log("hget %s : count failed !", strGroupKey.c_str());
+//                SPDLOG_ERROR("hget %s : count failed !", strGroupKey.c_str());
                 continue;
             }
             uint32_t nGroupCnt = (uint32_t)(atoi(strGroupCnt.c_str()));
@@ -509,7 +511,7 @@ void CGroupMessageModel::getUnReadCntAll(uint32_t nUserId, uint32_t &nTotalCnt)
     }
     else
     {
-        log("no cache connection for unread");
+        SPDLOG_ERROR("no cache connection for unread");
     }
 }
 
@@ -558,14 +560,14 @@ void CGroupMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nGroupId, cons
                         }
                         else
                         {
-                            log("invalid msgType. userId=%u, groupId=%u, msgType=%u", nUserId, nGroupId, nMsgType);
+                            SPDLOG_ERROR("invalid msgType. userId=%u, groupId=%u, msgType=%u", nUserId, nGroupId, nMsgType);
                         }
                     }
                     delete pResultSet;
                 }
                 else
                 {
-                    log("no result set for sql:%s", strSql.c_str());
+                    SPDLOG_ERROR("no result set for sql:%s", strSql.c_str());
                 }
                 pDBManager->RelDBConn(pDBConn);
                 if(!lsMsg.empty())
@@ -575,17 +577,17 @@ void CGroupMessageModel::getMsgByMsgId(uint32_t nUserId, uint32_t nGroupId, cons
             }
             else
             {
-                log("no db connection for teamtalk_slave");
+                SPDLOG_ERROR("no db connection for teamtalk_slave");
             }
         }
         else
         {
-            log("%u is not in group:%u", nUserId, nGroupId);
+            SPDLOG_ERROR("%u is not in group:%u", nUserId, nGroupId);
         }
     }
     else
     {
-        log("msgId is empty.");
+        SPDLOG_ERROR("msgId is empty.");
     }
 }
 

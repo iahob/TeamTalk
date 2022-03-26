@@ -21,6 +21,8 @@
 #include "UserModel.h"
 #include "GroupModel.h"
 #include "IM.Buddy.pb.h"
+#include "base/slog.h"
+
 
 using namespace std;
 
@@ -61,7 +63,7 @@ namespace DB_PROXY {
                 pContact->set_latest_msg_from_user_id(it->latest_msg_from_user_id());
             }
             
-            log("userId=%u, last_time=%u, count=%u", nUserId, nLastTime, msgResp.contact_session_list_size());
+            SPDLOG_ERROR("userId=%u, last_time=%u, count=%u", nUserId, nLastTime, msgResp.contact_session_list_size());
             
             msgResp.set_attach_data(msg.attach_data());
             pPduResp->SetPBMsg(&msgResp);
@@ -72,7 +74,7 @@ namespace DB_PROXY {
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     
@@ -106,7 +108,7 @@ namespace DB_PROXY {
                         CUserModel::getInstance()->clearUserCounter(nUserId, nPeerId, nType);
                     }
                 }
-                log("userId=%d, peerId=%d, result=%s", nUserId, nPeerId, bRet?"success":"failed");
+                SPDLOG_ERROR("userId=%d, peerId=%d, result=%s", nUserId, nPeerId, bRet?"success":"failed");
                 
                 msgResp.set_attach_data(msg.attach_data());
                 msgResp.set_user_id(nUserId);
@@ -121,11 +123,11 @@ namespace DB_PROXY {
             }
             else
             {
-                log("invalied session_type. userId=%u, peerId=%u, seseionType=%u", nUserId, nPeerId, nType);
+                SPDLOG_ERROR("invalied session_type. userId=%u, peerId=%u, seseionType=%u", nUserId, nPeerId, nType);
             }
         }
         else{
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     

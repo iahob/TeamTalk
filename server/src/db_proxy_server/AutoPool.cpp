@@ -12,6 +12,7 @@
 #include "DBPool.h"
 #include "CachePool.h"
 
+
 CAutoDB::CAutoDB(const char* pDBName, CDBConn** pDBConn)
 {
     m_pDBConn = CDBManager::getInstance()->GetDBConn(pDBName);

@@ -13,13 +13,15 @@
 #include "../CachePool.h"
 
 #include "GroupModel.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
 #include "Common.h"
 #include "AudioModel.h"
 #include "UserModel.h"
 #include "GroupMessageModel.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "SessionModel.h"
+#include "base/slog.h"
+
 
 CGroupModel* CGroupModel::m_pInstance = NULL;
 
@@ -75,7 +77,7 @@ uint32_t CGroupModel::createGroup(uint32_t nUserId, const string& strGroupName, 
         bool bRet = CGroupMessageModel::getInstance()->resetMsgId(nGroupId);
         if(!bRet)
         {
-            log("reset msgId failed. groupId=%u", nGroupId);
+            SPDLOG_ERROR("reset msgId failed. groupId=%u", nGroupId);
         }
         
         //insert IMGroupMember
@@ -193,7 +195,7 @@ void CGroupModel::getGroupInfo(map<uint32_t,IM::BaseDefine::GroupVersionInfo>& m
                         }
                         else
                         {
-                            log("invalid groupType. groupId=%u, groupType=%u", nGroupId, nGroupType);
+                            SPDLOG_ERROR("invalid groupType. groupId=%u, groupType=%u", nGroupId, nGroupType);
                         }
                     }
                 }
@@ -201,7 +203,7 @@ void CGroupModel::getGroupInfo(map<uint32_t,IM::BaseDefine::GroupVersionInfo>& m
             }
             else
             {
-                log("no result set for sql:%s", strSql.c_str());
+                SPDLOG_ERROR("no result set for sql:%s", strSql.c_str());
             }
             pDBManager->RelDBConn(pDBConn);
        if(!lsGroupInfo.empty())
@@ -211,12 +213,12 @@ void CGroupModel::getGroupInfo(map<uint32_t,IM::BaseDefine::GroupVersionInfo>& m
         }
         else
         {
-            log("no db connection for teamtalk_slave");
+            SPDLOG_ERROR("no db connection for teamtalk_slave");
         }
     }
     else
     {
-        log("no ids in map");
+        SPDLOG_ERROR("no ids in map");
     }
 }
 
@@ -234,7 +236,7 @@ bool CGroupModel::modifyGroupMember(uint32_t nUserId, uint32_t nGroupId, IM::Bas
                 removeSession(nGroupId, setUserId);
                 break;
             default:
-                log("unknown type:%u while modify group.%u->%u", nType, nUserId, nGroupId);
+                SPDLOG_ERROR("unknown type:%u while modify group.%u->%u", nType, nUserId, nGroupId);
                 break;
         }
         //if modify group member success, need to inc the group version and clear the user count;
@@ -249,7 +251,7 @@ bool CGroupModel::modifyGroupMember(uint32_t nUserId, uint32_t nGroupId, IM::Bas
     }
     else
     {
-        log("user:%u has no permission to modify group:%u", nUserId, nGroupId);
+        SPDLOG_ERROR("user:%u has no permission to modify group:%u", nUserId, nGroupId);
     }    return bRet;
 }
 
@@ -293,7 +295,7 @@ bool CGroupModel::insertNewGroup(uint32_t nUserId, const string& strGroupName, c
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return bRet;
 }
@@ -336,7 +338,7 @@ bool CGroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
             }
             else
             {
-                log("no result for sql:%s", strSql.c_str());
+                SPDLOG_ERROR("no result for sql:%s", strSql.c_str());
             }
             pDBManager->RelDBConn(pDBConn);
             
@@ -418,18 +420,18 @@ bool CGroupModel::insertNewMember(uint32_t nGroupId, set<uint32_t>& setUsers)
                 }
                 else
                 {
-                    log("no cache connection");
+                    SPDLOG_ERROR("no cache connection");
                 }
                 pDBManager->RelDBConn(pDBConn);
             }
             else
             {
-                log("no db connection for teamtalk_master");
+                SPDLOG_ERROR("no db connection for teamtalk_master");
             }
         }
         else
         {
-            log("no db connection for teamtalk_slave");
+            SPDLOG_ERROR("no db connection for teamtalk_slave");
         }
     }
     return bRet;
@@ -462,13 +464,13 @@ void CGroupModel::getUserGroupIds(uint32_t nUserId, list<uint32_t>& lsGroupId, u
         }
         else
         {
-            log("no result set for sql:%s", strSql.c_str());
+            SPDLOG_ERROR("no result set for sql:%s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 
@@ -516,18 +518,18 @@ void CGroupModel::getGroupVersion(list<uint32_t> &lsGroupId, list<IM::BaseDefine
             }
             else
             {
-                log("no result set for sql:%s", strSql.c_str());
+                SPDLOG_ERROR("no result set for sql:%s", strSql.c_str());
             }
             pDBManager->RelDBConn(pDBConn);
         }
         else
         {
-            log("no db connection for teamtalk_slave");
+            SPDLOG_ERROR("no db connection for teamtalk_slave");
         }
     }
     else
     {
-        log("group ids is empty");
+        SPDLOG_ERROR("group ids is empty");
     }
 }
 
@@ -549,7 +551,7 @@ bool CGroupModel::isInGroup(uint32_t nUserId, uint32_t nGroupId)
     }
     else
     {
-        log("no cache connection for group_member");
+        SPDLOG_ERROR("no cache connection for group_member");
     }
     return bRet;
 }
@@ -594,13 +596,13 @@ bool CGroupModel::hasModifyPermission(uint32_t nUserId, uint32_t nGroupId, IM::B
         }
         else
         {
-            log("no result for sql:%s", strSql.c_str());
+            SPDLOG_ERROR("no result for sql:%s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
     return bRet;
 }
@@ -656,7 +658,7 @@ bool CGroupModel::removeMember(uint32_t nGroupId, set<uint32_t> &setUser, list<u
         }
         else
         {
-            log("no cache connection");
+            SPDLOG_ERROR("no cache connection");
         }
         pDBManager->RelDBConn(pDBConn);
         if (bRet)
@@ -666,7 +668,7 @@ bool CGroupModel::removeMember(uint32_t nGroupId, set<uint32_t> &setUser, list<u
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return bRet;
 }
@@ -694,7 +696,7 @@ void CGroupModel::removeRepeatUser(uint32_t nGroupId, set<uint32_t> &setUser)
     }
     else
     {
-        log("no cache connection for group_member");
+        SPDLOG_ERROR("no cache connection for group_member");
     }
 }
 
@@ -703,7 +705,7 @@ bool CGroupModel::setPush(uint32_t nUserId, uint32_t nGroupId, uint32_t nType, u
     bool bRet = false;
     if(!isInGroup(nUserId, nGroupId))
     {
-        log("user:%d is not in group:%d", nUserId, nGroupId);
+        SPDLOG_ERROR("user:%d is not in group:%d", nUserId, nGroupId);
         return bRet;;
     }
     
@@ -722,7 +724,7 @@ bool CGroupModel::setPush(uint32_t nUserId, uint32_t nGroupId, uint32_t nType, u
     }
     else
     {
-        log("no cache connection for group_set");
+        SPDLOG_ERROR("no cache connection for group_set");
     }
     return bRet;
 }
@@ -762,12 +764,12 @@ void CGroupModel::getPush(uint32_t nGroupId, list<uint32_t>& lsUser, list<IM::Ba
         }
         else
         {
-            log("hgetall %s failed!", strGroupKey.c_str());
+            SPDLOG_ERROR("hgetall %s failed!", strGroupKey.c_str());
         }
     }
     else
     {
-        log("no cache connection for group_set");
+        SPDLOG_ERROR("no cache connection for group_set");
     }
 }
 
@@ -790,12 +792,12 @@ void CGroupModel::getGroupUser(uint32_t nGroupId, list<uint32_t> &lsUserId)
         }
         else
         {
-            log("hgetall %s failed!", strKey.c_str());
+            SPDLOG_ERROR("hgetall %s failed!", strKey.c_str());
         }
     }
     else
     {
-        log("no cache connection for group_member");
+        SPDLOG_ERROR("no cache connection for group_member");
     }
 }
 
@@ -812,7 +814,7 @@ void CGroupModel::updateGroupChat(uint32_t nGroupId)
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
 }
 
@@ -834,7 +836,7 @@ void CGroupModel::updateGroupChat(uint32_t nGroupId)
 //    }
 //    else
 //    {
-//        log("no db connection for teamtalk_slave");
+//        SPDLOG_ERROR("no db connection for teamtalk_slave");
 //    }
 //    return bRet;
 //}
@@ -880,7 +882,7 @@ bool CGroupModel::incGroupVersion(uint32_t nGroupId)
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return  bRet;
 }
@@ -916,7 +918,7 @@ uint32_t CGroupModel::getUserJoinTime(uint32_t nGroupId, uint32_t nUserId)
     }
     else
     {
-        log("no cache connection for group_member");
+        SPDLOG_ERROR("no cache connection for group_member");
     }
     return  nTime;
 }
@@ -933,7 +935,7 @@ void CGroupModel::clearGroupMember(uint32_t nGroupId)
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     CacheManager* pCacheManager = CacheManager::getInstance();
     CacheConn* pCacheConn = pCacheManager->GetCacheConn("group_member");
@@ -951,12 +953,12 @@ void CGroupModel::clearGroupMember(uint32_t nGroupId)
         }
         else
         {
-            log("hgetall %s failed", strKey.c_str());
+            SPDLOG_ERROR("hgetall %s failed", strKey.c_str());
         }
         pCacheManager->RelCacheConn(pCacheConn);
     }
     else
     {
-        log("no cache connection for group_member");
+        SPDLOG_ERROR("no cache connection for group_member");
     }
 }

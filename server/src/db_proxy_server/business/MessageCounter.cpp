@@ -16,10 +16,12 @@
 #include "GroupMessageModel.h"
 #include "IM.Message.pb.h"
 #include "IM.BaseDefine.pb.h"
-#include "IM.Login.pb.h"
+#include "IM.login.pb.h"
 #include "IM.Server.pb.h"
 #include "UserModel.h"
 #include<time.h>
+#include "base/slog.h"
+
 
 namespace DB_PROXY {
 
@@ -54,7 +56,7 @@ namespace DB_PROXY {
             }
             
             
-            log("userId=%d, unreadCnt=%u, totalCount=%u", nUserId, msgResp.unreadinfo_list_size(), nTotalCnt);
+            SPDLOG_ERROR("userId=%d, unreadCnt=%u, totalCount=%u", nUserId, msgResp.unreadinfo_list_size(), nTotalCnt);
             msgResp.set_attach_data(msg.attach_data());
             pPduResp->SetPBMsg(&msgResp);
             pPduResp->SetSeqNum(pPdu->GetSeqNum());
@@ -64,7 +66,7 @@ namespace DB_PROXY {
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
 
@@ -77,18 +79,18 @@ namespace DB_PROXY {
             uint32_t nFromId = msg.session_id();
             IM::BaseDefine::SessionType nSessionType = msg.session_type();
             CUserModel::getInstance()->clearUserCounter(nUserId, nFromId, nSessionType);
-            log("userId=%u, peerId=%u, type=%u", nFromId, nUserId, nSessionType);
+            SPDLOG_ERROR("userId=%u, peerId=%u, type=%u", nFromId, nUserId, nSessionType);
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
         
     void setDevicesToken(CImPdu* pPdu, uint32_t conn_uuid)
     {
-        IM::Login::IMDeviceTokenReq msg;
-        IM::Login::IMDeviceTokenRsp msgResp;
+        IM::login::IMDeviceTokenReq msg;
+        IM::login::IMDeviceTokenRsp msgResp;
         if(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()))
         {
             uint32_t nUserId = msg.user_id();
@@ -133,26 +135,26 @@ namespace DB_PROXY {
                 string strNewValue = int2string(nUserId);
                 pCacheConn->set("device_"+strToken, strNewValue);
             
-                log("setDeviceToken. userId=%u, deviceToken=%s", nUserId, strToken.c_str());
+                SPDLOG_ERROR("setDeviceToken. userId=%u, deviceToken=%s", nUserId, strToken.c_str());
                 pCacheManager->RelCacheConn(pCacheConn);
             }
             else
             {
-                log("no cache connection for token");
+                SPDLOG_ERROR("no cache connection for token");
             }
             
-            log("setDeviceToken. userId=%u, deviceToken=%s", nUserId, strToken.c_str());
+            SPDLOG_ERROR("setDeviceToken. userId=%u, deviceToken=%s", nUserId, strToken.c_str());
             msgResp.set_attach_data(msg.attach_data());
             msgResp.set_user_id(nUserId);
             pPduResp->SetPBMsg(&msgResp);
             pPduResp->SetSeqNum(pPdu->GetSeqNum());
-            pPduResp->SetServiceId(IM::BaseDefine::SID_LOGIN);
-            pPduResp->SetCommandId(IM::BaseDefine::CID_LOGIN_RES_DEVICETOKEN);
+            pPduResp->SetServiceId(IM::BaseDefine::SID_logIN);
+            pPduResp->SetCommandId(IM::BaseDefine::CID_logIN_RES_DEVICETOKEN);
             CProxyConn::AddResponsePdu(conn_uuid, pPduResp);
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
 
@@ -239,32 +241,32 @@ namespace DB_PROXY {
                                 }
                                 else
                                 {
-                                    log("invalid clientType.clientType=%u", nClientType);
+                                    SPDLOG_ERROR("invalid clientType.clientType=%u", nClientType);
                                 }
                             }
                             else
                             {
-                                log("invalid value. value=%s", strValue.c_str());
+                                SPDLOG_ERROR("invalid value. value=%s", strValue.c_str());
                             }
                             
                         }
                         else
                         {
-                            log("invalid key.key=%s", strKey.c_str());
+                            SPDLOG_ERROR("invalid key.key=%s", strKey.c_str());
                         }
                     }
                 }
                 else
                 {
-                    log("mget failed!");
+                    SPDLOG_ERROR("mget failed!");
                 }
             }
             else
             {
-                log("no cache connection for token");
+                SPDLOG_ERROR("no cache connection for token");
             }
             
-            log("req devices token.reqCnt=%u, resCnt=%u", nCnt, msgResp.user_token_info_size());
+            SPDLOG_ERROR("req devices token.reqCnt=%u, resCnt=%u", nCnt, msgResp.user_token_info_size());
             
             msgResp.set_attach_data(msg.attach_data());
             pPduResp->SetPBMsg(&msgResp);
@@ -275,7 +277,7 @@ namespace DB_PROXY {
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
 };

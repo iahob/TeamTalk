@@ -1,21 +1,21 @@
 /*
- * LoginServConn.h
+ * loginServConn.h
  *
  *  Created on: 2013-7-8
  *      Author: ziteng@mogujie.com
  */
 
-#ifndef LOGINSERVCONN_H_
-#define LOGINSERVCONN_H_
+#ifndef logINSERVCONN_H_
+#define logINSERVCONN_H_
 
-#include "imconn.h"
-#include "ServInfo.h"
+#include "base/imconn.h"
+#include "base/ServInfo.h"
 
-class CLoginServConn : public CImConn
+class CloginServConn : public CImConn
 {
 public:
-	CLoginServConn();
-	virtual ~CLoginServConn();
+	CloginServConn();
+	virtual ~CloginServConn();
 
 	bool IsOpen() { return m_bOpen; }
 

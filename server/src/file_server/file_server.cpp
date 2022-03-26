@@ -10,12 +10,12 @@
 #include "base/netlib.h"
 #include "base/ConfigFileReader.h"
 #include "base/version.h"
-#include "base/pb/protocol/IM.BaseDefine.pb.h"
+#include "IM.BaseDefine.pb.h"
 
-#include "file_server/config_util.h"
-#include "file_server/file_client_conn.h"
-#include "file_server/file_msg_server_conn.h"
-
+#include "config_util.h"
+#include "file_client_conn.h"
+#include "file_msg_server_conn.h"
+#include "base/slog.h"
 /*
  Address=0.0.0.0         # address for client
  
@@ -33,7 +33,7 @@
 //		CFileConn* pConn = new CFileConn();
 //		pConn->OnConnect(handle);
 //	} else {
-//		log("!!!error msg: %d ", msg);
+//		SPDLOG_ERROR("!!!error msg: %d ", msg);
 //	}
 //}
 
@@ -42,7 +42,7 @@
 //        CFileConn* pConn = new CFileConn();
 //        pConn->OnConnect(handle);
 //    } else {
-//        log("!!!error msg: %d ", msg);
+//        SPDLOG_ERROR("!!!error msg: %d ", msg);
 //    }
 //}
 
@@ -75,7 +75,7 @@ int main(int argc, char* argv[])
     char* str_task_timeout = config_file.GetConfigName("TaskTimeout");
 
 	if (!str_client_listen_ip || !str_client_listen_port || !str_msg_server_listen_ip || !str_msg_server_listen_port) {
-		log("config item missing, exit... ");
+		SPDLOG_ERROR("config item missing, exit... ");
 		return -1;
 	}
 
@@ -126,7 +126,7 @@ int main(int argc, char* argv[])
 	netlib_eventloop();
 
 	printf("exiting.......\n");
-	log("exit");
+	SPDLOG_ERROR("exit");
 
 	return 0;
 }

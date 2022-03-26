@@ -1,36 +1,37 @@
-cmake_minimum_required(VERSION 2.6)
+cmake_minimum_required(VERSION 3.12)
 PROJECT(pushserver)
 
 AUX_SOURCE_DIRECTORY(./ SRC_LIST1)
 AUX_SOURCE_DIRECTORY(./socket SRC_LIST2)
-AUX_SOURCE_DIRECTORY(../base/pb/protocol SRC_LIST3)
+AUX_SOURCE_DIRECTORY(../pb/protocol SRC_LIST2)
 
 
-#SET(LIBRARY_OUTPUT_PATH ./)
-SET(EXECUTABLE_OUTPUT_PATH  ./)
-# CMAKE的输出路径为TeamTalk\server\src\bin\${name}，${name}代表项目名称，如login_server
-## ../../定位到src下，并且只需要连接静态库时，增加该前缀
-SET(SRC_DIR  ../../)
-SET(PB_INCLUDE_DIR ../protobuf/include)
-SET(PB_LIB_DIR ${SRC_DIR}/protobuf/lib)
-
-SET(SLOG_LIB_DIR ${SRC_DIR}/lib)
-
-#设置自己mac os的openssl的路径
-if(APPLE)
-    SET(OPENSSL_INCLUDE_DIR /usr/local/Cellar/openssl/1.0.2r/include)
-    SET(OPENSSL_LIB_DIR /usr/local/Cellar/openssl/1.0.2r/lib)
-endif()
+SET(EXECUTABLE_OUTPUT_PATH  ${CMAKE_SOURCE_DIR}/run/bin)
 
 ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
 -DAC_HAS_DEBUG -DLINUX_DAEMON -std=c++11)
 
-INCLUDE_DIRECTORIES(./ ../base/pb/protocol ${PB_INCLUDE_DIR} ../slog ${OPENSSL_INCLUDE_DIR})
-LINK_DIRECTORIES(./ ${PB_LIB_DIR} ${SLOG_LIB_DIR} ${OPENSSL_LIB_DIR})
+#INCLUDE_DIRECTORIES(./ ../pb/protocol ${PB_INCLUDE_DIR} ../pkg/slog ${OPENSSL_INCLUDE_DIR})
+#LINK_DIRECTORIES(./ ${PB_LIB_DIR} ${SLOG_LIB_DIR} ${OPENSSL_LIB_DIR})
 
-#ADD_XXXX必须在TARGET_LINK_LIBRARIES前面，否则会报错
-#ADD_LIBRARY(${PROJECTNAME} SHARED/STATIC ${SRC_LIST})
-ADD_EXECUTABLE(push_server ${SRC_LIST1} ${SRC_LIST2} ${SRC_LIST3})
 
-TARGET_LINK_LIBRARIES(push_server pthread protobuf-lite ssl slog)
+ADD_EXECUTABLE(push_server ${SRC_LIST1} ${SRC_LIST2})
+
+TARGET_LINK_LIBRARIES(push_server pthread protobuf ssl)
+
+target_include_directories(
+        push_server PRIVATE
+        .
+        ../pkg
+        ../pb/protocol
+        ../pkg/security
+        /usr/local/include
+)
+
+target_link_directories(
+        push_server PRIVATE
+        .
+        /usr/local/lib
+        ${CMAKE_SOURCE_DIR}/run/lib
+)

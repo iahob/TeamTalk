@@ -12,6 +12,8 @@
 #include "DBPool.h"
 #include "MessageModel.h"
 #include "GroupMessageModel.h"
+#include "base/slog.h"
+
 
 
 CSessionModel* CSessionModel::m_pInstance = NULL;
@@ -52,14 +54,14 @@ void CSessionModel::getRecentSession(uint32_t nUserId, uint32_t lastTime, list<I
                 }
                 else
                 {
-                    log("invalid sessionType. userId=%u, peerId=%u, sessionType=%u", nUserId, nPeerId, nSessionType);
+                    SPDLOG_ERROR("invalid sessionType. userId=%u, peerId=%u, sessionType=%u", nUserId, nPeerId, nSessionType);
                 }
             }
             delete pResultSet;
         }
         else
         {
-            log("no result set for sql: %s", strSql.c_str());
+            SPDLOG_ERROR("no result set for sql: %s", strSql.c_str());
         }
         pDBManager->RelDBConn(pDBConn);
         if(!lsContact.empty())
@@ -69,7 +71,7 @@ void CSessionModel::getRecentSession(uint32_t nUserId, uint32_t lastTime, list<I
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
 }
 
@@ -101,7 +103,7 @@ uint32_t CSessionModel::getSessionId(uint32_t nUserId, uint32_t nPeerId, uint32_
     }
     else
     {
-        log("no db connection for teamtalk_slave");
+        SPDLOG_ERROR("no db connection for teamtalk_slave");
     }
     return nSessionId;
 }
@@ -119,7 +121,7 @@ bool CSessionModel::updateSession(uint32_t nSessionId, uint32_t nUpdateTime)
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return bRet;
 }
@@ -138,7 +140,7 @@ bool CSessionModel::removeSession(uint32_t nSessionId)
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return bRet;
 }
@@ -161,7 +163,7 @@ uint32_t CSessionModel::addSession(uint32_t nUserId, uint32_t nPeerId, uint32_t 
             {
                 nSessionId = INVALID_VALUE;
             }
-            log("has relation ship set status");
+            SPDLOG_ERROR("has relation ship set status");
         }
         else
         {
@@ -185,7 +187,7 @@ uint32_t CSessionModel::addSession(uint32_t nUserId, uint32_t nPeerId, uint32_t 
                 }
                 else
                 {
-                    log("insert message failed. %s", strSql.c_str());
+                    SPDLOG_ERROR("insert message failed. %s", strSql.c_str());
                 }
             }
             delete stmt;
@@ -194,7 +196,7 @@ uint32_t CSessionModel::addSession(uint32_t nUserId, uint32_t nPeerId, uint32_t 
     }
     else
     {
-        log("no db connection for teamtalk_master");
+        SPDLOG_ERROR("no db connection for teamtalk_master");
     }
     return nSessionId;
 }

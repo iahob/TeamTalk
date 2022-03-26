@@ -7,7 +7,7 @@
 
 #include "DBServConn.h"
 #include "RouteServConn.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "AttachData.h"
 #include "HttpConn.h"
 #include "HttpPdu.h"
@@ -18,12 +18,13 @@
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
 #include "IM.Group.pb.h"
+#include "base/slog.h"
 #include <list>
 using namespace std;
 
 using namespace IM::BaseDefine;
 
-extern hash_map<string, auth_struct*> g_hm_http_auth;
+extern unordered_map<string, auth_struct*> g_hm_http_auth;
 bool g_bOnSync = false;
 
 uint64_t    g_last_recv_auth = 0;
@@ -73,12 +74,12 @@ void init_db_serv_conn(serv_info_t* server_list, uint32_t server_count, uint32_t
 	// 这样当其他业务量非常繁忙时，也不会影响客服端的登录验证
 	// 建议配置4个实例，这样更新BusinessServer时，不会影响业务
 	if (total_db_instance < 2) {
-		log("DBServerIP need 2 instance at lest");
+		("DBServerIP need 2 instance at lest");
 		exit(1);
 	}
 
 	g_db_server_login_count = (total_db_instance / 2) * concur_conn_cnt;
-	log("DB server connection index for login business: [0, %u), for other business: [%u, %u)",
+	("DB server connection index for login business: [0, %u), for other business: [%u, %u)",
 			g_db_server_login_count, g_db_server_login_count, g_db_server_count);
 
 	serv_init<CDBServConn>(g_db_server_list, g_db_server_count);
@@ -152,7 +153,7 @@ CDBServConn::~CDBServConn()
 
 void CDBServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	log("Connecting to DB Storage Server %s:%d", server_ip, server_port);
+    SPDLOG_ERROR("Connecting to DB Storage Server %s:%d", server_ip, server_port);
 
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_db_server_conn_map);
@@ -177,14 +178,14 @@ void CDBServConn::Close()
 
 void CDBServConn::OnConfirm()
 {
-	log("connect to db server success");
+    SPDLOG_ERROR("connect to db server success");
 	m_bOpen = true;
 	g_db_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
 }
 
 void CDBServConn::OnClose()
 {
-	log("onclose from db server handle=%d", m_handle);
+    SPDLOG_ERROR("onclose from db server handle=%d", m_handle);
 	Close();
 }
 
@@ -199,7 +200,7 @@ void CDBServConn::OnTimer(uint64_t curr_tick)
 		SendPdu(&pdu);
 	}
 	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to db server timeout");
+        SPDLOG_ERROR("conn to db server timeout");
 		Close();
 	}
 }
@@ -222,7 +223,7 @@ void CDBServConn::HandlePdu(CImPdu* pPdu)
             _HandleMsgClient(pPdu);
             break;
         default:
-            log("db server, wrong cmd id=%d", pPdu->GetCommandId());
+            SPDLOG_ERROR("db server, wrong cmd id=%d", pPdu->GetCommandId());
 	}
 }
 
@@ -238,7 +239,7 @@ void CDBServConn::_HandleMsgClient(CImPdu *pPdu)
     }
 
     uint32_t msg_id = 0;
-    if(msg.has_msg_id())
+    if(msg.msg_id())
     {
        msg_id = msg.msg_id();
     }
@@ -249,7 +250,7 @@ void CDBServConn::_HandleMsgClient(CImPdu *pPdu)
     CHttpConn* pHttpConn = FindHttpConnByHandle(http_handle);
     if(!pHttpConn)
     {
-        log("no http connection");
+        SPDLOG_ERROR("no http connection");
         return;
     }
 
@@ -267,7 +268,7 @@ void CDBServConn::_HandleMsgClient(CImPdu *pPdu)
 
 void CDBServConn::_HandleStopReceivePacket(CImPdu* pPdu)
 {
-	log("HandleStopReceivePacket, from %s:%d",
+    SPDLOG_ERROR("HandleStopReceivePacket, from %s:%d",
 			g_db_server_list[m_serv_idx].server_ip.c_str(), g_db_server_list[m_serv_idx].server_port);
 
 	m_bOpen = false;
@@ -281,7 +282,7 @@ void CDBServConn::_HandleCreateGroupRsp(CImPdu *pPdu)
     string group_name = msg.group_name();
     uint32_t result_code = msg.result_code();
     uint32_t group_id = 0;
-    if (msg.has_group_id()) {
+    if (msg.group_id()) {
         group_id = msg.group_id();
     }
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
@@ -289,10 +290,10 @@ void CDBServConn::_HandleCreateGroupRsp(CImPdu *pPdu)
     CHttpConn* pHttpConn = FindHttpConnByHandle(http_handle);
     if(!pHttpConn)
     {
-        log("no http connection");
+        SPDLOG_ERROR("no http connection");
         return;
     }
-    log("HandleCreateGroupRsp, req_id=%u, group_name=%s, result=%u", user_id, group_name.c_str(),result_code);
+    SPDLOG_ERROR("HandleCreateGroupRsp, req_id=%u, group_name=%s, result=%u", user_id, group_name.c_str(),result_code);
     
     char* response_buf = NULL;
     if (result_code != 0)
@@ -319,14 +320,14 @@ void CDBServConn::_HandleChangeMemberRsp(CImPdu *pPdu)
     uint32_t group_id = msg.group_id();
     uint32_t chg_user_cnt = msg.chg_user_id_list_size();
     uint32_t cur_user_cnt = msg.cur_user_id_list_size();
-    log("HandleChangeMemberResp, change_type=%u, req_id=%u, group_id=%u, result=%u, chg_usr_cnt=%u, cur_user_cnt=%u.",
+    SPDLOG_ERROR("HandleChangeMemberResp, change_type=%u, req_id=%u, group_id=%u, result=%u, chg_usr_cnt=%u, cur_user_cnt=%u.",
         change_type, user_id, group_id, result, chg_user_cnt, cur_user_cnt);
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
     uint32_t http_handle = attach_data.GetHandle();
     CHttpConn* pHttpConn = FindHttpConnByHandle(http_handle);
     if(!pHttpConn)
     {
-        log("no http connection.");
+        SPDLOG_ERROR("no http connection.");
         return;
     }
     char* response_buf = NULL;

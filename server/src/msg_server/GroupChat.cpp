@@ -16,6 +16,7 @@
 #include "IM.Server.pb.h"
 #include "IM.Message.pb.h"
 #include <set>
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 
 CGroupChat* CGroupChat::s_group_chat_instance = NULL;
@@ -34,7 +35,7 @@ void CGroupChat::HandleClientGroupNormalRequest(CImPdu* pPdu, CMsgConn* pFromCon
     IM::Group::IMNormalGroupListReq msg;
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
     uint32_t user_id = pFromConn->GetUserId();
-    log("HandleClientGroupNormalRequest, user_id=%u. ", user_id);
+    SPDLOG_ERROR("HandleClientGroupNormalRequest, user_id=%u. ", user_id);
     CDbAttachData attach_data(ATTACH_TYPE_HANDLE, pFromConn->GetHandle(), 0);
     
     CDBServConn* pDBConn = get_db_serv_conn();
@@ -47,7 +48,7 @@ void CGroupChat::HandleClientGroupNormalRequest(CImPdu* pPdu, CMsgConn* pFromCon
     }
     else
     {
-        log("no db connection. ");
+        SPDLOG_ERROR("no db connection. ");
         IM::Group::IMNormalGroupListRsp msg2;
         msg.set_user_id(user_id);
         CImPdu pdu;
@@ -68,7 +69,7 @@ void CGroupChat::HandleGroupNormalResponse(CImPdu* pPdu)
     uint32_t group_cnt = msg.group_version_list_size();
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
 
-    log("HandleGroupNormalResponse, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
+    SPDLOG_ERROR("HandleGroupNormalResponse, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
 
     msg.clear_attach_data();
     pPdu->SetPBMsg(&msg);
@@ -85,7 +86,7 @@ void CGroupChat::HandleClientGroupInfoRequest(CImPdu *pPdu, CMsgConn* pFromConn)
     CHECK_PB_PARSE_MSG(msg.ParseFromArray(pPdu->GetBodyData(), pPdu->GetBodyLength()));
     uint32_t user_id = pFromConn->GetUserId();
     uint32_t group_cnt = msg.group_version_list_size();
-    log("HandleClientGroupInfoRequest, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
+    SPDLOG_ERROR("HandleClientGroupInfoRequest, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
     CPduAttachData attach_data(ATTACH_TYPE_HANDLE, pFromConn->GetHandle(), 0, NULL);
     
     CDBServConn* pDBConn = get_db_serv_conn();
@@ -98,7 +99,7 @@ void CGroupChat::HandleClientGroupInfoRequest(CImPdu *pPdu, CMsgConn* pFromConn)
     }
     else
     {
-        log("no db connection. ");
+        SPDLOG_ERROR("no db connection. ");
         IM::Group::IMGroupInfoListRsp msg2;
         msg2.set_user_id(user_id);
         CImPdu pdu;
@@ -119,14 +120,14 @@ void CGroupChat::HandleGroupInfoResponse(CImPdu* pPdu)
     uint32_t group_cnt = msg.group_info_list_size();
     CPduAttachData pduAttachData((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
     
-    log("HandleGroupInfoResponse, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
+    SPDLOG_ERROR("HandleGroupInfoResponse, user_id=%u, group_cnt=%u. ", user_id, group_cnt);
 
     //此处是查询成员时使用，主要用于群消息从数据库获得msg_id后进行发送,一般此时group_cnt = 1
     if (pduAttachData.GetPduLength() > 0 && group_cnt > 0)
     {
         IM::BaseDefine::GroupInfo group_info = msg.group_info_list(0);
         uint32_t group_id = group_info.group_id();
-        log("GroupInfoRequest is send by server, group_id=%u ", group_id);
+        SPDLOG_ERROR("GroupInfoRequest is send by server, group_id=%u ", group_id);
         
         std::set<uint32_t> group_member_set;
         for (uint32_t i = 0; i < group_info.group_member_list_size(); i++)
@@ -136,7 +137,7 @@ void CGroupChat::HandleGroupInfoResponse(CImPdu* pPdu)
         }
         if (group_member_set.find(user_id) == group_member_set.end())
         {
-            log("user_id=%u is not in group, group_id=%u. ", user_id, group_id);
+            SPDLOG_ERROR("user_id=%u is not in group, group_id=%u. ", user_id, group_id);
             return;
         }
         
@@ -204,13 +205,13 @@ void CGroupChat::HandleGroupMessage(CImPdu* pPdu)
 	string msg_data = msg.msg_data();
     uint32_t msg_id = msg.msg_id();
     if (msg_id == 0) {
-        log("HandleGroupMsg, write db failed, %u->%u. ", from_user_id, to_group_id);
+        SPDLOG_ERROR("HandleGroupMsg, write db failed, %u->%u. ", from_user_id, to_group_id);
         return;
     }
     uint8_t msg_type = msg.msg_type();
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
 
-    log("HandleGroupMsg, %u->%u, msg id=%u. ", from_user_id, to_group_id, msg_id);
+    SPDLOG_ERROR("HandleGroupMsg, %u->%u, msg id=%u. ", from_user_id, to_group_id, msg_id);
 
     CMsgConn* pFromConn = CImUserManager::GetInstance()->GetMsgConnByHandle(from_user_id,
                                         attach_data.GetHandle());
@@ -266,7 +267,7 @@ void CGroupChat::HandleGroupMessageBroadcast(CImPdu *pPdu)
     uint32_t to_group_id = msg.to_session_id();
     string msg_data = msg.msg_data();
     uint32_t msg_id = msg.msg_id();
-    log("HandleGroupMessageBroadcast, %u->%u, msg id=%u. ", from_user_id, to_group_id, msg_id);
+    SPDLOG_ERROR("HandleGroupMessageBroadcast, %u->%u, msg id=%u. ", from_user_id, to_group_id, msg_id);
     
     // 服务器没有群的信息，向DB服务器请求群信息，并带上消息作为附件，返回时在发送该消息给其他群成员
     //IM::BaseDefine::GroupVersionInfo group_version_info;
@@ -298,12 +299,12 @@ void CGroupChat::HandleClientGroupCreateRequest(CImPdu* pPdu, CMsgConn* pFromCon
     string group_name = msg.group_name();
     uint32_t group_type = msg.group_type();
     if (group_type == IM::BaseDefine::GROUP_TYPE_NORMAL) {
-        log("HandleClientGroupCreateRequest, create normal group failed, req_id=%u, group_name=%s. ", req_user_id, group_name.c_str());
+        SPDLOG_ERROR("HandleClientGroupCreateRequest, create normal group failed, req_id=%u, group_name=%s. ", req_user_id, group_name.c_str());
         return;
     }
 	string group_avatar = msg.group_avatar();
 	uint32_t user_cnt = msg.member_id_list_size();
-	log("HandleClientGroupCreateRequest, req_id=%u, group_name=%s, avatar_url=%s, user_cnt=%u ",
+	SPDLOG_ERROR("HandleClientGroupCreateRequest, req_id=%u, group_name=%s, avatar_url=%s, user_cnt=%u ",
 			req_user_id, group_name.c_str(), group_avatar.c_str(), user_cnt);
 
 	CDBServConn* pDbConn = get_db_serv_conn();
@@ -314,7 +315,7 @@ void CGroupChat::HandleClientGroupCreateRequest(CImPdu* pPdu, CMsgConn* pFromCon
         pPdu->SetPBMsg(&msg);
 		pDbConn->SendPdu(pPdu);
 	} else {
-		log("no DB connection ");
+		SPDLOG_ERROR("no DB connection ");
         IM::Group::IMGroupCreateRsp msg2;
         msg2.set_user_id(req_user_id);
         msg2.set_result_code(1);
@@ -338,7 +339,7 @@ void CGroupChat::HandleGroupCreateResponse(CImPdu* pPdu)
 	uint32_t group_id = msg.group_id();
 	string group_name = msg.group_name();
 	uint32_t user_cnt = msg.user_id_list_size();
-	log("HandleGroupCreateResponse, req_id=%u, result=%u, group_id=%u, group_name=%s, member_cnt=%u. ", user_id, result, group_id, group_name.c_str(), user_cnt);
+	SPDLOG_ERROR("HandleGroupCreateResponse, req_id=%u, result=%u, group_id=%u, group_name=%s, member_cnt=%u. ", user_id, result, group_id, group_name.c_str(), user_cnt);
 
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
     
@@ -362,7 +363,7 @@ void CGroupChat::HandleClientGroupChangeMemberRequest(CImPdu* pPdu, CMsgConn* pF
 	uint32_t req_user_id = pFromConn->GetUserId();
 	uint32_t group_id = msg.group_id();
 	uint32_t user_cnt = msg.member_id_list_size();
-	log("HandleClientChangeMemberReq, change_type=%u, req_id=%u, group_id=%u, user_cnt=%u ",
+	SPDLOG_ERROR("HandleClientChangeMemberReq, change_type=%u, req_id=%u, group_id=%u, user_cnt=%u ",
 			change_type, req_user_id, group_id, user_cnt);
 
 	CDBServConn* pDbConn = get_db_serv_conn();
@@ -374,7 +375,7 @@ void CGroupChat::HandleClientGroupChangeMemberRequest(CImPdu* pPdu, CMsgConn* pF
         pPdu->SetPBMsg(&msg);
 		pDbConn->SendPdu(pPdu);
 	} else {
-		log("no DB connection ");
+		SPDLOG_ERROR("no DB connection ");
         IM::Group::IMGroupChangeMemberRsp msg2;
         msg2.set_user_id(req_user_id);
         msg2.set_change_type((IM::BaseDefine::GroupModifyType)change_type);
@@ -400,7 +401,7 @@ void CGroupChat::HandleGroupChangeMemberResponse(CImPdu* pPdu)
 	uint32_t group_id = msg.group_id();
 	uint32_t chg_user_cnt = msg.chg_user_id_list_size();
     uint32_t cur_user_cnt = msg.cur_user_id_list_size();
-	log("HandleChangeMemberResp, change_type=%u, req_id=%u, group_id=%u, result=%u, chg_usr_cnt=%u, cur_user_cnt=%u. ",
+	SPDLOG_ERROR("HandleChangeMemberResp, change_type=%u, req_id=%u, group_id=%u, result=%u, chg_usr_cnt=%u, cur_user_cnt=%u. ",
 			change_type, user_id, group_id, result, chg_user_cnt, cur_user_cnt);
 
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
@@ -453,7 +454,7 @@ void CGroupChat::HandleGroupChangeMemberBroadcast(CImPdu* pPdu)
 	uint32_t group_id = msg.group_id();
 	uint32_t chg_user_cnt = msg.chg_user_id_list_size();
     uint32_t cur_user_cnt = msg.cur_user_id_list_size();
-	log("HandleChangeMemberBroadcast, change_type=%u, group_id=%u, chg_user_cnt=%u, cur_user_cnt=%u. ", change_type, group_id, chg_user_cnt, cur_user_cnt);
+	SPDLOG_ERROR("HandleChangeMemberBroadcast, change_type=%u, group_id=%u, chg_user_cnt=%u, cur_user_cnt=%u. ", change_type, group_id, chg_user_cnt, cur_user_cnt);
 
     for (uint32_t i = 0; i < chg_user_cnt; i++)
     {
@@ -474,7 +475,7 @@ void CGroupChat::HandleClientGroupShieldGroupRequest(CImPdu *pPdu, CMsgConn *pFr
     uint32_t shield_status = msg.shield_status();
     uint32_t group_id = msg.group_id();
     uint32_t user_id = pFromConn->GetUserId();
-    log("HandleClientGroupShieldGroupRequest, user_id: %u, group_id: %u, shield_status: %u. ",
+    SPDLOG_ERROR("HandleClientGroupShieldGroupRequest, user_id: %u, group_id: %u, shield_status: %u. ",
         user_id, group_id, shield_status);
     
     CDBServConn* pDbConn = get_db_serv_conn();
@@ -486,7 +487,7 @@ void CGroupChat::HandleClientGroupShieldGroupRequest(CImPdu *pPdu, CMsgConn *pFr
 		pDbConn->SendPdu(pPdu);
         
 	} else {
-        log("no DB connection ");
+        SPDLOG_ERROR("no DB connection ");
         IM::Group::IMGroupShieldRsp msg2;
         msg2.set_user_id(user_id);
         msg2.set_result_code(1);
@@ -507,7 +508,7 @@ void CGroupChat::HandleGroupShieldGroupResponse(CImPdu *pPdu)
     uint32_t result = msg.result_code();
     uint32_t user_id = msg.user_id();
     uint32_t group_id = msg.group_id();
-    log("HandleGroupShieldGroupResponse, result: %u, user_id: %u, group_id: %u. ", result,
+    SPDLOG_ERROR("HandleGroupShieldGroupResponse, result: %u, user_id: %u, group_id: %u. ", result,
         user_id, group_id);
     
     CDbAttachData attach_data((uchar_t*)msg.attach_data().c_str(), msg.attach_data().length());
@@ -527,7 +528,7 @@ void CGroupChat::HandleGroupGetShieldByGroupResponse(CImPdu *pPdu)
 
     uint32_t shield_status_list_cnt = msg.shield_status_list_size();
     
-    log("HandleGroupGetShieldByGroupResponse, shield_status_list_cnt: %u. ",
+    SPDLOG_ERROR("HandleGroupGetShieldByGroupResponse, shield_status_list_cnt: %u. ",
         shield_status_list_cnt);
     
     IM::Server::IMGetDeviceTokenReq msg2;
@@ -541,7 +542,7 @@ void CGroupChat::HandleGroupGetShieldByGroupResponse(CImPdu *pPdu)
         }
         else
         {
-            log("user_id: %u shield group, group id: %u. ", shield_status.user_id(), shield_status.group_id());
+            SPDLOG_ERROR("user_id: %u shield group, group id: %u. ", shield_status.user_id(), shield_status.group_id());
         }
     }
     CImPdu pdu;

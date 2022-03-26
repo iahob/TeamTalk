@@ -15,7 +15,7 @@
 
 #include <list>
 #include <map>
-#include "public_define.h"
+#include "base/public_define.h"
 #include "util.h"
 #include "IM.BaseDefine.pb.h"
 

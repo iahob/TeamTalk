@@ -1,7 +1,7 @@
 /*================================================================
  *   Copyright (C) 2014 All rights reserved.
  *
- *   文件名称：Login.cpp
+ *   文件名称：login.cpp
  *   创 建 者：Zhang Yuanhao
  *   邮    箱：bluefoxah@gmail.com
  *   创建日期：2014年12月15日
@@ -11,26 +11,27 @@
 
 #include <list>
 #include "../ProxyConn.h"
-#include "../HttpClient.h"
+#include "base/HttpClient.h"
 #include "../SyncCenter.h"
-#include "Login.h"
+#include "login.h"
 #include "UserModel.h"
-#include "TokenValidator.h"
+#include "base/TokenValidator.h"
 #include "json/json.h"
 #include "Common.h"
 #include "IM.Server.pb.h"
-#include "Base64.h"
-#include "InterLogin.h"
-#include "ExterLogin.h"
+#include "base/Base64.h"
+#include "Interlogin.h"
+#include "Exterlogin.h"
+#include "base/slog.h"
 
-CInterLoginStrategy g_loginStrategy;
+CInterloginStrategy g_loginStrategy;
 
-hash_map<string, list<uint32_t> > g_hmLimits;
+unordered_map<string, list<uint32_t> > g_hmLimits;
 CLock g_cLimitLock;
 namespace DB_PROXY {
     
     
-void doLogin(CImPdu* pPdu, uint32_t conn_uuid)
+void dologin(CImPdu* pPdu, uint32_t conn_uuid)
 {
     
     CImPdu* pPduResp = new CImPdu;
@@ -45,7 +46,6 @@ void doLogin(CImPdu* pPdu, uint32_t conn_uuid)
         
         msgResp.set_user_name(strDomain);
         msgResp.set_attach_data(msg.attach_data());
-       
 	//清理超过5分钟的错误时间点记录
 	/*
 		清理放在这里还是放在密码错误后添加的时候呢？
@@ -95,11 +95,11 @@ void doLogin(CImPdu* pPdu, uint32_t conn_uuid)
            }
 	}	        
 
-	log("%s request login.", strDomain.c_str());
+	SPDLOG_ERROR("%s request login.", strDomain.c_str());
 
 	IM::BaseDefine::UserInfo cUser;
 
-	if(g_loginStrategy.doLogin(strDomain, strPass, cUser))
+	if(g_loginStrategy.dologin(strDomain, strPass, cUser))
 	{
 		IM::BaseDefine::UserInfo* pUser = msgResp.mutable_user_info();
 		pUser->set_user_id(cUser.user_id());
@@ -132,7 +132,7 @@ void doLogin(CImPdu* pPdu, uint32_t conn_uuid)
 		list<uint32_t>& lsErrorTime = g_hmLimits[strDomain];
 		lsErrorTime.push_front(tmCurrent);
 
-		log("get result false");
+		SPDLOG_ERROR("get result false");
 		msgResp.set_result_code(1);
 		msgResp.set_result_string("用户名/密码错误");
 	}

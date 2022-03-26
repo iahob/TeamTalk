@@ -11,7 +11,8 @@
 #include "HttpPdu.h"
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
-#include "ImPduBase.h"
+#include "base/ImPduBase.h"
+#include "base/slog.h"
 namespace HTTP {
 
 static ConnMap_t g_route_server_conn_map;
@@ -123,7 +124,7 @@ CRouteServConn::~CRouteServConn()
 
 void CRouteServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t idx)
 {
-	log("Connecting to RouteServer %s:%d ", server_ip, server_port);
+	SPDLOG_ERROR("Connecting to RouteServer %s:%d ", server_ip, server_port);
 
 	m_serv_idx = idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_route_server_conn_map);
@@ -152,7 +153,7 @@ void CRouteServConn::Close()
 
 void CRouteServConn::OnConfirm()
 {
-	log("connect to route server success ");
+	SPDLOG_ERROR("connect to route server success ");
 	m_bOpen = true;
 	m_connect_time = get_tick_count();
 	g_route_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
@@ -165,7 +166,7 @@ void CRouteServConn::OnConfirm()
 
 void CRouteServConn::OnClose()
 {
-	log("onclose from route server handle=%d ", m_handle);
+	SPDLOG_ERROR("onclose from route server handle=%d ", m_handle);
 	Close();
 }
 
@@ -181,7 +182,7 @@ void CRouteServConn::OnTimer(uint64_t curr_tick)
 	}
 
 	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to route server timeout ");
+		SPDLOG_ERROR("conn to route server timeout ");
 		Close();
 	}
 }

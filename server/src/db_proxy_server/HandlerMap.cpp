@@ -21,6 +21,7 @@
 #include "business/FileAction.h"
 #include "IM.BaseDefine.pb.h"
 
+
 using namespace IM::BaseDefine;
 
 
@@ -62,10 +63,10 @@ CHandlerMap* CHandlerMap::getInstance()
  */
 void CHandlerMap::Init()
 {
-	// Login validate
-	m_handler_map.insert(make_pair(uint32_t(CID_OTHER_VALIDATE_REQ), DB_PROXY::doLogin));
-    m_handler_map.insert(make_pair(uint32_t(CID_LOGIN_REQ_PUSH_SHIELD), DB_PROXY::doPushShield));
-    m_handler_map.insert(make_pair(uint32_t(CID_LOGIN_REQ_QUERY_PUSH_SHIELD), DB_PROXY::doQueryPushShield));
+	// login validate
+	m_handler_map.insert(make_pair(uint32_t(CID_OTHER_VALIDATE_REQ), DB_PROXY::dologin));
+    m_handler_map.insert(make_pair(uint32_t(CID_logIN_REQ_PUSH_SHIELD), DB_PROXY::doPushShield));
+    m_handler_map.insert(make_pair(uint32_t(CID_logIN_REQ_QUERY_PUSH_SHIELD), DB_PROXY::doQueryPushShield));
     
     // recent session
     m_handler_map.insert(make_pair(uint32_t(CID_BUDDY_LIST_RECENT_CONTACT_SESSION_REQUEST), DB_PROXY::getRecentSession));
@@ -87,7 +88,7 @@ void CHandlerMap::Init()
     m_handler_map.insert(make_pair(uint32_t(CID_MSG_GET_LATEST_MSG_ID_REQ), DB_PROXY::getLatestMsgId));
     
     // device token
-    m_handler_map.insert(make_pair(uint32_t(CID_LOGIN_REQ_DEVICETOKEN), DB_PROXY::setDevicesToken));
+    m_handler_map.insert(make_pair(uint32_t(CID_logIN_REQ_DEVICETOKEN), DB_PROXY::setDevicesToken));
     m_handler_map.insert(make_pair(uint32_t(CID_OTHER_GET_DEVICE_TOKEN_REQ), DB_PROXY::getDevicesToken));
     
     //push 推送设置

@@ -9,13 +9,15 @@
  *
  ================================================================*/
 
-#include "../ProxyConn.h"
-#include "GroupAction.h"
-#include "GroupModel.h"
+#include "ProxyConn.h"
+#include "business/GroupAction.h"
+#include "business/GroupModel.h"
 #include "IM.Group.pb.h"
 #include "IM.BaseDefine.pb.h"
-#include "public_define.h"
+#include "base/public_define.h"
 #include "IM.Server.pb.h"
+#include "base/slog.h"
+
 
 namespace DB_PROXY {
     
@@ -46,7 +48,7 @@ namespace DB_PROXY {
                     uint32_t nUserId = msg.member_id_list(i);
                     setMember.insert(nUserId);
                 }
-                log("createGroup.%d create %s, userCnt=%u", nUserId, strGroupName.c_str(), setMember.size());
+                SPDLOG_ERROR("createGroup.%d create %s, userCnt=%u", nUserId, strGroupName.c_str(), setMember.size());
                 
                 uint32_t nGroupId = CGroupModel::getInstance()->createGroup(nUserId, strGroupName, strGroupAvatar, nGroupType, setMember);
                 msgResp.set_user_id(nUserId);
@@ -66,7 +68,7 @@ namespace DB_PROXY {
                 }
                 
                 
-                log("createGroup.%d create %s, userCnt=%u, result:%d", nUserId, strGroupName.c_str(), setMember.size(), msgResp.result_code());
+                SPDLOG_ERROR("createGroup.%d create %s, userCnt=%u, result:%d", nUserId, strGroupName.c_str(), setMember.size(), msgResp.result_code());
                 
                 msgResp.set_attach_data(msg.attach_data());
                 pPduRes->SetPBMsg(&msgResp);
@@ -77,12 +79,12 @@ namespace DB_PROXY {
             }
             else
             {
-                log("invalid group type.userId=%u, groupType=%u, groupName=%s", nUserId, nGroupType, strGroupName.c_str());
+                SPDLOG_ERROR("invalid group type.userId=%u, groupType=%u, groupName=%s", nUserId, nGroupType, strGroupName.c_str());
             }
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     
@@ -112,7 +114,7 @@ namespace DB_PROXY {
                 pGroupVersion->set_version(it->version());
             }
             
-            log("getNormalGroupList. userId=%u, count=%d", nUserId, msgResp.group_version_list_size());
+            SPDLOG_ERROR("getNormalGroupList. userId=%u, count=%d", nUserId, msgResp.group_version_list_size());
             
             msgResp.set_attach_data(msg.attach_data());
             pPduRes->SetPBMsg(&msgResp);
@@ -123,7 +125,7 @@ namespace DB_PROXY {
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     
@@ -174,7 +176,7 @@ namespace DB_PROXY {
                 }
             }
             
-            log("userId=%u, requestCount=%u", nUserId, nGroupCnt);
+            SPDLOG_ERROR("userId=%u, requestCount=%u", nUserId, nGroupCnt);
             
             msgResp.set_attach_data(msg.attach_data());
             pPduRes->SetPBMsg(&msgResp);
@@ -185,7 +187,7 @@ namespace DB_PROXY {
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     /**
@@ -232,7 +234,7 @@ namespace DB_PROXY {
                         msgResp.add_cur_user_id_list(*it);
                     }
                 }
-                log("userId=%u, groupId=%u, result=%u, changeCount:%u, currentCount=%u",nUserId, nGroupId,  bRet?0:1, msgResp.chg_user_id_list_size(), msgResp.cur_user_id_list_size());
+                SPDLOG_ERROR("userId=%u, groupId=%u, result=%u, changeCount:%u, currentCount=%u",nUserId, nGroupId,  bRet?0:1, msgResp.chg_user_id_list_size(), msgResp.cur_user_id_list_size());
                 msgResp.set_attach_data(msg.attach_data());
                 pPduRes->SetPBMsg(&msgResp);
                 pPduRes->SetSeqNum(pPdu->GetSeqNum());
@@ -242,13 +244,13 @@ namespace DB_PROXY {
             }
             else
             {
-                log("invalid groupModifyType or groupId. userId=%u, groupId=%u, groupModifyType=%u", nUserId, nGroupId, nType);
+                SPDLOG_ERROR("invalid groupModifyType or groupId. userId=%u, groupId=%u, groupModifyType=%u", nUserId, nGroupId, nType);
             }
             
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     
@@ -277,7 +279,7 @@ namespace DB_PROXY {
                 msgResp.set_group_id(nGroupId);
                 msgResp.set_result_code(bRet?0:1);
             
-                log("userId=%u, groupId=%u, result=%u", nUserId, nGroupId, msgResp.result_code());
+                SPDLOG_ERROR("userId=%u, groupId=%u, result=%u", nUserId, nGroupId, msgResp.result_code());
                 
                 msgResp.set_attach_data(msg.attach_data());
                 pPduRes->SetPBMsg(&msgResp);
@@ -288,12 +290,12 @@ namespace DB_PROXY {
             }
             else
             {
-                log("Invalid group.userId=%u, groupId=%u", nUserId, nGroupId);
+                SPDLOG_ERROR("Invalid group.userId=%u, groupId=%u", nUserId, nGroupId);
             }
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
     
@@ -331,7 +333,7 @@ namespace DB_PROXY {
                     pStatus->set_shield_status(it->shield_status());
                 }
                 
-                log("groupId=%u, count=%u", nGroupId, nUserCnt);
+                SPDLOG_ERROR("groupId=%u, count=%u", nGroupId, nUserCnt);
                 
                 msgResp.set_attach_data(msg.attach_data());
                 pPduRes->SetPBMsg(&msgResp);
@@ -342,12 +344,12 @@ namespace DB_PROXY {
             }
             else
             {
-                log("Invalid groupId. nGroupId=%u", nGroupId);
+                SPDLOG_ERROR("Invalid groupId. nGroupId=%u", nGroupId);
             }
         }
         else
         {
-            log("parse pb failed");
+            SPDLOG_ERROR("parse pb failed");
         }
     }
 }

@@ -1,35 +1,35 @@
 /*
- * LoginConn.h
+ * loginConn.h
  *
  *  Created on: 2013-6-21
  *      Author: jianqingdu
  */
 
-#ifndef LOGINCONN_H_
-#define LOGINCONN_H_
+#ifndef logINCONN_H_
+#define logINCONN_H_
 
-#include "imconn.h"
+#include "base/imconn.h"
 
 enum {
-	LOGIN_CONN_TYPE_CLIENT = 1,
-	LOGIN_CONN_TYPE_MSG_SERV
+	logIN_CONN_TYPE_CLIENT = 1,
+	logIN_CONN_TYPE_MSG_SERV
 };
 
-typedef struct  {
+ struct msg_serv_info_t {
     string		ip_addr1;	// 电信IP
     string		ip_addr2;	// 网通IP
     uint16_t	port;
     uint32_t	max_conn_cnt;
     uint32_t	cur_conn_cnt;
     string 		hostname;	// 消息服务器的主机名
-} msg_serv_info_t;
+} ;
 
 
-class CLoginConn : public CImConn
+class CloginConn : public CImConn
 {
 public:
-	CLoginConn();
-	virtual ~CLoginConn();
+	CloginConn();
+	virtual ~CloginConn();
 
 	virtual void Close();
 
@@ -49,4 +49,4 @@ private:
 
 void init_login_conn();
 
-#endif /* LOGINCONN_H_ */
+#endif /* logINCONN_H_ */

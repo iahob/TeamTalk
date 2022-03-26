@@ -8,10 +8,12 @@
 *   描    述：需要通过外部接口进行验证
 *
 ================================================================*/
-#include "ExterLogin.h"
+#include "Exterlogin.h"
+#include "base/slog.h"
 
-const std::string strLoginUrl = "http://xxxx";
-bool CExterLoginStrategy::doLogin(const std::string &strName, const std::string &strPass, IM::BaseDefine::UserInfo& user)
+
+const std::string strloginUrl = "http://xxxx";
+bool CExterloginStrategy::dologin(const std::string &strName, const std::string &strPass, IM::BaseDefine::UserInfo& user)
 {
     bool bRet = false;
     

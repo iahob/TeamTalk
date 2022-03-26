@@ -12,12 +12,12 @@
 
 #include <iostream>
 #include <signal.h>
-#include "netlib.h"
-#include "ConfigFileReader.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
 #include "HttpConn.h"
 #include "FileManager.h"
-#include "ThreadPool.h"
-
+#include "base/ThreadPool.h"
+#include "base/slog.h"
 using namespace std;
 using namespace msfs;
 
@@ -85,7 +85,7 @@ void http_callback(void* callback_data, uint8_t msg, uint32_t handle,
         pConn->OnConnect(handle);
     } else
     {
-        log("!!!error msg: %d", msg);
+        SPDLOG_ERROR("!!!error msg: %d", msg);
     }
 }
 
@@ -96,11 +96,11 @@ void doQuitJob()
     	config_file.SetConfigValue("FileCnt", fileCntBuf);
 	FileManager::destroyInstance();
 netlib_destroy();
-    log("I'm ready quit...");
+    SPDLOG_ERROR("I'm ready quit...");
 }
 void Stop(int signo)
 {
-    log("receive signal:%d", signo);
+    SPDLOG_ERROR("receive signal:%d", signo);
     switch(signo)
     {
     case SIGINT:
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
                break;
            }
        }
-    log("MsgServer max files can open: %d", getdtablesize());
+    SPDLOG_ERROR("MsgServer max files can open: %d", getdtablesize());
 
 
     char* listen_ip = config_file.GetConfigName("ListenIP");
@@ -141,11 +141,11 @@ int main(int argc, char* argv[])
 
     if (!listen_ip || !str_listen_port || !base_dir || !str_file_cnt || !str_files_per_dir || !str_post_thread_count || !str_get_thread_count)
     {
-        log("config file miss, exit...");
+        SPDLOG_ERROR("config file miss, exit...");
         return -1;
     }
     
-    log("%s,%s",listen_ip, str_listen_port);
+    SPDLOG_ERROR("%s,%s",listen_ip, str_listen_port);
     uint16_t listen_port = atoi(str_listen_port);
     long long int  fileCnt = atoll(str_file_cnt);
     int filesPerDir = atoi(str_files_per_dir);
@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
     int nGetThreadCount = atoi(str_get_thread_count);
     if(nPostThreadCount <= 0 || nGetThreadCount <= 0)
     {
-        log("thread count is invalied");
+        SPDLOG_ERROR("thread count is invalied");
         return -1;
     }
     g_PostThreadPool.Init(nPostThreadCount);

@@ -6,9 +6,9 @@
  */
 
 #include "RouteConn.h"
-#include "netlib.h"
-#include "ConfigFileReader.h"
-#include "version.h"
+#include "base/netlib.h"
+#include "base/ConfigFileReader.h"
+#include "base/version.h"
 
 // this callback will be replaced by imconn_callback() in OnConnect()
 void route_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)
@@ -20,7 +20,7 @@ void route_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void
 	}
 	else
 	{
-		log("!!!error msg: %d ", msg);
+		SPDLOG_ERROR("!!!error msg: %d ", msg);
 	}
 }
 
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 	char* str_listen_msg_port = config_file.GetConfigName("ListenMsgPort");
 
 	if (!listen_ip || !str_listen_msg_port) {
-		log("config item missing, exit... ");
+		SPDLOG_ERROR("config item missing, exit... ");
 		return -1;
 	}
 

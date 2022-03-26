@@ -10,9 +10,9 @@
  #include "HttpConn.h"
  ================================================================*/
 #include "HttpConn.h"
-#include "HttpParserWrapper.h"
-#include "atomic.h"
-
+#include "base/HttpParserWrapper.h"
+#include "base/atomic.h"
+#include "base/slog.h"
 static HttpConnMap_t g_http_conn_map;
 
 // conn_handle 从0开始递增，可以防止因socket handle重用引起的一些冲突
@@ -58,7 +58,7 @@ void httpconn_callback(void* callback_data, uint8_t msg, uint32_t handle,
         pConn->OnClose();
         break;
     default:
-        log("!!!httpconn_callback error msg: %d", msg);
+        SPDLOG_ERROR("!!!httpconn_callback error msg: %d", msg);
         break;
     }
 }
@@ -132,232 +132,208 @@ void CHttpTask::run()
     }
 }
 
-void CHttpTask::OnUpload()
-{
+void CHttpTask::OnUpload() {
 
     //get the file original filename
     char *pContent = NULL;
-        int nTmpLen = 0;
-        const char* pPos = memfind(m_pContent, m_nContentLen, CONTENT_DISPOSITION, strlen(CONTENT_DISPOSITION));
-        if (pPos != NULL)
-        {
-            nTmpLen = pPos - m_pContent;
-            const char* pPos2 = memfind(pPos, m_nContentLen - nTmpLen, "filename=", strlen("filename="));
-            if (pPos2 != NULL)
-            {
-                pPos = pPos2 + strlen("filename=") + 1;
-                const char * pPosQuotes = memfind(pPos, m_nContentLen - nTmpLen, "\"", strlen("\""));
-                int nFileNameLen = pPosQuotes - pPos;
-                
-                char szFileName[256];
-                if(nFileNameLen <= 255)
-                {
-                    memcpy(szFileName,  pPos, nFileNameLen);
-                    szFileName[nFileNameLen] = 0;
+    int nTmpLen = 0;
+    const char *pPos = memfind(m_pContent, m_nContentLen, CONTENT_DISPOSITION, strlen(CONTENT_DISPOSITION));
+    if (pPos != NULL) {
+        nTmpLen = pPos - m_pContent;
+        const char *pPos2 = memfind(pPos, m_nContentLen - nTmpLen, "filename=", strlen("filename="));
+        if (pPos2 != NULL) {
+            pPos = pPos2 + strlen("filename=") + 1;
+            const char *pPosQuotes = memfind(pPos, m_nContentLen - nTmpLen, "\"", strlen("\""));
+            int nFileNameLen = pPosQuotes - pPos;
 
-                    
-                    const char* pPosType = memfind(szFileName, nFileNameLen, ".", 1, false);
-                    if(pPosType != NULL)
-                    {
-                        char szType[16];
-                        int nTypeLen = nFileNameLen - (pPosType + 1 - szFileName);
-                        if(nTypeLen <=15)
-                        {
-                            memcpy(szType, pPosType + 1, nTypeLen);
-                            szType[nTypeLen] = 0;
-                            log("upload file, file name:%s", szFileName);
-                            char szExtend[16];
-                            const char* pPosExtend = memfind(szFileName, nFileNameLen, "_", 1, false);
-                            if(pPosExtend != NULL)
-                            {
-                                const char* pPosTmp = memfind(pPosExtend, nFileNameLen - (pPosExtend + 1 - szFileName), "x", 1);
-                                if(pPosTmp != NULL)
-                                {
-                                    int nWidthLen = pPosTmp - pPosExtend - 1;
-                                    int nHeightLen = pPosType - pPosTmp - 1;
-                                    if(nWidthLen >= 0 && nHeightLen >= 0)
-                                    {
-                                        int nWidth = 0;
-                                        int nHeight = 0;
-                                        char szWidth[5], szHeight[5];
-                                        if(nWidthLen <=4 && nHeightLen <=4)
-                                        {
-                                            memcpy(szWidth, pPosExtend + 1, nWidthLen);
-                                            szWidth[nWidthLen] = 0;
-                                            memcpy(szHeight, pPosTmp + 1, nHeightLen );
-                                            szHeight[nHeightLen] = 0;
-                                            nWidth = atoi(szWidth);
-                                            nHeight = atoi(szHeight);
-                                            snprintf(szExtend, sizeof(szExtend), "%dx%d.%s", nWidth, nHeight, szType);
-                                        }else
-                                        {
-                                            szExtend[0] = 0;
-                                        }
-                                    }
-                                    else
-                                    {
+            char szFileName[256];
+            if (nFileNameLen <= 255) {
+                memcpy(szFileName, pPos, nFileNameLen);
+                szFileName[nFileNameLen] = 0;
+
+
+                const char *pPosType = memfind(szFileName, nFileNameLen, ".", 1, false);
+                if (pPosType != NULL) {
+                    char szType[16];
+                    int nTypeLen = nFileNameLen - (pPosType + 1 - szFileName);
+                    if (nTypeLen <= 15) {
+                        memcpy(szType, pPosType + 1, nTypeLen);
+                        szType[nTypeLen] = 0;
+                        SPDLOG_ERROR("upload file, file name:%s", szFileName);
+                        char szExtend[16];
+                        const char *pPosExtend = memfind(szFileName, nFileNameLen, "_", 1, false);
+                        if (pPosExtend != NULL) {
+                            const char *pPosTmp = memfind(pPosExtend, nFileNameLen - (pPosExtend + 1 - szFileName), "x",
+                                                          1);
+                            if (pPosTmp != NULL) {
+                                int nWidthLen = pPosTmp - pPosExtend - 1;
+                                int nHeightLen = pPosType - pPosTmp - 1;
+                                if (nWidthLen >= 0 && nHeightLen >= 0) {
+                                    int nWidth = 0;
+                                    int nHeight = 0;
+                                    char szWidth[5], szHeight[5];
+                                    if (nWidthLen <= 4 && nHeightLen <= 4) {
+                                        memcpy(szWidth, pPosExtend + 1, nWidthLen);
+                                        szWidth[nWidthLen] = 0;
+                                        memcpy(szHeight, pPosTmp + 1, nHeightLen);
+                                        szHeight[nHeightLen] = 0;
+                                        nWidth = atoi(szWidth);
+                                        nHeight = atoi(szHeight);
+                                        snprintf(szExtend, sizeof(szExtend), "%dx%d.%s", nWidth, nHeight, szType);
+                                    } else {
                                         szExtend[0] = 0;
                                     }
-                                }
-                                else{
+                                } else {
                                     szExtend[0] = 0;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 szExtend[0] = 0;
                             }
+                        } else {
+                            szExtend[0] = 0;
+                        }
 
-                            //get the file content
-                            size_t nPos = m_strContentType.find(BOUNDARY_MARK);
-                            if (nPos != m_strContentType.npos)
-                            {
-                                const  char* pBoundary = m_strContentType.c_str() + nPos + strlen(BOUNDARY_MARK);
-                                int nBoundaryLen = m_strContentType.length() - nPos - strlen(BOUNDARY_MARK);
+                        //get the file content
+                        size_t nPos = m_strContentType.find(BOUNDARY_MARK);
+                        if (nPos != m_strContentType.npos) {
+                            const char *pBoundary = m_strContentType.c_str() + nPos + strlen(BOUNDARY_MARK);
+                            int nBoundaryLen = m_strContentType.length() - nPos - strlen(BOUNDARY_MARK);
 
-                                pPos = memfind(m_pContent, m_nContentLen, pBoundary, nBoundaryLen);
-                                if (NULL != pPos)
-                                {
+                            pPos = memfind(m_pContent, m_nContentLen, pBoundary, nBoundaryLen);
+                            if (NULL != pPos) {
+                                nTmpLen = pPos - m_pContent;
+                                pPos = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, CONTENT_TYPE,
+                                               strlen(CONTENT_TYPE));
+                                if (NULL != pPos) {
                                     nTmpLen = pPos - m_pContent;
-                                    pPos = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, CONTENT_TYPE, strlen(CONTENT_TYPE));
-                                    if (NULL != pPos)
-                                    {
+                                    pPos = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, HTTP_END_MARK,
+                                                   strlen(HTTP_END_MARK));
+                                    if (NULL != pPos) {
                                         nTmpLen = pPos - m_pContent;
-                                        pPos = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, HTTP_END_MARK, strlen(HTTP_END_MARK));
-                                        if (NULL != pPos)
-                                        {
-                                            nTmpLen = pPos - m_pContent;
-                                            const char* pFileStart = pPos + strlen(HTTP_END_MARK);
-                                            pPos2 = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, pBoundary, nBoundaryLen);
-                                            if (NULL != pPos2)
-                                            {
-                                                int64_t nFileSize = pPos2 - strlen(HTTP_END_MARK) - pFileStart;
-                                                if (nFileSize <= HTTP_UPLOAD_MAX)
-                                                {
-                                                    char filePath[512] =
-                                                    { 0 };
-                                                    if(strlen(szExtend) != 0)
-                                                    {
-                                                        g_fileManager->uploadFile(szType, pFileStart, nFileSize, filePath, szExtend);
-                                                    }
-                                                    else{
-                                                        g_fileManager->uploadFile(szType, pFileStart, nFileSize, filePath);
-                                                    }
-                                                    char url[1024];
-                                                    snprintf(url, sizeof(url), "{\"error_code\":0,\"error_msg\": \"成功\",\"path\":\"%s\",\"url\":\"http://%s/%s\"}", filePath,m_strAccessHost.c_str(), filePath);
-                                                    uint32_t content_length = strlen(url);
-                                                    pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                                    snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
-                                                    CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
+                                        const char *pFileStart = pPos + strlen(HTTP_END_MARK);
+                                        pPos2 = memfind(m_pContent + nTmpLen, m_nContentLen - nTmpLen, pBoundary,
+                                                        nBoundaryLen);
+                                        if (NULL != pPos2) {
+                                            int64_t nFileSize = pPos2 - strlen(HTTP_END_MARK) - pFileStart;
+                                            if (nFileSize <= HTTP_UPLOAD_MAX) {
+                                                char filePath[512] =
+                                                        {0};
+                                                if (strlen(szExtend) != 0) {
+                                                    g_fileManager->uploadFile(szType, pFileStart, nFileSize, filePath,
+                                                                              szExtend);
+                                                } else {
+                                                    g_fileManager->uploadFile(szType, pFileStart, nFileSize, filePath);
                                                 }
-                                            }
-                                            else
-                                            {
-                                                char url[128];
-                                                snprintf(url, sizeof(url), "{\"error_code\":8,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                                                log("%s",url);
+                                                char url[1024];
+                                                snprintf(url, sizeof(url),
+                                                         "{\"error_code\":0,\"error_msg\": \"成功\",\"path\":\"%s\",\"url\":\"http://%s/%s\"}",
+                                                         filePath, m_strAccessHost.c_str(), filePath);
                                                 uint32_t content_length = strlen(url);
                                                 pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                                                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML,
+                                                         content_length, url);
                                                 CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                                             }
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             char url[128];
-                                            snprintf(url, sizeof(url), "{\"error_code\":7,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                                            log("%s",url);
+                                            snprintf(url, sizeof(url),
+                                                     "{\"error_code\":8,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                                            SPDLOG_ERROR("%s", url);
                                             uint32_t content_length = strlen(url);
                                             pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                                            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML,
+                                                     content_length, url);
                                             CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                                         }
-
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         char url[128];
-                                        snprintf(url, sizeof(url), "{\"error_code\":6,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                                        log("%s",url);
+                                        snprintf(url, sizeof(url),
+                                                 "{\"error_code\":7,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                                        SPDLOG_ERROR("%s", url);
                                         uint32_t content_length = strlen(url);
                                         pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                        snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                                        snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,
+                                                 url);
                                         CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                                     }
-                                }
-                                else
-                                {
+
+                                } else {
                                     char url[128];
-                                    snprintf(url, sizeof(url), "{\"error_code\":5,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                                    log("%s",url);
+                                    snprintf(url, sizeof(url),
+                                             "{\"error_code\":6,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                                    SPDLOG_ERROR("%s", url);
                                     uint32_t content_length = strlen(url);
                                     pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                    snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                                    snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
                                     CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 char url[128];
-                                snprintf(url, sizeof(url), "{\"error_code\":4,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                                log("%s",url);
+                                snprintf(url, sizeof(url),
+                                         "{\"error_code\":5,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                                SPDLOG_ERROR("%s", url);
                                 uint32_t content_length = strlen(url);
                                 pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
                                 CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                             }
-                        }
-                        else{
+                        } else {
                             char url[128];
-                            snprintf(url, sizeof(url), "{\"error_code\":9,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                            log("%s",url);
+                            snprintf(url, sizeof(url),
+                                     "{\"error_code\":4,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                            SPDLOG_ERROR("%s", url);
                             uint32_t content_length = strlen(url);
                             pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
                             CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                         }
-                   }
-                   else{
-                       char url[128];
-                       snprintf(url, sizeof(url), "{\"error_code\":10,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                       log("%s",url);
-                       uint32_t content_length = strlen(url);
-                       pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                       snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
-                       CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
-                   }
-                }else
-                {
+                    } else {
+                        char url[128];
+                        snprintf(url, sizeof(url),
+                                 "{\"error_code\":9,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                        SPDLOG_ERROR("%s", url);
+                        uint32_t content_length = strlen(url);
+                        pContent = new char[HTTP_RESPONSE_HTML_MAX];
+                        snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
+                        CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
+                    }
+                } else {
                     char url[128];
-                    snprintf(url, sizeof(url), "{\"error_code\":11,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                    log("%s",url);
+                    snprintf(url, sizeof(url),
+                             "{\"error_code\":10,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                    SPDLOG_ERROR("%s", url);
                     uint32_t content_length = strlen(url);
                     pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                    snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                    snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
                     CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
                 }
-            }
-            else
-            {
+            } else {
                 char url[128];
-                snprintf(url, sizeof(url), "{\"error_code\":3,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-                log("%s",url);
+                snprintf(url, sizeof(url), "{\"error_code\":11,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+                SPDLOG_ERROR("%s", url);
                 uint32_t content_length = strlen(url);
                 pContent = new char[HTTP_RESPONSE_HTML_MAX];
-                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+                snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
                 CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
             }
-        }
-        else
-        {
+        } else {
             char url[128];
-            snprintf(url, sizeof(url), "{\"error_code\":2,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
-            log("%s",url);
+            snprintf(url, sizeof(url), "{\"error_code\":3,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+            SPDLOG_ERROR("%s", url);
             uint32_t content_length = strlen(url);
             pContent = new char[HTTP_RESPONSE_HTML_MAX];
-            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length,url);
+            snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
             CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
         }
+    } else {
+        char url[128];
+        snprintf(url, sizeof(url), "{\"error_code\":2,\"error_msg\": \"格式错误\",\"path\":\"\",\"url\":\"\"}");
+        SPDLOG_ERROR("%s", url);
+        uint32_t content_length = strlen(url);
+        pContent = new char[HTTP_RESPONSE_HTML_MAX];
+        snprintf(pContent, HTTP_RESPONSE_HTML_MAX, HTTP_RESPONSE_HTML, content_length, url);
+        CHttpConn::AddResponsePdu(m_ConnHandle, pContent, strlen(pContent));
+    }
 }
 
 void  CHttpTask::OnDownload()
@@ -394,7 +370,7 @@ void  CHttpTask::OnDownload()
                 char* pContent = new char[nTotalLen];
                 snprintf(pContent, nTotalLen, HTTP_RESPONSE_404);
                 CHttpConn::AddResponsePdu(m_ConnHandle, pContent, nTotalLen);
-                log("File size is invalied\n");
+                SPDLOG_ERROR("File size is invalied\n");
                 
             }
         }
@@ -420,12 +396,12 @@ CHttpConn::CHttpConn()
         m_conn_handle = ++g_conn_handle_generator;
     }
 
-    //log("CHttpConn, handle=%u", m_conn_handle);
+    //SPDLOG_ERROR("CHttpConn, handle=%u", m_conn_handle);
 }
 
 CHttpConn::~CHttpConn()
 {
-    //log("~CHttpConn, handle=%u", m_conn_handle);
+    //SPDLOG_ERROR("~CHttpConn, handle=%u", m_conn_handle);
 }
 
 int CHttpConn::Send(void* data, int len)
@@ -446,7 +422,7 @@ int CHttpConn::Send(void* data, int len)
     {
         m_out_buf.Write((char*) data + ret, len - ret);
         m_busy = true;
-        //log("not send all, remain=%d", m_out_buf.GetWriteOffset());
+        //SPDLOG_ERROR("not send all, remain=%d", m_out_buf.GetWriteOffset());
     }
     else
     {
@@ -504,7 +480,7 @@ void CHttpConn::OnRead()
     uint32_t buf_len = m_in_buf.GetWriteOffset();
     in_buf[buf_len] = '\0';
 
-    //log("OnRead, buf_len=%u, conn_handle=%u", buf_len, m_conn_handle); // for debug
+    //SPDLOG_ERROR("OnRead, buf_len=%u, conn_handle=%u", buf_len, m_conn_handle); // for debug
 
 
     m_HttpParser.ParseHttpContent(in_buf, buf_len);
@@ -512,7 +488,7 @@ void CHttpConn::OnRead()
     if (m_HttpParser.IsReadAll())
     {
         string strUrl = m_HttpParser.GetUrl();
-        log("IP:%s access:%s", m_peer_ip.c_str(), strUrl.c_str());
+        SPDLOG_ERROR("IP:%s access:%s", m_peer_ip.c_str(), strUrl.c_str());
         if (strUrl.find("..") != strUrl.npos) {
             Close();
             return;
@@ -521,10 +497,10 @@ void CHttpConn::OnRead()
         if (m_HttpParser.GetContentLen() > HTTP_UPLOAD_MAX)
         {
             // file is too big
-            log("content  is too big");
+            SPDLOG_ERROR("content  is too big");
             char url[128];
             snprintf(url, sizeof(url), "{\"error_code\":1,\"error_msg\": \"上传文件过大\",\"url\":\"\"}");
-            log("%s",url);
+            SPDLOG_ERROR("%s",url);
             uint32_t content_length = strlen(url);
             char pContent[1024];
             snprintf(pContent, sizeof(pContent), HTTP_RESPONSE_HTML, content_length,url);
@@ -542,7 +518,7 @@ void CHttpConn::OnRead()
             }
             catch(...)
             {
-                log("not enough memory");
+                SPDLOG_ERROR("not enough memory");
                 char szResponse[HTTP_RESPONSE_500_LEN + 1];
                 snprintf(szResponse, HTTP_RESPONSE_500_LEN, "%s", HTTP_RESPONSE_500);
                 Send(szResponse, HTTP_RESPONSE_500_LEN);
@@ -586,7 +562,7 @@ void CHttpConn::OnWrite()
     if (ret < out_buf_size)
     {
         m_busy = true;
-//        log("not send all, remain=%d", m_out_buf.GetWriteOffset());
+//        SPDLOG_ERROR("not send all, remain=%d", m_out_buf.GetWriteOffset());
     } else
     {
         m_busy = false;
@@ -603,7 +579,7 @@ void CHttpConn::OnTimer(uint64_t curr_tick)
 {
     if (curr_tick > m_last_recv_tick + HTTP_CONN_TIMEOUT)
     {
-        log("HttpConn timeout, handle=%d", m_conn_handle);
+        SPDLOG_ERROR("HttpConn timeout, handle=%d", m_conn_handle);
         Close();
     }
 }

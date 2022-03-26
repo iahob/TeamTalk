@@ -143,14 +143,14 @@ void CImUser::HandleKickUser(CMsgConn* pConn, uint32_t reason)
     if (it != m_conn_map.end()) {
         CMsgConn* pConn = it->second;
         if(pConn) {
-            log("kick service user, user_id=%u.", m_user_id);
-            IM::Login::IMKickUser msg;
+            SPDLOG_ERROR("kick service user, user_id=%u.", m_user_id);
+            IM::login::IMKickUser msg;
             msg.set_user_id(m_user_id);
             msg.set_kick_reason((::IM::BaseDefine::KickReasonType)reason);
             CImPdu pdu;
             pdu.SetPBMsg(&msg);
-            pdu.SetServiceId(SID_LOGIN);
-            pdu.SetCommandId(CID_LOGIN_KICK_USER);
+            pdu.SetServiceId(SID_logIN);
+            pdu.SetCommandId(CID_logIN_KICK_USER);
             pConn->SendPdu(&pdu);
             pConn->SetKickOff();
             //pConn->Close();
@@ -207,7 +207,7 @@ CImUserManager* CImUserManager::GetInstance()
 }
 
 
-CImUser* CImUserManager::GetImUserByLoginName(string login_name)
+CImUser* CImUserManager::GetImUserByloginName(string login_name)
 {
     CImUser* pUser = NULL;
     ImUserMapByName_t::iterator it = m_im_user_map_by_name.find(login_name);
@@ -237,17 +237,17 @@ CMsgConn* CImUserManager::GetMsgConnByHandle(uint32_t user_id, uint32_t handle)
     return pMsgConn;
 }
 
-bool CImUserManager::AddImUserByLoginName(string login_name, CImUser *pUser)
+bool CImUserManager::AddImUserByloginName(string login_name, CImUser *pUser)
 {
     bool bRet = false;
-    if (GetImUserByLoginName(login_name) == NULL) {
+    if (GetImUserByloginName(login_name) == NULL) {
         m_im_user_map_by_name[login_name] = pUser;
         bRet = true;
     }
     return bRet;
 }
 
-void CImUserManager::RemoveImUserByLoginName(string login_name)
+void CImUserManager::RemoveImUserByloginName(string login_name)
 {
     m_im_user_map_by_name.erase(login_name);
 }
@@ -271,7 +271,7 @@ void CImUserManager::RemoveImUser(CImUser *pUser)
 {
     if (pUser != NULL) {
         RemoveImUserById(pUser->GetUserId());
-        RemoveImUserByLoginName(pUser->GetLoginName());
+        RemoveImUserByloginName(pUser->GetloginName());
         delete pUser;
         pUser = NULL;
     }

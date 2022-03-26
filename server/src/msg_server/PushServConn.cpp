@@ -11,6 +11,7 @@
 #include "IM.Server.pb.h"
 #include "IM.Other.pb.h"
 #include "IM.BaseDefine.pb.h"
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 
 #define IOS_PUSH_FLASH_MAX_LENGTH    40
@@ -125,7 +126,7 @@ CPushServConn::~CPushServConn()
 
 void CPushServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	log("Connecting to Push Server %s:%d ", server_ip, server_port);
+	SPDLOG_ERROR("Connecting to Push Server %s:%d ", server_ip, server_port);
     
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_push_server_conn_map);
@@ -152,7 +153,7 @@ void CPushServConn::Close()
 
 void CPushServConn::OnConfirm()
 {
-	log("connect to push server success ");
+	SPDLOG_ERROR("connect to push server success ");
 	m_bOpen = true;
 	g_push_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
     g_master_push_conn = this;
@@ -160,7 +161,7 @@ void CPushServConn::OnConfirm()
 
 void CPushServConn::OnClose()
 {
-	log("onclose from push server handle=%d ", m_handle);
+	SPDLOG_ERROR("onclose from push server handle=%d ", m_handle);
 	Close();
 }
 
@@ -176,7 +177,7 @@ void CPushServConn::OnTimer(uint64_t curr_tick)
 	}
     
 	if (curr_tick > m_last_recv_tick + SERVER_TIMEOUT) {
-		log("conn to push server timeout ");
+		SPDLOG_ERROR("conn to push server timeout ");
 		Close();
 	}
 }
@@ -185,13 +186,13 @@ void CPushServConn::HandlePdu(CImPdu* pPdu)
 {
 	switch (pPdu->GetCommandId()) {
         case CID_OTHER_HEARTBEAT:
-            //log("push server heart beat. ");
+            //SPDLOG_ERROR("push server heart beat. ");
             break;
         case CID_OTHER_PUSH_TO_USER_RSP:
             _HandlePushToUserResponse( pPdu );
             break;
         default:
-            log("push server, wrong cmd id=%d ", pPdu->GetCommandId());
+            SPDLOG_ERROR("push server, wrong cmd id=%d ", pPdu->GetCommandId());
 	}
 }
 
@@ -199,5 +200,5 @@ void CPushServConn::_HandlePushToUserResponse(CImPdu *pPdu)
 {
     // uint32_t result_cnt = pPdu->GetUserCnt();
     // push_result_t* push_result_list = pPdu->GetUserTokenList();
-    log("HandlePushToUserResponse ");
+    SPDLOG_ERROR("HandlePushToUserResponse ");
 }
