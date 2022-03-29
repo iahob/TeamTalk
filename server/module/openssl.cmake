@@ -5,7 +5,7 @@ set(OPENSSL_ROOT            ${CMAKE_CURRENT_BINARY_DIR}/${OPENSSL_NAME})
 set(OPENSSL_SOURCE_PATH      ${OPENSSL_ROOT}/src/${OPENSSL_NAME})
 
 set(OPENSSL_URL             ${CMAKE_SOURCE_DIR}/module/third_part/${OPENSSL_NAME}.tar.gz)
-set(OPENSSL_CONFIGURE       ${OPENSSL_SOURCE_PATH}/configure --prefix=/usr/local/)
+set(OPENSSL_CONFIGURE       ${OPENSSL_SOURCE_PATH}/Configure --prefix=/usr/local/)
 set(OPENSSL_MAKE            make -j 8)
 set(OPENSSL_INSTALL         make install)
 
