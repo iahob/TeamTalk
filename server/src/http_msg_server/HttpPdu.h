@@ -8,7 +8,7 @@
 #ifndef HTTPPDU_H_
 #define HTTPPDU_H_
 
-#include "util.h"
+#include "base/util.h"
 #include "base/ImPduBase.h"
 #include <list>
 #include "IM.BaseDefine.pb.h"

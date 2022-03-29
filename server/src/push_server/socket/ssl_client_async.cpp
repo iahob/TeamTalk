@@ -117,28 +117,22 @@ void CSSLClientAsync::UnInitSSL()
     }
 }
     
-void CSSLClientAsync::OnConnect(BOOL bConnected)
-{
+void CSSLClientAsync::OnConnect(BOOL bConnected) {
     //无论是否连接成功，都认为已经判断结束
     SetCheckConnect(FALSE);
     //连接完毕，则删除写/错误事件的注册,改成读事件
     m_pio->Remove_WriteEvent(this);
-    if (TRUE == bConnected)
-    {
-        SPDLOG_INFO("socket connect successed, remote ip: {}, port: {}.", GetRemoteIP(),
-                       GetRemotePort());
+    if (TRUE == bConnected) {
+        // SPDLOG_INFO("socket connect successed, remote ip: {}, port: {}.", GetRemoteIP(),GetRemotePort());
         DoConnect(GetSocketID());
         SSL_set_mode(GetSSL(), SSL_MODE_AUTO_RETRY);
-        if (SSL_set_fd(GetSSL(), GetSocket()) != 1)
-        {
+        if (SSL_set_fd(GetSSL(), GetSocket()) != 1) {
             SPDLOG_ERROR("ssl set fd failed");
             DoException(GetSocketID(), SOCKET_IO_SSL_CONNECT_FAILED);
             return;
         }
         SSLConnect();
-    }
-    else
-    {
+    } else {
         SPDLOG_ERROR("socket connect failed, remote ip: {}, port: {}.", GetRemoteIP(), GetRemotePort());
         DoException(GetSocketID(), SOCKET_IO_TCP_CONNECT_FAILED);
     }

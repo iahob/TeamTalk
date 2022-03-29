@@ -14,7 +14,7 @@
 #include <string>
 #include "FileLin.h"
 #include "CriticalSection.h"
-
+#include <cstring>
 
 
 using namespace std;

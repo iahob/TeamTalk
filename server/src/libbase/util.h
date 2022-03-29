@@ -9,10 +9,10 @@
 #ifndef _WIN32
 #include <strings.h>
 #endif
-
+#include <cstring>
 #include <sys/stat.h>
 
-
+#include <cstring>
 #ifdef _WIN32
 #define	snprintf	sprintf_s
 #else

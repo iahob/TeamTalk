@@ -12,7 +12,7 @@
 #ifndef __HTTP_CONN_H__
 #define __HTTP_CONN_H__
 
-#include "util.h"
+
 #if (MSFS_LINUX)
 #include <sys/sendfile.h>
 #elif (MSFS_BSD)

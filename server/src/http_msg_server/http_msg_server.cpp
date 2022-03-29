@@ -14,7 +14,7 @@
 #include "base/ServInfo.h"
 #include "HttpConn.h"
 #include "HttpQuery.h"
-#include "util.h"
+#include "base/util.h"
 #include "base/EncDec.h"
 #include "base/slog.h"
 

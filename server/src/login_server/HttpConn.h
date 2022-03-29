@@ -9,7 +9,7 @@
 #define __HTTP_CONN_H__
 
 #include "base/netlib.h"
-#include "util.h"
+#include "base/util.h"
 #include "base/HttpParserWrapper.h"
 
 #define HTTP_CONN_TIMEOUT			60000
