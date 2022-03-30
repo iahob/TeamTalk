@@ -7,7 +7,7 @@
 //
 
 #import "DDApplicationUpdate.h"
-#import <Sparkle/Sparkle.h>
+//#import <Sparkle/Sparkle.h>
 static NSInteger const updateCheckTimeInterval = 60 * 30;
 
 @implementation DDApplicationUpdate
@@ -46,6 +46,6 @@ static NSInteger const updateCheckTimeInterval = 60 * 30;
 
 - (void)checkoutUpdateInBackground
 {
-    [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
+//    [[SUUpdater sharedUpdater] checkForUpdatesInBackground];
 }
 @end

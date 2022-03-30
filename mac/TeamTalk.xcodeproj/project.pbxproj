@@ -31,7 +31,6 @@
 		37E4C0381A6E486A00178EA8 /* MTSysConfigEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E4C0371A6E486A00178EA8 /* MTSysConfigEntity.m */; };
 		37E4C03B1A6E487E00178EA8 /* MTSysConfigModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 37E4C03A1A6E487E00178EA8 /* MTSysConfigModule.m */; };
 		49D196CB65CA248FC65E6F11 /* libPods-TeamTalk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69145849E6349CA64566B6E7 /* libPods-TeamTalk.a */; };
-		5700BF0918A8A4B00060092F /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5700BF0818A8A4B00060092F /* Sparkle.framework */; };
 		5700BF0C18A8A5AD0060092F /* dsa_pub.pem in Resources */ = {isa = PBXBuildFile; fileRef = 5700BF0B18A8A5AD0060092F /* dsa_pub.pem */; };
 		5709F94F1848682E0096D176 /* DDImageSpreadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5709F94E1848682E0096D176 /* DDImageSpreadView.m */; };
 		5709F95218486ABB0096D176 /* toolbar_bg_theme_gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 5709F95018486ABB0096D176 /* toolbar_bg_theme_gray.png */; };
@@ -169,7 +168,6 @@
 		577C168E184749A1009718D7 /* icon_user_h51@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 577C168C184749A1009718D7 /* icon_user_h51@2x.png */; };
 		577C169118475857009718D7 /* DDTabItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 577C169018475857009718D7 /* DDTabItemView.m */; };
 		577C169418476804009718D7 /* DDMainWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 577C169318476804009718D7 /* DDMainWindow.m */; };
-		578BB18818B49ECF007C2294 /* Sparkle.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 5700BF0818A8A4B00060092F /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		578D5EA0187EC0C600568EE6 /* icon_offline.png in Resources */ = {isa = PBXBuildFile; fileRef = 578D5E9E187EC0C600568EE6 /* icon_offline.png */; };
 		578D5EA1187EC0C600568EE6 /* icon_offline@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 578D5E9F187EC0C600568EE6 /* icon_offline@2x.png */; };
 		578D5EA4187EC0E600568EE6 /* icon_away.png in Resources */ = {isa = PBXBuildFile; fileRef = 578D5EA2187EC0E600568EE6 /* icon_away.png */; };
@@ -920,6 +918,8 @@
 			isa = PBXBuildRule;
 			compilerSpec = com.apple.compilers.proxy.script;
 			fileType = pattern.proxy;
+			inputFiles = (
+			);
 			isEditable = 1;
 			outputFiles = (
 			);
@@ -934,7 +934,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				578BB18818B49ECF007C2294 /* Sparkle.framework in Copy Files */,
 				57CA0F4E18D2D43F005C0B0D /* CrashReporter.framework in Copy Files */,
 			);
 			name = "Copy Files";
@@ -2239,7 +2238,6 @@
 				570D6E53183A053E00F68CB0 /* QuartzCore.framework in Frameworks */,
 				57AB317F1828816100B7766E /* Security.framework in Frameworks */,
 				573847331820CDA000443653 /* Cocoa.framework in Frameworks */,
-				5700BF0918A8A4B00060092F /* Sparkle.framework in Frameworks */,
 				49D196CB65CA248FC65E6F11 /* libPods-TeamTalk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2587,6 +2585,7 @@
 				573847311820CDA000443653 /* Frameworks */,
 				573847301820CDA000443653 /* Products */,
 				D2DB4085FFF0FDA637621A14 /* Pods */,
+				87B18C8E27F3EACF003BF94C /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -3625,6 +3624,14 @@
 			path = modules/pb;
 			sourceTree = "<group>";
 		};
+		87B18C8E27F3EACF003BF94C /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				C48B104818D1B18500DEF8C6 /* IOKit.framework */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		C408E8C7191CD9D5005F5150 /* Users */ = {
 			isa = PBXGroup;
 			children = (
@@ -4448,8 +4455,6 @@
 				5738472C1820CDA000443653 /* Frameworks */,
 				5738472D1820CDA000443653 /* Resources */,
 				5700BF0618A8A4880060092F /* Copy Files */,
-				4339E9449C259D1050E09245 /* [CP] Copy Pods Resources */,
-				ED18AEB41166243D52C8B136 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 				C407F20B19604CFD00ED6ED8 /* PBXBuildRule */,
@@ -4472,7 +4477,7 @@
 				ORGANIZATIONNAME = mogujie;
 				TargetAttributes = {
 					5738472E1820CDA000443653 = {
-						DevelopmentTeam = 974B56UFMV;
+						DevelopmentTeam = 8S6349HKC4;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Sandbox = {
@@ -4487,6 +4492,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -5071,49 +5077,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		4339E9449C259D1050E09245 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5B4EB9AF98993B8F2DA57993 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TeamTalk-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		ED18AEB41166243D52C8B136 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TeamTalk/Pods-TeamTalk-frameworks.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -5525,9 +5504,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = macosx10.8;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -5557,8 +5536,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				SDKROOT = macosx10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -5570,7 +5549,7 @@
 				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 974B56UFMV;
+				DEVELOPMENT_TEAM = 8S6349HKC4;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TeamTalk/TeamTalk-Prefix.pch";
@@ -5580,16 +5559,15 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Duoduo-ecacnztivbkeggegyktnermxjnpy/Build/Products/Debug",
-					/Users/golastroom/Downloads,
 					"$(PROJECT_DIR)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaominfc.TeamTalk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.haiboTeamTalk;
 				PRODUCT_NAME = TeamTalk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT) ${SRCROOT}/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -5602,7 +5580,7 @@
 				CLANG_ANALYZER_OBJC_RETAIN_COUNT = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 974B56UFMV;
+				DEVELOPMENT_TEAM = 8S6349HKC4;
 				FRAMEWORK_SEARCH_PATHS = "$(SRCROOT)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "TeamTalk/TeamTalk-Prefix.pch";
@@ -5612,16 +5590,15 @@
 					"$(inherited)",
 					"$(SDKROOT)/usr/lib/system",
 					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/Duoduo-ecacnztivbkeggegyktnermxjnpy/Build/Products/Debug",
-					/Users/golastroom/Downloads,
 					"$(PROJECT_DIR)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
-				PRODUCT_BUNDLE_IDENTIFIER = com.xiaominfc.TeamTalk;
+				PRODUCT_BUNDLE_IDENTIFIER = com.haiboTeamTalk;
 				PRODUCT_NAME = TeamTalk;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
-				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT)";
+				USER_HEADER_SEARCH_PATHS = "$(PODS_ROOT) ${SRCROOT}/**";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

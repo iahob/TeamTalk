@@ -40,7 +40,6 @@
 #import "DDIntranetViewController.h"
 #import "DDIntranetEntity.h"
 #import "MTUserModule.h"
-#import "DDTestViewController.h"
 
 #define MAIN_WINDOW_NIB	@"DDMainWindow"		//Filename of the login window nib
 
