@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 	signal(SIGPIPE, SIG_IGN);
 	srand(time(NULL));
     
-	SPDLOG_ERROR("MsgServer max files can open: %d ", getdtablesize());
+	SPDLOG_ERROR("MsgServer max files can open: {} ", getdtablesize());
     
 	CConfigFileReader config_file("httpmsgserver.conf");
     

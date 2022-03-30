@@ -153,7 +153,7 @@ CDBServConn::~CDBServConn()
 
 void CDBServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-    SPDLOG_ERROR("Connecting to DB Storage Server %s:%d", server_ip, server_port);
+    SPDLOG_ERROR("Connecting to DB Storage Server {}:{}", server_ip, server_port);
 
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_db_server_conn_map);
@@ -185,7 +185,7 @@ void CDBServConn::OnConfirm()
 
 void CDBServConn::OnClose()
 {
-    SPDLOG_ERROR("onclose from db server handle=%d", m_handle);
+    SPDLOG_ERROR("onclose from db server handle={}", m_handle);
 	Close();
 }
 
@@ -223,7 +223,7 @@ void CDBServConn::HandlePdu(CImPdu* pPdu)
             _HandleMsgClient(pPdu);
             break;
         default:
-            SPDLOG_ERROR("db server, wrong cmd id=%d", pPdu->GetCommandId());
+            SPDLOG_ERROR("db server, wrong cmd id={}", pPdu->GetCommandId());
 	}
 }
 
@@ -268,7 +268,7 @@ void CDBServConn::_HandleMsgClient(CImPdu *pPdu)
 
 void CDBServConn::_HandleStopReceivePacket(CImPdu* pPdu)
 {
-    SPDLOG_ERROR("HandleStopReceivePacket, from %s:%d",
+    SPDLOG_ERROR("HandleStopReceivePacket, from {}:{}",
 			g_db_server_list[m_serv_idx].server_ip.c_str(), g_db_server_list[m_serv_idx].server_port);
 
 	m_bOpen = false;
@@ -293,7 +293,7 @@ void CDBServConn::_HandleCreateGroupRsp(CImPdu *pPdu)
         SPDLOG_ERROR("no http connection");
         return;
     }
-    SPDLOG_ERROR("HandleCreateGroupRsp, req_id={}, group_name=%s, result={}", user_id, group_name.c_str(),result_code);
+    SPDLOG_ERROR("HandleCreateGroupRsp, req_id={}, group_name={}, result={}", user_id, group_name.c_str(),result_code);
     
     char* response_buf = NULL;
     if (result_code != 0)
