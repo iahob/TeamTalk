@@ -1224,8 +1224,10 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	//  being a private API.
 	// Instead, we have to manufacture a call to our super-super class here, grr
 	Method method = class_getInstanceMethod( [UIView class], @selector(hitTest:withEvent:) );
-	IMP imp = method_getImplementation( method );
-	return ( (UIView *)imp(self, @selector(hitTest:withEvent:), point, event) ); // -[UIView hitTest:withEvent:]
+ 	IMP imp = method_getImplementation( method );
+ 	// return ( (UIView *)imp(self, @selector(hitTest:withEvent:), point, event) ); // -[UIView hitTest:withEvent:]
+    return [UIView init];
+     
 }
 
 - (BOOL) _canSelectItemContainingHitView: (UIView *) hitView

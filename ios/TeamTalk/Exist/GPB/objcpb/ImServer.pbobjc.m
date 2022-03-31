@@ -13,12 +13,24 @@
  #import "GPBProtocolBuffers_RuntimeSupport.h"
 #endif
 
- #import "ImServer.pbobjc.h"
- #import "ImBaseDefine.pbobjc.h"
+#import "ImServer.pbobjc.h"
+#import "ImBaseDefine.pbobjc.h"
 // @@protoc_insertion_point(imports)
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#pragma clang diagnostic ignored "-Wdollar-in-identifier-extension"
+
+#pragma mark - Objective C Class declarations
+// Forward declarations of Objective C classes that we can use as
+// static values in struct initializers.
+// We don't use [Foo class] because it is not a static value.
+GPBObjCClassDeclaration(IpAddr);
+GPBObjCClassDeclaration(PushResult);
+GPBObjCClassDeclaration(ServerUserStat);
+GPBObjCClassDeclaration(ShieldStatus);
+GPBObjCClassDeclaration(UserInfo);
+GPBObjCClassDeclaration(UserTokenInfo);
 
 #pragma mark - ImServerRoot
 
@@ -38,7 +50,7 @@ static GPBFileDescriptor *ImServerRoot_FileDescriptor(void) {
   if (!descriptor) {
     GPB_DEBUG_CHECK_RUNTIME_VERSIONS();
     descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"IM.Server"
-                                                     syntax:GPBFileSyntaxProto2];
+                                                     syntax:GPBFileSyntaxProto3];
   }
   return descriptor;
 }
@@ -47,7 +59,7 @@ static GPBFileDescriptor *ImServerRoot_FileDescriptor(void) {
 
 @implementation IMStopReceivePacket
 
-@dynamic hasResult, result;
+@dynamic result;
 
 typedef struct IMStopReceivePacket__storage_ {
   uint32_t _has_storage_[1];
@@ -62,11 +74,11 @@ typedef struct IMStopReceivePacket__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "result",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMStopReceivePacket_FieldNumber_Result,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMStopReceivePacket__storage_, result),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -77,8 +89,10 @@ typedef struct IMStopReceivePacket__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMStopReceivePacket__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -90,9 +104,9 @@ typedef struct IMStopReceivePacket__storage_ {
 
 @implementation IMValidateReq
 
-@dynamic hasUserName, userName;
-@dynamic hasPassword, password;
-@dynamic hasAttachData, attachData;
+@dynamic userName;
+@dynamic password;
+@dynamic attachData;
 
 typedef struct IMValidateReq__storage_ {
   uint32_t _has_storage_[1];
@@ -109,29 +123,29 @@ typedef struct IMValidateReq__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateReq_FieldNumber_UserName,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMValidateReq__storage_, userName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "password",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateReq_FieldNumber_Password,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMValidateReq__storage_, password),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateReq_FieldNumber_AttachData,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(IMValidateReq__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -142,8 +156,10 @@ typedef struct IMValidateReq__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMValidateReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -155,11 +171,11 @@ typedef struct IMValidateReq__storage_ {
 
 @implementation IMValidateRsp
 
-@dynamic hasUserName, userName;
-@dynamic hasResultCode, resultCode;
-@dynamic hasResultString, resultString;
+@dynamic userName;
+@dynamic resultCode;
+@dynamic resultString;
 @dynamic hasUserInfo, userInfo;
-@dynamic hasAttachData, attachData;
+@dynamic attachData;
 
 typedef struct IMValidateRsp__storage_ {
   uint32_t _has_storage_[1];
@@ -178,34 +194,34 @@ typedef struct IMValidateRsp__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateRsp_FieldNumber_UserName,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMValidateRsp__storage_, userName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "resultCode",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateRsp_FieldNumber_ResultCode,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMValidateRsp__storage_, resultCode),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "resultString",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateRsp_FieldNumber_ResultString,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(IMValidateRsp__storage_, resultString),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "userInfo",
-        .dataTypeSpecific.className = GPBStringifySymbol(UserInfo),
+        .dataTypeSpecific.clazz = GPBObjCClass(UserInfo),
         .number = IMValidateRsp_FieldNumber_UserInfo,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(IMValidateRsp__storage_, userInfo),
@@ -214,11 +230,11 @@ typedef struct IMValidateRsp__storage_ {
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMValidateRsp_FieldNumber_AttachData,
         .hasIndex = 4,
         .offset = (uint32_t)offsetof(IMValidateRsp__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -229,8 +245,10 @@ typedef struct IMValidateRsp__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMValidateRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -243,7 +261,7 @@ typedef struct IMValidateRsp__storage_ {
 @implementation IMGetDeviceTokenReq
 
 @dynamic userIdArray, userIdArray_Count;
-@dynamic hasAttachData, attachData;
+@dynamic attachData;
 
 typedef struct IMGetDeviceTokenReq__storage_ {
   uint32_t _has_storage_[1];
@@ -259,20 +277,20 @@ typedef struct IMGetDeviceTokenReq__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userIdArray",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGetDeviceTokenReq_FieldNumber_UserIdArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMGetDeviceTokenReq__storage_, userIdArray),
-        .flags = GPBFieldRepeated,
+        .flags = (GPBFieldFlags)(GPBFieldRepeated | GPBFieldPacked),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGetDeviceTokenReq_FieldNumber_AttachData,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMGetDeviceTokenReq__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -283,8 +301,10 @@ typedef struct IMGetDeviceTokenReq__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMGetDeviceTokenReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -297,7 +317,7 @@ typedef struct IMGetDeviceTokenReq__storage_ {
 @implementation IMGetDeviceTokenRsp
 
 @dynamic userTokenInfoArray, userTokenInfoArray_Count;
-@dynamic hasAttachData, attachData;
+@dynamic attachData;
 
 typedef struct IMGetDeviceTokenRsp__storage_ {
   uint32_t _has_storage_[1];
@@ -313,7 +333,7 @@ typedef struct IMGetDeviceTokenRsp__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userTokenInfoArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(UserTokenInfo),
+        .dataTypeSpecific.clazz = GPBObjCClass(UserTokenInfo),
         .number = IMGetDeviceTokenRsp_FieldNumber_UserTokenInfoArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMGetDeviceTokenRsp__storage_, userTokenInfoArray),
@@ -322,11 +342,11 @@ typedef struct IMGetDeviceTokenRsp__storage_ {
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGetDeviceTokenRsp_FieldNumber_AttachData,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMGetDeviceTokenRsp__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -337,8 +357,10 @@ typedef struct IMGetDeviceTokenRsp__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMGetDeviceTokenRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -350,7 +372,7 @@ typedef struct IMGetDeviceTokenRsp__storage_ {
 
 @implementation IMRoleSet
 
-@dynamic hasMaster, master;
+@dynamic master;
 
 typedef struct IMRoleSet__storage_ {
   uint32_t _has_storage_[1];
@@ -365,11 +387,11 @@ typedef struct IMRoleSet__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "master",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMRoleSet_FieldNumber_Master,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMRoleSet__storage_, master),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -380,8 +402,10 @@ typedef struct IMRoleSet__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMRoleSet__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -408,7 +432,7 @@ typedef struct IMOnlineUserInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userStatListArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(ServerUserStat),
+        .dataTypeSpecific.clazz = GPBObjCClass(ServerUserStat),
         .number = IMOnlineUserInfo_FieldNumber_UserStatListArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMOnlineUserInfo__storage_, userStatListArray),
@@ -423,8 +447,10 @@ typedef struct IMOnlineUserInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMOnlineUserInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -436,12 +462,12 @@ typedef struct IMOnlineUserInfo__storage_ {
 
 @implementation IMMsgServInfo
 
-@dynamic hasIp1, ip1;
-@dynamic hasIp2, ip2;
-@dynamic hasPort, port;
-@dynamic hasMaxConnCnt, maxConnCnt;
-@dynamic hasCurConnCnt, curConnCnt;
-@dynamic hasHostName, hostName;
+@dynamic ip1;
+@dynamic ip2;
+@dynamic port;
+@dynamic maxConnCnt;
+@dynamic curConnCnt;
+@dynamic hostName;
 
 typedef struct IMMsgServInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -461,56 +487,56 @@ typedef struct IMMsgServInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "ip1",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_Ip1,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, ip1),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "ip2",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_Ip2,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, ip2),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "port",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_Port,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, port),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "maxConnCnt",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_MaxConnCnt,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, maxConnCnt),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "curConnCnt",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_CurConnCnt,
         .hasIndex = 4,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, curConnCnt),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "hostName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMMsgServInfo_FieldNumber_HostName,
         .hasIndex = 5,
         .offset = (uint32_t)offsetof(IMMsgServInfo__storage_, hostName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
     };
@@ -521,8 +547,10 @@ typedef struct IMMsgServInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMMsgServInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -534,9 +562,9 @@ typedef struct IMMsgServInfo__storage_ {
 
 @implementation IMUserStatusUpdate
 
-@dynamic hasUserStatus, userStatus;
-@dynamic hasUserId, userId;
-@dynamic hasClientType, clientType;
+@dynamic userStatus;
+@dynamic userId;
+@dynamic clientType;
 
 typedef struct IMUserStatusUpdate__storage_ {
   uint32_t _has_storage_[1];
@@ -550,36 +578,33 @@ typedef struct IMUserStatusUpdate__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userStatus",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMUserStatusUpdate_FieldNumber_UserStatus,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, userStatus),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userStatus",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMUserStatusUpdate_FieldNumber_UserStatus,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, userStatus),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMUserStatusUpdate_FieldNumber_UserId,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, userId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMUserStatusUpdate_FieldNumber_UserId,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, userId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = ClientType_ClientTypeWindows,
-        .core.name = "clientType",
-        .core.dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
-        .core.number = IMUserStatusUpdate_FieldNumber_ClientType,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, clientType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "clientType",
+        .dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
+        .number = IMUserStatusUpdate_FieldNumber_ClientType,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(IMUserStatusUpdate__storage_, clientType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -587,10 +612,12 @@ typedef struct IMUserStatusUpdate__storage_ {
                                      rootClass:[ImServerRoot class]
                                           file:ImServerRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMUserStatusUpdate__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -598,12 +625,24 @@ typedef struct IMUserStatusUpdate__storage_ {
 
 @end
 
+int32_t IMUserStatusUpdate_ClientType_RawValue(IMUserStatusUpdate *message) {
+  GPBDescriptor *descriptor = [IMUserStatusUpdate descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMUserStatusUpdate_FieldNumber_ClientType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetIMUserStatusUpdate_ClientType_RawValue(IMUserStatusUpdate *message, int32_t value) {
+  GPBDescriptor *descriptor = [IMUserStatusUpdate descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMUserStatusUpdate_FieldNumber_ClientType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - IMUserCntUpdate
 
 @implementation IMUserCntUpdate
 
-@dynamic hasUserAction, userAction;
-@dynamic hasUserId, userId;
+@dynamic userAction;
+@dynamic userId;
 
 typedef struct IMUserCntUpdate__storage_ {
   uint32_t _has_storage_[1];
@@ -619,20 +658,20 @@ typedef struct IMUserCntUpdate__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userAction",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMUserCntUpdate_FieldNumber_UserAction,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMUserCntUpdate__storage_, userAction),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "userId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMUserCntUpdate_FieldNumber_UserId,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMUserCntUpdate__storage_, userId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -643,8 +682,10 @@ typedef struct IMUserCntUpdate__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMUserCntUpdate__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -656,9 +697,9 @@ typedef struct IMUserCntUpdate__storage_ {
 
 @implementation IMServerKickUser
 
-@dynamic hasUserId, userId;
-@dynamic hasClientType, clientType;
-@dynamic hasReason, reason;
+@dynamic userId;
+@dynamic clientType;
+@dynamic reason;
 
 typedef struct IMServerKickUser__storage_ {
   uint32_t _has_storage_[1];
@@ -672,36 +713,33 @@ typedef struct IMServerKickUser__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMServerKickUser_FieldNumber_UserId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(IMServerKickUser__storage_, userId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMServerKickUser_FieldNumber_UserId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(IMServerKickUser__storage_, userId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = ClientType_ClientTypeWindows,
-        .core.name = "clientType",
-        .core.dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
-        .core.number = IMServerKickUser_FieldNumber_ClientType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(IMServerKickUser__storage_, clientType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "clientType",
+        .dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
+        .number = IMServerKickUser_FieldNumber_ClientType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(IMServerKickUser__storage_, clientType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "reason",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMServerKickUser_FieldNumber_Reason,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(IMServerKickUser__storage_, reason),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "reason",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMServerKickUser_FieldNumber_Reason,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(IMServerKickUser__storage_, reason),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -709,10 +747,12 @@ typedef struct IMServerKickUser__storage_ {
                                      rootClass:[ImServerRoot class]
                                           file:ImServerRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMServerKickUser__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -720,12 +760,24 @@ typedef struct IMServerKickUser__storage_ {
 
 @end
 
+int32_t IMServerKickUser_ClientType_RawValue(IMServerKickUser *message) {
+  GPBDescriptor *descriptor = [IMServerKickUser descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMServerKickUser_FieldNumber_ClientType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetIMServerKickUser_ClientType_RawValue(IMServerKickUser *message, int32_t value) {
+  GPBDescriptor *descriptor = [IMServerKickUser descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMServerKickUser_FieldNumber_ClientType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - IMServerPCLoginStatusNotify
 
 @implementation IMServerPCLoginStatusNotify
 
-@dynamic hasUserId, userId;
-@dynamic hasLoginStatus, loginStatus;
+@dynamic userId;
+@dynamic loginStatus;
 
 typedef struct IMServerPCLoginStatusNotify__storage_ {
   uint32_t _has_storage_[1];
@@ -741,20 +793,20 @@ typedef struct IMServerPCLoginStatusNotify__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMServerPCLoginStatusNotify_FieldNumber_UserId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMServerPCLoginStatusNotify__storage_, userId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "loginStatus",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMServerPCLoginStatusNotify_FieldNumber_LoginStatus,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMServerPCLoginStatusNotify__storage_, loginStatus),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -765,8 +817,10 @@ typedef struct IMServerPCLoginStatusNotify__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMServerPCLoginStatusNotify__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -778,8 +832,8 @@ typedef struct IMServerPCLoginStatusNotify__storage_ {
 
 @implementation IMPushToUserReq
 
-@dynamic hasFlash, flash;
-@dynamic hasData_p, data_p;
+@dynamic flash;
+@dynamic data_p;
 @dynamic userTokenListArray, userTokenListArray_Count;
 
 typedef struct IMPushToUserReq__storage_ {
@@ -797,25 +851,25 @@ typedef struct IMPushToUserReq__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "flash",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMPushToUserReq_FieldNumber_Flash,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMPushToUserReq__storage_, flash),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "data_p",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMPushToUserReq_FieldNumber_Data_p,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMPushToUserReq__storage_, data_p),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "userTokenListArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(UserTokenInfo),
+        .dataTypeSpecific.clazz = GPBObjCClass(UserTokenInfo),
         .number = IMPushToUserReq_FieldNumber_UserTokenListArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMPushToUserReq__storage_, userTokenListArray),
@@ -830,8 +884,10 @@ typedef struct IMPushToUserReq__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMPushToUserReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -858,7 +914,7 @@ typedef struct IMPushToUserRsp__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "pushResultListArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(PushResult),
+        .dataTypeSpecific.clazz = GPBObjCClass(PushResult),
         .number = IMPushToUserRsp_FieldNumber_PushResultListArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMPushToUserRsp__storage_, pushResultListArray),
@@ -873,8 +929,10 @@ typedef struct IMPushToUserRsp__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMPushToUserRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -886,9 +944,9 @@ typedef struct IMPushToUserRsp__storage_ {
 
 @implementation IMGroupGetShieldReq
 
-@dynamic hasGroupId, groupId;
+@dynamic groupId;
 @dynamic userIdArray, userIdArray_Count;
-@dynamic hasAttachData, attachData;
+@dynamic attachData;
 
 typedef struct IMGroupGetShieldReq__storage_ {
   uint32_t _has_storage_[1];
@@ -905,29 +963,29 @@ typedef struct IMGroupGetShieldReq__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "groupId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGroupGetShieldReq_FieldNumber_GroupId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMGroupGetShieldReq__storage_, groupId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "userIdArray",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGroupGetShieldReq_FieldNumber_UserIdArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMGroupGetShieldReq__storage_, userIdArray),
-        .flags = GPBFieldRepeated,
+        .flags = (GPBFieldFlags)(GPBFieldRepeated | GPBFieldPacked),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGroupGetShieldReq_FieldNumber_AttachData,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMGroupGetShieldReq__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -938,8 +996,10 @@ typedef struct IMGroupGetShieldReq__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMGroupGetShieldReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -951,9 +1011,9 @@ typedef struct IMGroupGetShieldReq__storage_ {
 
 @implementation IMGroupGetShieldRsp
 
-@dynamic hasGroupId, groupId;
+@dynamic groupId;
 @dynamic shieldStatusListArray, shieldStatusListArray_Count;
-@dynamic hasAttachData, attachData;
+@dynamic attachData;
 
 typedef struct IMGroupGetShieldRsp__storage_ {
   uint32_t _has_storage_[1];
@@ -970,16 +1030,16 @@ typedef struct IMGroupGetShieldRsp__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "groupId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGroupGetShieldRsp_FieldNumber_GroupId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IMGroupGetShieldRsp__storage_, groupId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "shieldStatusListArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(ShieldStatus),
+        .dataTypeSpecific.clazz = GPBObjCClass(ShieldStatus),
         .number = IMGroupGetShieldRsp_FieldNumber_ShieldStatusListArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMGroupGetShieldRsp__storage_, shieldStatusListArray),
@@ -988,11 +1048,11 @@ typedef struct IMGroupGetShieldRsp__storage_ {
       },
       {
         .name = "attachData",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IMGroupGetShieldRsp_FieldNumber_AttachData,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IMGroupGetShieldRsp__storage_, attachData),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeBytes,
       },
     };
@@ -1003,8 +1063,10 @@ typedef struct IMGroupGetShieldRsp__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMGroupGetShieldRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1016,12 +1078,12 @@ typedef struct IMGroupGetShieldRsp__storage_ {
 
 @implementation IMFileTransferReq
 
-@dynamic hasFromUserId, fromUserId;
-@dynamic hasToUserId, toUserId;
-@dynamic hasFileName, fileName;
-@dynamic hasFileSize, fileSize;
-@dynamic hasTransMode, transMode;
-@dynamic hasAttachData, attachData;
+@dynamic fromUserId;
+@dynamic toUserId;
+@dynamic fileName;
+@dynamic fileSize;
+@dynamic transMode;
+@dynamic attachData;
 
 typedef struct IMFileTransferReq__storage_ {
   uint32_t _has_storage_[1];
@@ -1038,66 +1100,60 @@ typedef struct IMFileTransferReq__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "fromUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferReq_FieldNumber_FromUserId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fromUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "fromUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferReq_FieldNumber_FromUserId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fromUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "toUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferReq_FieldNumber_ToUserId,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, toUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "toUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferReq_FieldNumber_ToUserId,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, toUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "fileName",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferReq_FieldNumber_FileName,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fileName),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeString,
+        .name = "fileName",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferReq_FieldNumber_FileName,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fileName),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "fileSize",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferReq_FieldNumber_FileSize,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fileSize),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "fileSize",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferReq_FieldNumber_FileSize,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, fileSize),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = TransferFileType_FileTypeOnline,
-        .core.name = "transMode",
-        .core.dataTypeSpecific.enumDescFunc = TransferFileType_EnumDescriptor,
-        .core.number = IMFileTransferReq_FieldNumber_TransMode,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, transMode),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "transMode",
+        .dataTypeSpecific.enumDescFunc = TransferFileType_EnumDescriptor,
+        .number = IMFileTransferReq_FieldNumber_TransMode,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, transMode),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "attachData",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferReq_FieldNumber_AttachData,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(IMFileTransferReq__storage_, attachData),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "attachData",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferReq_FieldNumber_AttachData,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(IMFileTransferReq__storage_, attachData),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeBytes,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1105,10 +1161,12 @@ typedef struct IMFileTransferReq__storage_ {
                                      rootClass:[ImServerRoot class]
                                           file:ImServerRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMFileTransferReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1116,18 +1174,30 @@ typedef struct IMFileTransferReq__storage_ {
 
 @end
 
+int32_t IMFileTransferReq_TransMode_RawValue(IMFileTransferReq *message) {
+  GPBDescriptor *descriptor = [IMFileTransferReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMFileTransferReq_FieldNumber_TransMode];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetIMFileTransferReq_TransMode_RawValue(IMFileTransferReq *message, int32_t value) {
+  GPBDescriptor *descriptor = [IMFileTransferReq descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMFileTransferReq_FieldNumber_TransMode];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - IMFileTransferRsp
 
 @implementation IMFileTransferRsp
 
-@dynamic hasResultCode, resultCode;
-@dynamic hasFromUserId, fromUserId;
-@dynamic hasToUserId, toUserId;
-@dynamic hasFileName, fileName;
-@dynamic hasFileSize, fileSize;
-@dynamic hasTaskId, taskId;
-@dynamic hasTransMode, transMode;
-@dynamic hasAttachData, attachData;
+@dynamic resultCode;
+@dynamic fromUserId;
+@dynamic toUserId;
+@dynamic fileName;
+@dynamic fileSize;
+@dynamic taskId;
+@dynamic transMode;
+@dynamic attachData;
 
 typedef struct IMFileTransferRsp__storage_ {
   uint32_t _has_storage_[1];
@@ -1146,86 +1216,78 @@ typedef struct IMFileTransferRsp__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "resultCode",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_ResultCode,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, resultCode),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "resultCode",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_ResultCode,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, resultCode),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "fromUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_FromUserId,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fromUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "fromUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_FromUserId,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fromUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "toUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_ToUserId,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, toUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "toUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_ToUserId,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, toUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "fileName",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_FileName,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fileName),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "fileName",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_FileName,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fileName),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "fileSize",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_FileSize,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fileSize),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "fileSize",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_FileSize,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, fileSize),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "taskId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_TaskId,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, taskId),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeString,
+        .name = "taskId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_TaskId,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, taskId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueEnum = TransferFileType_FileTypeOnline,
-        .core.name = "transMode",
-        .core.dataTypeSpecific.enumDescFunc = TransferFileType_EnumDescriptor,
-        .core.number = IMFileTransferRsp_FieldNumber_TransMode,
-        .core.hasIndex = 6,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, transMode),
-        .core.flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "transMode",
+        .dataTypeSpecific.enumDescFunc = TransferFileType_EnumDescriptor,
+        .number = IMFileTransferRsp_FieldNumber_TransMode,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, transMode),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "attachData",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = IMFileTransferRsp_FieldNumber_AttachData,
-        .core.hasIndex = 7,
-        .core.offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, attachData),
-        .core.flags = GPBFieldOptional,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "attachData",
+        .dataTypeSpecific.clazz = Nil,
+        .number = IMFileTransferRsp_FieldNumber_AttachData,
+        .hasIndex = 7,
+        .offset = (uint32_t)offsetof(IMFileTransferRsp__storage_, attachData),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeBytes,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1233,16 +1295,30 @@ typedef struct IMFileTransferRsp__storage_ {
                                      rootClass:[ImServerRoot class]
                                           file:ImServerRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMFileTransferRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
 }
 
 @end
+
+int32_t IMFileTransferRsp_TransMode_RawValue(IMFileTransferRsp *message) {
+  GPBDescriptor *descriptor = [IMFileTransferRsp descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMFileTransferRsp_FieldNumber_TransMode];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetIMFileTransferRsp_TransMode_RawValue(IMFileTransferRsp *message, int32_t value) {
+  GPBDescriptor *descriptor = [IMFileTransferRsp descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:IMFileTransferRsp_FieldNumber_TransMode];
+  GPBSetMessageRawEnumField(message, field, value);
+}
 
 #pragma mark - IMFileServerIPReq
 
@@ -1265,8 +1341,10 @@ typedef struct IMFileServerIPReq__storage_ {
                                         fields:NULL
                                     fieldCount:0
                                    storageSize:sizeof(IMFileServerIPReq__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1293,7 +1371,7 @@ typedef struct IMFileServerIPRsp__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "ipAddrListArray",
-        .dataTypeSpecific.className = GPBStringifySymbol(IpAddr),
+        .dataTypeSpecific.clazz = GPBObjCClass(IpAddr),
         .number = IMFileServerIPRsp_FieldNumber_IpAddrListArray,
         .hasIndex = GPBNoHasBit,
         .offset = (uint32_t)offsetof(IMFileServerIPRsp__storage_, ipAddrListArray),
@@ -1308,8 +1386,10 @@ typedef struct IMFileServerIPRsp__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IMFileServerIPRsp__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;

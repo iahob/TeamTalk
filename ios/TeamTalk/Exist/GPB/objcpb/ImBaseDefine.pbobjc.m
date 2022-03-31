@@ -13,7 +13,9 @@
  #import "GPBProtocolBuffers_RuntimeSupport.h"
 #endif
 
- #import "ImBaseDefine.pbobjc.h"
+#import <stdatomic.h>
+
+#import "ImBaseDefine.pbobjc.h"
 // @@protoc_insertion_point(imports)
 
 #pragma clang diagnostic push
@@ -37,7 +39,7 @@ static GPBFileDescriptor *ImBaseDefineRoot_FileDescriptor(void) {
   if (!descriptor) {
     GPB_DEBUG_CHECK_RUNTIME_VERSIONS();
     descriptor = [[GPBFileDescriptor alloc] initWithPackage:@"IM.BaseDefine"
-                                                     syntax:GPBFileSyntaxProto2];
+                                                     syntax:GPBFileSyntaxProto3];
   }
   return descriptor;
 }
@@ -45,13 +47,14 @@ static GPBFileDescriptor *ImBaseDefineRoot_FileDescriptor(void) {
 #pragma mark - Enum ServiceID
 
 GPBEnumDescriptor *ServiceID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "SidLogin\000SidBuddyList\000SidMsg\000SidGroup\000Si"
-        "dFile\000SidSwitchService\000SidOther\000SidInter"
-        "nal\000";
+        "SidUnknown\000SidLogin\000SidBuddyList\000SidMsg\000"
+        "SidGroup\000SidFile\000SidSwitchService\000SidOth"
+        "er\000SidInternal\000";
     static const int32_t values[] = {
+        ServiceID_SidUnknown,
         ServiceID_SidLogin,
         ServiceID_SidBuddyList,
         ServiceID_SidMsg,
@@ -67,7 +70,8 @@ GPBEnumDescriptor *ServiceID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:ServiceID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -76,6 +80,7 @@ GPBEnumDescriptor *ServiceID_EnumDescriptor(void) {
 
 BOOL ServiceID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case ServiceID_SidUnknown:
     case ServiceID_SidLogin:
     case ServiceID_SidBuddyList:
     case ServiceID_SidMsg:
@@ -93,19 +98,20 @@ BOOL ServiceID_IsValidValue(int32_t value__) {
 #pragma mark - Enum LoginCmdID
 
 GPBEnumDescriptor *LoginCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidLoginReqMsgserver\000CidLoginResMsgserve"
-        "r\000CidLoginReqUserlogin\000CidLoginResUserlo"
-        "gin\000CidLoginReqLoginout\000CidLoginResLogin"
-        "out\000CidLoginKickUser\000CidLoginReqDeviceto"
-        "ken\000CidLoginResDevicetoken\000CidLoginReqKi"
-        "ckpcclient\000CidLoginResKickpcclient\000CidLo"
-        "ginReqPushShield\000CidLoginResPushShield\000C"
-        "idLoginReqQueryPushShield\000CidLoginResQue"
-        "ryPushShield\000";
+        "CidLoginUnknown\000CidLoginReqMsgserver\000Cid"
+        "LoginResMsgserver\000CidLoginReqUserlogin\000C"
+        "idLoginResUserlogin\000CidLoginReqLoginout\000"
+        "CidLoginResLoginout\000CidLoginKickUser\000Cid"
+        "LoginReqDevicetoken\000CidLoginResDevicetok"
+        "en\000CidLoginReqKickpcclient\000CidLoginResKi"
+        "ckpcclient\000CidLoginReqPushShield\000CidLogi"
+        "nResPushShield\000CidLoginReqQueryPushShiel"
+        "d\000CidLoginResQueryPushShield\000";
     static const int32_t values[] = {
+        LoginCmdID_CidLoginUnknown,
         LoginCmdID_CidLoginReqMsgserver,
         LoginCmdID_CidLoginResMsgserver,
         LoginCmdID_CidLoginReqUserlogin,
@@ -128,7 +134,8 @@ GPBEnumDescriptor *LoginCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:LoginCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -137,6 +144,7 @@ GPBEnumDescriptor *LoginCmdID_EnumDescriptor(void) {
 
 BOOL LoginCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case LoginCmdID_CidLoginUnknown:
     case LoginCmdID_CidLoginReqMsgserver:
     case LoginCmdID_CidLoginResMsgserver:
     case LoginCmdID_CidLoginReqUserlogin:
@@ -161,27 +169,29 @@ BOOL LoginCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum BuddyListCmdID
 
 GPBEnumDescriptor *BuddyListCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidBuddyListRecentContactSessionRequest\000"
-        "CidBuddyListRecentContactSessionResponse"
-        "\000CidBuddyListStatusNotify\000CidBuddyListUs"
-        "erInfoRequest\000CidBuddyListUserInfoRespon"
-        "se\000CidBuddyListRemoveSessionReq\000CidBuddy"
-        "ListRemoveSessionRes\000CidBuddyListAllUser"
-        "Request\000CidBuddyListAllUserResponse\000CidB"
-        "uddyListUsersStatusRequest\000CidBuddyListU"
-        "sersStatusResponse\000CidBuddyListChangeAva"
-        "tarRequest\000CidBuddyListChangeAvatarRespo"
-        "nse\000CidBuddyListPcLoginStatusNotify\000CidB"
-        "uddyListRemoveSessionNotify\000CidBuddyList"
-        "DepartmentRequest\000CidBuddyListDepartment"
-        "Response\000CidBuddyListAvatarChangedNotify"
-        "\000CidBuddyListChangeSignInfoRequest\000CidBu"
-        "ddyListChangeSignInfoResponse\000CidBuddyLi"
-        "stSignInfoChangedNotify\000";
+        "CidBuddyListUnknown\000CidBuddyListRecentCo"
+        "ntactSessionRequest\000CidBuddyListRecentCo"
+        "ntactSessionResponse\000CidBuddyListStatusN"
+        "otify\000CidBuddyListUserInfoRequest\000CidBud"
+        "dyListUserInfoResponse\000CidBuddyListRemov"
+        "eSessionReq\000CidBuddyListRemoveSessionRes"
+        "\000CidBuddyListAllUserRequest\000CidBuddyList"
+        "AllUserResponse\000CidBuddyListUsersStatusR"
+        "equest\000CidBuddyListUsersStatusResponse\000C"
+        "idBuddyListChangeAvatarRequest\000CidBuddyL"
+        "istChangeAvatarResponse\000CidBuddyListPcLo"
+        "ginStatusNotify\000CidBuddyListRemoveSessio"
+        "nNotify\000CidBuddyListDepartmentRequest\000Ci"
+        "dBuddyListDepartmentResponse\000CidBuddyLis"
+        "tAvatarChangedNotify\000CidBuddyListChangeS"
+        "ignInfoRequest\000CidBuddyListChangeSignInf"
+        "oResponse\000CidBuddyListSignInfoChangedNot"
+        "ify\000";
     static const int32_t values[] = {
+        BuddyListCmdID_CidBuddyListUnknown,
         BuddyListCmdID_CidBuddyListRecentContactSessionRequest,
         BuddyListCmdID_CidBuddyListRecentContactSessionResponse,
         BuddyListCmdID_CidBuddyListStatusNotify,
@@ -210,7 +220,8 @@ GPBEnumDescriptor *BuddyListCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:BuddyListCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -219,6 +230,7 @@ GPBEnumDescriptor *BuddyListCmdID_EnumDescriptor(void) {
 
 BOOL BuddyListCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case BuddyListCmdID_CidBuddyListUnknown:
     case BuddyListCmdID_CidBuddyListRecentContactSessionRequest:
     case BuddyListCmdID_CidBuddyListRecentContactSessionResponse:
     case BuddyListCmdID_CidBuddyListStatusNotify:
@@ -249,17 +261,18 @@ BOOL BuddyListCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum MessageCmdID
 
 GPBEnumDescriptor *MessageCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidMsgData\000CidMsgDataAck\000CidMsgReadAck\000C"
-        "idMsgReadNotify\000CidMsgTimeRequest\000CidMsg"
-        "TimeResponse\000CidMsgUnreadCntRequest\000CidM"
-        "sgUnreadCntResponse\000CidMsgListRequest\000Ci"
-        "dMsgListResponse\000CidMsgGetLatestMsgIdReq"
-        "\000CidMsgGetLatestMsgIdRsp\000CidMsgGetByMsgI"
-        "dReq\000CidMsgGetByMsgIdRes\000";
+        "CidMsgUnknown\000CidMsgData\000CidMsgDataAck\000C"
+        "idMsgReadAck\000CidMsgReadNotify\000CidMsgTime"
+        "Request\000CidMsgTimeResponse\000CidMsgUnreadC"
+        "ntRequest\000CidMsgUnreadCntResponse\000CidMsg"
+        "ListRequest\000CidMsgListResponse\000CidMsgGet"
+        "LatestMsgIdReq\000CidMsgGetLatestMsgIdRsp\000C"
+        "idMsgGetByMsgIdReq\000CidMsgGetByMsgIdRes\000";
     static const int32_t values[] = {
+        MessageCmdID_CidMsgUnknown,
         MessageCmdID_CidMsgData,
         MessageCmdID_CidMsgDataAck,
         MessageCmdID_CidMsgReadAck,
@@ -281,7 +294,8 @@ GPBEnumDescriptor *MessageCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:MessageCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -290,6 +304,7 @@ GPBEnumDescriptor *MessageCmdID_EnumDescriptor(void) {
 
 BOOL MessageCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case MessageCmdID_CidMsgUnknown:
     case MessageCmdID_CidMsgData:
     case MessageCmdID_CidMsgDataAck:
     case MessageCmdID_CidMsgReadAck:
@@ -313,17 +328,19 @@ BOOL MessageCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum GroupCmdID
 
 GPBEnumDescriptor *GroupCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidGroupNormalListRequest\000CidGroupNormal"
-        "ListResponse\000CidGroupInfoRequest\000CidGrou"
-        "pInfoResponse\000CidGroupCreateRequest\000CidG"
-        "roupCreateResponse\000CidGroupChangeMemberR"
-        "equest\000CidGroupChangeMemberResponse\000CidG"
-        "roupShieldGroupRequest\000CidGroupShieldGro"
-        "upResponse\000CidGroupChangeMemberNotify\000";
+        "CidGroupUnknown\000CidGroupNormalListReques"
+        "t\000CidGroupNormalListResponse\000CidGroupInf"
+        "oRequest\000CidGroupInfoResponse\000CidGroupCr"
+        "eateRequest\000CidGroupCreateResponse\000CidGr"
+        "oupChangeMemberRequest\000CidGroupChangeMem"
+        "berResponse\000CidGroupShieldGroupRequest\000C"
+        "idGroupShieldGroupResponse\000CidGroupChang"
+        "eMemberNotify\000";
     static const int32_t values[] = {
+        GroupCmdID_CidGroupUnknown,
         GroupCmdID_CidGroupNormalListRequest,
         GroupCmdID_CidGroupNormalListResponse,
         GroupCmdID_CidGroupInfoRequest,
@@ -342,7 +359,8 @@ GPBEnumDescriptor *GroupCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:GroupCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -351,6 +369,7 @@ GPBEnumDescriptor *GroupCmdID_EnumDescriptor(void) {
 
 BOOL GroupCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case GroupCmdID_CidGroupUnknown:
     case GroupCmdID_CidGroupNormalListRequest:
     case GroupCmdID_CidGroupNormalListResponse:
     case GroupCmdID_CidGroupInfoRequest:
@@ -371,16 +390,17 @@ BOOL GroupCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum FileCmdID
 
 GPBEnumDescriptor *FileCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidFileLoginReq\000CidFileLoginRes\000CidFileS"
-        "tate\000CidFilePullDataReq\000CidFilePullDataR"
-        "sp\000CidFileRequest\000CidFileResponse\000CidFil"
-        "eNotify\000CidFileHasOfflineReq\000CidFileHasO"
-        "fflineRes\000CidFileAddOfflineReq\000CidFileDe"
-        "lOfflineReq\000";
+        "CidFileUnknown\000CidFileLoginReq\000CidFileLo"
+        "ginRes\000CidFileState\000CidFilePullDataReq\000C"
+        "idFilePullDataRsp\000CidFileRequest\000CidFile"
+        "Response\000CidFileNotify\000CidFileHasOffline"
+        "Req\000CidFileHasOfflineRes\000CidFileAddOffli"
+        "neReq\000CidFileDelOfflineReq\000";
     static const int32_t values[] = {
+        FileCmdID_CidFileUnknown,
         FileCmdID_CidFileLoginReq,
         FileCmdID_CidFileLoginRes,
         FileCmdID_CidFileState,
@@ -400,7 +420,8 @@ GPBEnumDescriptor *FileCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:FileCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -409,6 +430,7 @@ GPBEnumDescriptor *FileCmdID_EnumDescriptor(void) {
 
 BOOL FileCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case FileCmdID_CidFileUnknown:
     case FileCmdID_CidFileLoginReq:
     case FileCmdID_CidFileLoginRes:
     case FileCmdID_CidFileState:
@@ -430,14 +452,15 @@ BOOL FileCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum SwitchServiceCmdID
 
 GPBEnumDescriptor *SwitchServiceCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidSwitchP2PCmd\000";
+        "CidSwitchUnknown\000CidSwitchP2PCmd\000";
     static const int32_t values[] = {
+        SwitchServiceCmdID_CidSwitchUnknown,
         SwitchServiceCmdID_CidSwitchP2PCmd,
     };
-    static const char *extraTextFormatInfo = "\001\000c\346\203\343\000";
+    static const char *extraTextFormatInfo = "\001\001c\346\203\343\000";
     GPBEnumDescriptor *worker =
         [GPBEnumDescriptor allocDescriptorForName:GPBNSStringifySymbol(SwitchServiceCmdID)
                                        valueNames:valueNames
@@ -445,7 +468,8 @@ GPBEnumDescriptor *SwitchServiceCmdID_EnumDescriptor(void) {
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:SwitchServiceCmdID_IsValidValue
                               extraTextFormatInfo:extraTextFormatInfo];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -454,6 +478,7 @@ GPBEnumDescriptor *SwitchServiceCmdID_EnumDescriptor(void) {
 
 BOOL SwitchServiceCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case SwitchServiceCmdID_CidSwitchUnknown:
     case SwitchServiceCmdID_CidSwitchP2PCmd:
       return YES;
     default:
@@ -464,22 +489,24 @@ BOOL SwitchServiceCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum OtherCmdID
 
 GPBEnumDescriptor *OtherCmdID_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "CidOtherHeartbeat\000CidOtherStopRecvPacket"
-        "\000CidOtherValidateReq\000CidOtherValidateRsp"
-        "\000CidOtherGetDeviceTokenReq\000CidOtherGetDe"
-        "viceTokenRsp\000CidOtherRoleSet\000CidOtherOnl"
-        "ineUserInfo\000CidOtherMsgServInfo\000CidOther"
-        "UserStatusUpdate\000CidOtherUserCntUpdate\000C"
-        "idOtherServerKickUser\000CidOtherLoginStatu"
-        "sNotify\000CidOtherPushToUserReq\000CidOtherPu"
-        "shToUserRsp\000CidOtherGetShieldReq\000CidOthe"
-        "rGetShieldRsp\000CidOtherFileTransferReq\000Ci"
-        "dOtherFileTransferRsp\000CidOtherFileServer"
-        "IpReq\000CidOtherFileServerIpRsp\000";
+        "CidOtherUnknown\000CidOtherHeartbeat\000CidOth"
+        "erStopRecvPacket\000CidOtherValidateReq\000Cid"
+        "OtherValidateRsp\000CidOtherGetDeviceTokenR"
+        "eq\000CidOtherGetDeviceTokenRsp\000CidOtherRol"
+        "eSet\000CidOtherOnlineUserInfo\000CidOtherMsgS"
+        "ervInfo\000CidOtherUserStatusUpdate\000CidOthe"
+        "rUserCntUpdate\000CidOtherServerKickUser\000Ci"
+        "dOtherLoginStatusNotify\000CidOtherPushToUs"
+        "erReq\000CidOtherPushToUserRsp\000CidOtherGetS"
+        "hieldReq\000CidOtherGetShieldRsp\000CidOtherFi"
+        "leTransferReq\000CidOtherFileTransferRsp\000Ci"
+        "dOtherFileServerIpReq\000CidOtherFileServer"
+        "IpRsp\000";
     static const int32_t values[] = {
+        OtherCmdID_CidOtherUnknown,
         OtherCmdID_CidOtherHeartbeat,
         OtherCmdID_CidOtherStopRecvPacket,
         OtherCmdID_CidOtherValidateReq,
@@ -508,7 +535,8 @@ GPBEnumDescriptor *OtherCmdID_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:OtherCmdID_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -517,6 +545,7 @@ GPBEnumDescriptor *OtherCmdID_EnumDescriptor(void) {
 
 BOOL OtherCmdID_IsValidValue(int32_t value__) {
   switch (value__) {
+    case OtherCmdID_CidOtherUnknown:
     case OtherCmdID_CidOtherHeartbeat:
     case OtherCmdID_CidOtherStopRecvPacket:
     case OtherCmdID_CidOtherValidateReq:
@@ -547,7 +576,7 @@ BOOL OtherCmdID_IsValidValue(int32_t value__) {
 #pragma mark - Enum ResultType
 
 GPBEnumDescriptor *ResultType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
         "RefuseReasonNone\000RefuseReasonNoMsgServer"
@@ -571,7 +600,8 @@ GPBEnumDescriptor *ResultType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:ResultType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -597,12 +627,13 @@ BOOL ResultType_IsValidValue(int32_t value__) {
 #pragma mark - Enum KickReasonType
 
 GPBEnumDescriptor *KickReasonType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "KickReasonDuplicateUser\000KickReasonMobile"
-        "Kick\000";
+        "KickReasonNone\000KickReasonDuplicateUser\000K"
+        "ickReasonMobileKick\000";
     static const int32_t values[] = {
+        KickReasonType_KickReasonNone,
         KickReasonType_KickReasonDuplicateUser,
         KickReasonType_KickReasonMobileKick,
     };
@@ -612,7 +643,8 @@ GPBEnumDescriptor *KickReasonType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:KickReasonType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -621,6 +653,7 @@ GPBEnumDescriptor *KickReasonType_EnumDescriptor(void) {
 
 BOOL KickReasonType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case KickReasonType_KickReasonNone:
     case KickReasonType_KickReasonDuplicateUser:
     case KickReasonType_KickReasonMobileKick:
       return YES;
@@ -632,11 +665,13 @@ BOOL KickReasonType_IsValidValue(int32_t value__) {
 #pragma mark - Enum OnlineListType
 
 GPBEnumDescriptor *OnlineListType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "OnlineListTypeFriendList\000";
+        "OnlineListTypeNone\000OnlineListTypeFriendL"
+        "ist\000";
     static const int32_t values[] = {
+        OnlineListType_OnlineListTypeNone,
         OnlineListType_OnlineListTypeFriendList,
     };
     GPBEnumDescriptor *worker =
@@ -645,7 +680,8 @@ GPBEnumDescriptor *OnlineListType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:OnlineListType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -654,6 +690,7 @@ GPBEnumDescriptor *OnlineListType_EnumDescriptor(void) {
 
 BOOL OnlineListType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case OnlineListType_OnlineListTypeNone:
     case OnlineListType_OnlineListTypeFriendList:
       return YES;
     default:
@@ -664,12 +701,13 @@ BOOL OnlineListType_IsValidValue(int32_t value__) {
 #pragma mark - Enum UserStatType
 
 GPBEnumDescriptor *UserStatType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "UserStatusOnline\000UserStatusOffline\000UserS"
-        "tatusLeave\000";
+        "UserStatusNone\000UserStatusOnline\000UserStat"
+        "usOffline\000UserStatusLeave\000";
     static const int32_t values[] = {
+        UserStatType_UserStatusNone,
         UserStatType_UserStatusOnline,
         UserStatType_UserStatusOffline,
         UserStatType_UserStatusLeave,
@@ -680,7 +718,8 @@ GPBEnumDescriptor *UserStatType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:UserStatType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -689,6 +728,7 @@ GPBEnumDescriptor *UserStatType_EnumDescriptor(void) {
 
 BOOL UserStatType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case UserStatType_UserStatusNone:
     case UserStatType_UserStatusOnline:
     case UserStatType_UserStatusOffline:
     case UserStatType_UserStatusLeave:
@@ -701,11 +741,13 @@ BOOL UserStatType_IsValidValue(int32_t value__) {
 #pragma mark - Enum SessionType
 
 GPBEnumDescriptor *SessionType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "SessionTypeSingle\000SessionTypeGroup\000";
+        "SessionTypeNone\000SessionTypeSingle\000Sessio"
+        "nTypeGroup\000";
     static const int32_t values[] = {
+        SessionType_SessionTypeNone,
         SessionType_SessionTypeSingle,
         SessionType_SessionTypeGroup,
     };
@@ -715,7 +757,8 @@ GPBEnumDescriptor *SessionType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:SessionType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -724,6 +767,7 @@ GPBEnumDescriptor *SessionType_EnumDescriptor(void) {
 
 BOOL SessionType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case SessionType_SessionTypeNone:
     case SessionType_SessionTypeSingle:
     case SessionType_SessionTypeGroup:
       return YES;
@@ -735,12 +779,14 @@ BOOL SessionType_IsValidValue(int32_t value__) {
 #pragma mark - Enum MsgType
 
 GPBEnumDescriptor *MsgType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "MsgTypeSingleText\000MsgTypeSingleAudio\000Msg"
-        "TypeGroupText\000MsgTypeGroupAudio\000";
+        "MsgTypeNone\000MsgTypeSingleText\000MsgTypeSin"
+        "gleAudio\000MsgTypeGroupText\000MsgTypeGroupAu"
+        "dio\000";
     static const int32_t values[] = {
+        MsgType_MsgTypeNone,
         MsgType_MsgTypeSingleText,
         MsgType_MsgTypeSingleAudio,
         MsgType_MsgTypeGroupText,
@@ -752,7 +798,8 @@ GPBEnumDescriptor *MsgType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:MsgType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -761,6 +808,7 @@ GPBEnumDescriptor *MsgType_EnumDescriptor(void) {
 
 BOOL MsgType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case MsgType_MsgTypeNone:
     case MsgType_MsgTypeSingleText:
     case MsgType_MsgTypeSingleAudio:
     case MsgType_MsgTypeGroupText:
@@ -774,12 +822,13 @@ BOOL MsgType_IsValidValue(int32_t value__) {
 #pragma mark - Enum ClientType
 
 GPBEnumDescriptor *ClientType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "ClientTypeWindows\000ClientTypeMac\000ClientTy"
-        "peIos\000ClientTypeAndroid\000";
+        "ClientTypeNone\000ClientTypeWindows\000ClientT"
+        "ypeMac\000ClientTypeIos\000ClientTypeAndroid\000";
     static const int32_t values[] = {
+        ClientType_ClientTypeNone,
         ClientType_ClientTypeWindows,
         ClientType_ClientTypeMac,
         ClientType_ClientTypeIos,
@@ -791,7 +840,8 @@ GPBEnumDescriptor *ClientType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:ClientType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -800,6 +850,7 @@ GPBEnumDescriptor *ClientType_EnumDescriptor(void) {
 
 BOOL ClientType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case ClientType_ClientTypeNone:
     case ClientType_ClientTypeWindows:
     case ClientType_ClientTypeMac:
     case ClientType_ClientTypeIos:
@@ -813,11 +864,13 @@ BOOL ClientType_IsValidValue(int32_t value__) {
 #pragma mark - Enum GroupType
 
 GPBEnumDescriptor *GroupType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "GroupTypeNormal\000GroupTypeTmp\000";
+        "GroupTypeNone\000GroupTypeNormal\000GroupTypeT"
+        "mp\000";
     static const int32_t values[] = {
+        GroupType_GroupTypeNone,
         GroupType_GroupTypeNormal,
         GroupType_GroupTypeTmp,
     };
@@ -827,7 +880,8 @@ GPBEnumDescriptor *GroupType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:GroupType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -836,6 +890,7 @@ GPBEnumDescriptor *GroupType_EnumDescriptor(void) {
 
 BOOL GroupType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case GroupType_GroupTypeNone:
     case GroupType_GroupTypeNormal:
     case GroupType_GroupTypeTmp:
       return YES;
@@ -847,11 +902,13 @@ BOOL GroupType_IsValidValue(int32_t value__) {
 #pragma mark - Enum GroupModifyType
 
 GPBEnumDescriptor *GroupModifyType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "GroupModifyTypeAdd\000GroupModifyTypeDel\000";
+        "GroupModifyTypeNone\000GroupModifyTypeAdd\000G"
+        "roupModifyTypeDel\000";
     static const int32_t values[] = {
+        GroupModifyType_GroupModifyTypeNone,
         GroupModifyType_GroupModifyTypeAdd,
         GroupModifyType_GroupModifyTypeDel,
     };
@@ -861,7 +918,8 @@ GPBEnumDescriptor *GroupModifyType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:GroupModifyType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -870,6 +928,7 @@ GPBEnumDescriptor *GroupModifyType_EnumDescriptor(void) {
 
 BOOL GroupModifyType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case GroupModifyType_GroupModifyTypeNone:
     case GroupModifyType_GroupModifyTypeAdd:
     case GroupModifyType_GroupModifyTypeDel:
       return YES;
@@ -881,11 +940,13 @@ BOOL GroupModifyType_IsValidValue(int32_t value__) {
 #pragma mark - Enum TransferFileType
 
 GPBEnumDescriptor *TransferFileType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "FileTypeOnline\000FileTypeOffline\000";
+        "FileTypeNone\000FileTypeOnline\000FileTypeOffl"
+        "ine\000";
     static const int32_t values[] = {
+        TransferFileType_FileTypeNone,
         TransferFileType_FileTypeOnline,
         TransferFileType_FileTypeOffline,
     };
@@ -895,7 +956,8 @@ GPBEnumDescriptor *TransferFileType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:TransferFileType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -904,6 +966,7 @@ GPBEnumDescriptor *TransferFileType_EnumDescriptor(void) {
 
 BOOL TransferFileType_IsValidValue(int32_t value__) {
   switch (value__) {
+    case TransferFileType_FileTypeNone:
     case TransferFileType_FileTypeOnline:
     case TransferFileType_FileTypeOffline:
       return YES;
@@ -915,7 +978,7 @@ BOOL TransferFileType_IsValidValue(int32_t value__) {
 #pragma mark - Enum ClientFileState
 
 GPBEnumDescriptor *ClientFileState_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
         "ClientFilePeerReady\000ClientFileCancel\000Cli"
@@ -932,7 +995,8 @@ GPBEnumDescriptor *ClientFileState_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:ClientFileState_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -954,13 +1018,14 @@ BOOL ClientFileState_IsValidValue(int32_t value__) {
 #pragma mark - Enum ClientFileRole
 
 GPBEnumDescriptor *ClientFileRole_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
-        "ClientRealtimeSender\000ClientRealtimeRecve"
-        "r\000ClientOfflineUpload\000ClientOfflineDownl"
-        "oad\000";
+        "ClientFileNone\000ClientRealtimeSender\000Clie"
+        "ntRealtimeRecver\000ClientOfflineUpload\000Cli"
+        "entOfflineDownload\000";
     static const int32_t values[] = {
+        ClientFileRole_ClientFileNone,
         ClientFileRole_ClientRealtimeSender,
         ClientFileRole_ClientRealtimeRecver,
         ClientFileRole_ClientOfflineUpload,
@@ -972,7 +1037,8 @@ GPBEnumDescriptor *ClientFileRole_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:ClientFileRole_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -981,6 +1047,7 @@ GPBEnumDescriptor *ClientFileRole_EnumDescriptor(void) {
 
 BOOL ClientFileRole_IsValidValue(int32_t value__) {
   switch (value__) {
+    case ClientFileRole_ClientFileNone:
     case ClientFileRole_ClientRealtimeSender:
     case ClientFileRole_ClientRealtimeRecver:
     case ClientFileRole_ClientOfflineUpload:
@@ -994,7 +1061,7 @@ BOOL ClientFileRole_IsValidValue(int32_t value__) {
 #pragma mark - Enum FileServerError
 
 GPBEnumDescriptor *FileServerError_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
         "FileServerErrnoOk\000FileServerErrnoCreateT"
@@ -1030,7 +1097,8 @@ GPBEnumDescriptor *FileServerError_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:FileServerError_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -1061,7 +1129,7 @@ BOOL FileServerError_IsValidValue(int32_t value__) {
 #pragma mark - Enum SessionStatusType
 
 GPBEnumDescriptor *SessionStatusType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
         "SessionStatusOk\000SessionStatusDelete\000";
@@ -1075,7 +1143,8 @@ GPBEnumDescriptor *SessionStatusType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:SessionStatusType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -1095,7 +1164,7 @@ BOOL SessionStatusType_IsValidValue(int32_t value__) {
 #pragma mark - Enum DepartmentStatusType
 
 GPBEnumDescriptor *DepartmentStatusType_EnumDescriptor(void) {
-  static GPBEnumDescriptor *descriptor = NULL;
+  static _Atomic(GPBEnumDescriptor*) descriptor = nil;
   if (!descriptor) {
     static const char *valueNames =
         "DeptStatusOk\000DeptStatusDelete\000";
@@ -1109,7 +1178,8 @@ GPBEnumDescriptor *DepartmentStatusType_EnumDescriptor(void) {
                                            values:values
                                             count:(uint32_t)(sizeof(values) / sizeof(int32_t))
                                      enumVerifier:DepartmentStatusType_IsValidValue];
-    if (!OSAtomicCompareAndSwapPtrBarrier(nil, worker, (void * volatile *)&descriptor)) {
+    GPBEnumDescriptor *expected = nil;
+    if (!atomic_compare_exchange_strong(&descriptor, &expected, worker)) {
       [worker release];
     }
   }
@@ -1130,8 +1200,8 @@ BOOL DepartmentStatusType_IsValidValue(int32_t value__) {
 
 @implementation IpAddr
 
-@dynamic hasIp, ip;
-@dynamic hasPort, port;
+@dynamic ip;
+@dynamic port;
 
 typedef struct IpAddr__storage_ {
   uint32_t _has_storage_[1];
@@ -1147,20 +1217,20 @@ typedef struct IpAddr__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "ip",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IpAddr_FieldNumber_Ip,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(IpAddr__storage_, ip),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "port",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = IpAddr_FieldNumber_Port,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(IpAddr__storage_, port),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -1171,8 +1241,10 @@ typedef struct IpAddr__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(IpAddr__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1184,17 +1256,17 @@ typedef struct IpAddr__storage_ {
 
 @implementation UserInfo
 
-@dynamic hasUserId, userId;
-@dynamic hasUserGender, userGender;
-@dynamic hasUserNickName, userNickName;
-@dynamic hasAvatarURL, avatarURL;
-@dynamic hasDepartmentId, departmentId;
-@dynamic hasEmail, email;
-@dynamic hasUserRealName, userRealName;
-@dynamic hasUserTel, userTel;
-@dynamic hasUserDomain, userDomain;
-@dynamic hasStatus, status;
-@dynamic hasSignInfo, signInfo;
+@dynamic userId;
+@dynamic userGender;
+@dynamic userNickName;
+@dynamic avatarURL;
+@dynamic departmentId;
+@dynamic email;
+@dynamic userRealName;
+@dynamic userTel;
+@dynamic userDomain;
+@dynamic status;
+@dynamic signInfo;
 
 typedef struct UserInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -1219,101 +1291,101 @@ typedef struct UserInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "userGender",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserGender,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userGender),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "userNickName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserNickName,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userNickName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "avatarURL",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_AvatarURL,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(UserInfo__storage_, avatarURL),
-        .flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldTextFormatNameCustom),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldTextFormatNameCustom | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "departmentId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_DepartmentId,
         .hasIndex = 4,
         .offset = (uint32_t)offsetof(UserInfo__storage_, departmentId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "email",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_Email,
         .hasIndex = 5,
         .offset = (uint32_t)offsetof(UserInfo__storage_, email),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "userRealName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserRealName,
         .hasIndex = 6,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userRealName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "userTel",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserTel,
         .hasIndex = 7,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userTel),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "userDomain",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_UserDomain,
         .hasIndex = 8,
         .offset = (uint32_t)offsetof(UserInfo__storage_, userDomain),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "status",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_Status,
         .hasIndex = 9,
         .offset = (uint32_t)offsetof(UserInfo__storage_, status),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "signInfo",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = UserInfo_FieldNumber_SignInfo,
         .hasIndex = 10,
         .offset = (uint32_t)offsetof(UserInfo__storage_, signInfo),
-        .flags = GPBFieldOptional,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
     };
@@ -1324,13 +1396,15 @@ typedef struct UserInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(UserInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
 #if !GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
     static const char *extraTextFormatInfo =
         "\001\004\006\241!!\000";
     [localDescriptor setupExtraTextInfo:extraTextFormatInfo];
 #endif  // !GPBOBJC_SKIP_MESSAGE_TEXTFORMAT_EXTRAS
-    NSAssert(descriptor == nil, @"Startup recursed!");
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1342,14 +1416,14 @@ typedef struct UserInfo__storage_ {
 
 @implementation ContactSessionInfo
 
-@dynamic hasSessionId, sessionId;
-@dynamic hasSessionType, sessionType;
-@dynamic hasSessionStatus, sessionStatus;
-@dynamic hasUpdatedTime, updatedTime;
-@dynamic hasLatestMsgId, latestMsgId;
-@dynamic hasLatestMsgData, latestMsgData;
-@dynamic hasLatestMsgType, latestMsgType;
-@dynamic hasLatestMsgFromUserId, latestMsgFromUserId;
+@dynamic sessionId;
+@dynamic sessionType;
+@dynamic sessionStatus;
+@dynamic updatedTime;
+@dynamic latestMsgId;
+@dynamic latestMsgData;
+@dynamic latestMsgType;
+@dynamic latestMsgFromUserId;
 
 typedef struct ContactSessionInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -1368,86 +1442,78 @@ typedef struct ContactSessionInfo__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "sessionId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ContactSessionInfo_FieldNumber_SessionId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "sessionId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ContactSessionInfo_FieldNumber_SessionId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = SessionType_SessionTypeSingle,
-        .core.name = "sessionType",
-        .core.dataTypeSpecific.enumDescFunc = SessionType_EnumDescriptor,
-        .core.number = ContactSessionInfo_FieldNumber_SessionType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "sessionType",
+        .dataTypeSpecific.enumDescFunc = SessionType_EnumDescriptor,
+        .number = ContactSessionInfo_FieldNumber_SessionType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = SessionStatusType_SessionStatusOk,
-        .core.name = "sessionStatus",
-        .core.dataTypeSpecific.enumDescFunc = SessionStatusType_EnumDescriptor,
-        .core.number = ContactSessionInfo_FieldNumber_SessionStatus,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionStatus),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "sessionStatus",
+        .dataTypeSpecific.enumDescFunc = SessionStatusType_EnumDescriptor,
+        .number = ContactSessionInfo_FieldNumber_SessionStatus,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, sessionStatus),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "updatedTime",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ContactSessionInfo_FieldNumber_UpdatedTime,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, updatedTime),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "updatedTime",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ContactSessionInfo_FieldNumber_UpdatedTime,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, updatedTime),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "latestMsgId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ContactSessionInfo_FieldNumber_LatestMsgId,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "latestMsgId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ContactSessionInfo_FieldNumber_LatestMsgId,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "latestMsgData",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ContactSessionInfo_FieldNumber_LatestMsgData,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgData),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "latestMsgData",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ContactSessionInfo_FieldNumber_LatestMsgData,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgData),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeBytes,
       },
       {
-        .defaultValue.valueEnum = MsgType_MsgTypeSingleText,
-        .core.name = "latestMsgType",
-        .core.dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
-        .core.number = ContactSessionInfo_FieldNumber_LatestMsgType,
-        .core.hasIndex = 6,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "latestMsgType",
+        .dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
+        .number = ContactSessionInfo_FieldNumber_LatestMsgType,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "latestMsgFromUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ContactSessionInfo_FieldNumber_LatestMsgFromUserId,
-        .core.hasIndex = 7,
-        .core.offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgFromUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "latestMsgFromUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ContactSessionInfo_FieldNumber_LatestMsgFromUserId,
+        .hasIndex = 7,
+        .offset = (uint32_t)offsetof(ContactSessionInfo__storage_, latestMsgFromUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1455,10 +1521,12 @@ typedef struct ContactSessionInfo__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(ContactSessionInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1466,12 +1534,48 @@ typedef struct ContactSessionInfo__storage_ {
 
 @end
 
+int32_t ContactSessionInfo_SessionType_RawValue(ContactSessionInfo *message) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_SessionType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetContactSessionInfo_SessionType_RawValue(ContactSessionInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_SessionType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
+int32_t ContactSessionInfo_SessionStatus_RawValue(ContactSessionInfo *message) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_SessionStatus];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetContactSessionInfo_SessionStatus_RawValue(ContactSessionInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_SessionStatus];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
+int32_t ContactSessionInfo_LatestMsgType_RawValue(ContactSessionInfo *message) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_LatestMsgType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetContactSessionInfo_LatestMsgType_RawValue(ContactSessionInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [ContactSessionInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ContactSessionInfo_FieldNumber_LatestMsgType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - UserStat
 
 @implementation UserStat
 
-@dynamic hasUserId, userId;
-@dynamic hasStatus, status;
+@dynamic userId;
+@dynamic status;
 
 typedef struct UserStat__storage_ {
   uint32_t _has_storage_[1];
@@ -1484,26 +1588,24 @@ typedef struct UserStat__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UserStat_FieldNumber_UserId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(UserStat__storage_, userId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UserStat_FieldNumber_UserId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(UserStat__storage_, userId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = UserStatType_UserStatusOnline,
-        .core.name = "status",
-        .core.dataTypeSpecific.enumDescFunc = UserStatType_EnumDescriptor,
-        .core.number = UserStat_FieldNumber_Status,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(UserStat__storage_, status),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "status",
+        .dataTypeSpecific.enumDescFunc = UserStatType_EnumDescriptor,
+        .number = UserStat_FieldNumber_Status,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(UserStat__storage_, status),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1511,10 +1613,12 @@ typedef struct UserStat__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(UserStat__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1522,13 +1626,25 @@ typedef struct UserStat__storage_ {
 
 @end
 
+int32_t UserStat_Status_RawValue(UserStat *message) {
+  GPBDescriptor *descriptor = [UserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UserStat_FieldNumber_Status];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetUserStat_Status_RawValue(UserStat *message, int32_t value) {
+  GPBDescriptor *descriptor = [UserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UserStat_FieldNumber_Status];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - ServerUserStat
 
 @implementation ServerUserStat
 
-@dynamic hasUserId, userId;
-@dynamic hasStatus, status;
-@dynamic hasClientType, clientType;
+@dynamic userId;
+@dynamic status;
+@dynamic clientType;
 
 typedef struct ServerUserStat__storage_ {
   uint32_t _has_storage_[1];
@@ -1542,36 +1658,33 @@ typedef struct ServerUserStat__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = ServerUserStat_FieldNumber_UserId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(ServerUserStat__storage_, userId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = ServerUserStat_FieldNumber_UserId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(ServerUserStat__storage_, userId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = UserStatType_UserStatusOnline,
-        .core.name = "status",
-        .core.dataTypeSpecific.enumDescFunc = UserStatType_EnumDescriptor,
-        .core.number = ServerUserStat_FieldNumber_Status,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(ServerUserStat__storage_, status),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "status",
+        .dataTypeSpecific.enumDescFunc = UserStatType_EnumDescriptor,
+        .number = ServerUserStat_FieldNumber_Status,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(ServerUserStat__storage_, status),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueEnum = ClientType_ClientTypeWindows,
-        .core.name = "clientType",
-        .core.dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
-        .core.number = ServerUserStat_FieldNumber_ClientType,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(ServerUserStat__storage_, clientType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "clientType",
+        .dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
+        .number = ServerUserStat_FieldNumber_ClientType,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(ServerUserStat__storage_, clientType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1579,10 +1692,12 @@ typedef struct ServerUserStat__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(ServerUserStat__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1590,17 +1705,41 @@ typedef struct ServerUserStat__storage_ {
 
 @end
 
+int32_t ServerUserStat_Status_RawValue(ServerUserStat *message) {
+  GPBDescriptor *descriptor = [ServerUserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ServerUserStat_FieldNumber_Status];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetServerUserStat_Status_RawValue(ServerUserStat *message, int32_t value) {
+  GPBDescriptor *descriptor = [ServerUserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ServerUserStat_FieldNumber_Status];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
+int32_t ServerUserStat_ClientType_RawValue(ServerUserStat *message) {
+  GPBDescriptor *descriptor = [ServerUserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ServerUserStat_FieldNumber_ClientType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetServerUserStat_ClientType_RawValue(ServerUserStat *message, int32_t value) {
+  GPBDescriptor *descriptor = [ServerUserStat descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:ServerUserStat_FieldNumber_ClientType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - UnreadInfo
 
 @implementation UnreadInfo
 
-@dynamic hasSessionId, sessionId;
-@dynamic hasSessionType, sessionType;
-@dynamic hasUnreadCnt, unreadCnt;
-@dynamic hasLatestMsgId, latestMsgId;
-@dynamic hasLatestMsgData, latestMsgData;
-@dynamic hasLatestMsgType, latestMsgType;
-@dynamic hasLatestMsgFromUserId, latestMsgFromUserId;
+@dynamic sessionId;
+@dynamic sessionType;
+@dynamic unreadCnt;
+@dynamic latestMsgId;
+@dynamic latestMsgData;
+@dynamic latestMsgType;
+@dynamic latestMsgFromUserId;
 
 typedef struct UnreadInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -1618,76 +1757,69 @@ typedef struct UnreadInfo__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "sessionId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UnreadInfo_FieldNumber_SessionId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, sessionId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "sessionId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UnreadInfo_FieldNumber_SessionId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, sessionId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = SessionType_SessionTypeSingle,
-        .core.name = "sessionType",
-        .core.dataTypeSpecific.enumDescFunc = SessionType_EnumDescriptor,
-        .core.number = UnreadInfo_FieldNumber_SessionType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, sessionType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "sessionType",
+        .dataTypeSpecific.enumDescFunc = SessionType_EnumDescriptor,
+        .number = UnreadInfo_FieldNumber_SessionType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, sessionType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "unreadCnt",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UnreadInfo_FieldNumber_UnreadCnt,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, unreadCnt),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "unreadCnt",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UnreadInfo_FieldNumber_UnreadCnt,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, unreadCnt),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "latestMsgId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UnreadInfo_FieldNumber_LatestMsgId,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "latestMsgId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UnreadInfo_FieldNumber_LatestMsgId,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "latestMsgData",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UnreadInfo_FieldNumber_LatestMsgData,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgData),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "latestMsgData",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UnreadInfo_FieldNumber_LatestMsgData,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgData),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeBytes,
       },
       {
-        .defaultValue.valueEnum = MsgType_MsgTypeSingleText,
-        .core.name = "latestMsgType",
-        .core.dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
-        .core.number = UnreadInfo_FieldNumber_LatestMsgType,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "latestMsgType",
+        .dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
+        .number = UnreadInfo_FieldNumber_LatestMsgType,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "latestMsgFromUserId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UnreadInfo_FieldNumber_LatestMsgFromUserId,
-        .core.hasIndex = 6,
-        .core.offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgFromUserId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "latestMsgFromUserId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UnreadInfo_FieldNumber_LatestMsgFromUserId,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(UnreadInfo__storage_, latestMsgFromUserId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1695,10 +1827,12 @@ typedef struct UnreadInfo__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(UnreadInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1706,15 +1840,39 @@ typedef struct UnreadInfo__storage_ {
 
 @end
 
+int32_t UnreadInfo_SessionType_RawValue(UnreadInfo *message) {
+  GPBDescriptor *descriptor = [UnreadInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UnreadInfo_FieldNumber_SessionType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetUnreadInfo_SessionType_RawValue(UnreadInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [UnreadInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UnreadInfo_FieldNumber_SessionType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
+int32_t UnreadInfo_LatestMsgType_RawValue(UnreadInfo *message) {
+  GPBDescriptor *descriptor = [UnreadInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UnreadInfo_FieldNumber_LatestMsgType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetUnreadInfo_LatestMsgType_RawValue(UnreadInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [UnreadInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UnreadInfo_FieldNumber_LatestMsgType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - MsgInfo
 
 @implementation MsgInfo
 
-@dynamic hasMsgId, msgId;
-@dynamic hasFromSessionId, fromSessionId;
-@dynamic hasCreateTime, createTime;
-@dynamic hasMsgType, msgType;
-@dynamic hasMsgData, msgData;
+@dynamic msgId;
+@dynamic fromSessionId;
+@dynamic createTime;
+@dynamic msgType;
+@dynamic msgData;
 
 typedef struct MsgInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -1730,56 +1888,51 @@ typedef struct MsgInfo__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "msgId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgInfo_FieldNumber_MsgId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(MsgInfo__storage_, msgId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "msgId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = MsgInfo_FieldNumber_MsgId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(MsgInfo__storage_, msgId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "fromSessionId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgInfo_FieldNumber_FromSessionId,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(MsgInfo__storage_, fromSessionId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "fromSessionId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = MsgInfo_FieldNumber_FromSessionId,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(MsgInfo__storage_, fromSessionId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "createTime",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgInfo_FieldNumber_CreateTime,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(MsgInfo__storage_, createTime),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "createTime",
+        .dataTypeSpecific.clazz = Nil,
+        .number = MsgInfo_FieldNumber_CreateTime,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(MsgInfo__storage_, createTime),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = MsgType_MsgTypeSingleText,
-        .core.name = "msgType",
-        .core.dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
-        .core.number = MsgInfo_FieldNumber_MsgType,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(MsgInfo__storage_, msgType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "msgType",
+        .dataTypeSpecific.enumDescFunc = MsgType_EnumDescriptor,
+        .number = MsgInfo_FieldNumber_MsgType,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(MsgInfo__storage_, msgType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueData = nil,
-        .core.name = "msgData",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = MsgInfo_FieldNumber_MsgData,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(MsgInfo__storage_, msgData),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeBytes,
+        .name = "msgData",
+        .dataTypeSpecific.clazz = Nil,
+        .number = MsgInfo_FieldNumber_MsgData,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(MsgInfo__storage_, msgData),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeBytes,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1787,10 +1940,12 @@ typedef struct MsgInfo__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(MsgInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1798,12 +1953,24 @@ typedef struct MsgInfo__storage_ {
 
 @end
 
+int32_t MsgInfo_MsgType_RawValue(MsgInfo *message) {
+  GPBDescriptor *descriptor = [MsgInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgInfo_FieldNumber_MsgType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetMsgInfo_MsgType_RawValue(MsgInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [MsgInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:MsgInfo_FieldNumber_MsgType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - GroupVersionInfo
 
 @implementation GroupVersionInfo
 
-@dynamic hasGroupId, groupId;
-@dynamic hasVersion, version;
+@dynamic groupId;
+@dynamic version;
 
 typedef struct GroupVersionInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -1819,20 +1986,20 @@ typedef struct GroupVersionInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "groupId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = GroupVersionInfo_FieldNumber_GroupId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(GroupVersionInfo__storage_, groupId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "version",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = GroupVersionInfo_FieldNumber_Version,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(GroupVersionInfo__storage_, version),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -1843,8 +2010,10 @@ typedef struct GroupVersionInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(GroupVersionInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1856,13 +2025,13 @@ typedef struct GroupVersionInfo__storage_ {
 
 @implementation GroupInfo
 
-@dynamic hasGroupId, groupId;
-@dynamic hasVersion, version;
-@dynamic hasGroupName, groupName;
-@dynamic hasGroupAvatar, groupAvatar;
-@dynamic hasGroupCreatorId, groupCreatorId;
-@dynamic hasGroupType, groupType;
-@dynamic hasShieldStatus, shieldStatus;
+@dynamic groupId;
+@dynamic version;
+@dynamic groupName;
+@dynamic groupAvatar;
+@dynamic groupCreatorId;
+@dynamic groupType;
+@dynamic shieldStatus;
 @dynamic groupMemberListArray, groupMemberListArray_Count;
 
 typedef struct GroupInfo__storage_ {
@@ -1882,86 +2051,78 @@ typedef struct GroupInfo__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "groupId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_GroupId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "groupId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_GroupId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "version",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_Version,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, version),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "version",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_Version,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, version),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "groupName",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_GroupName,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupName),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeString,
+        .name = "groupName",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_GroupName,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupName),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "groupAvatar",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_GroupAvatar,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupAvatar),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeString,
+        .name = "groupAvatar",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_GroupAvatar,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupAvatar),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "groupCreatorId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_GroupCreatorId,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupCreatorId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "groupCreatorId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_GroupCreatorId,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupCreatorId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = GroupType_GroupTypeNormal,
-        .core.name = "groupType",
-        .core.dataTypeSpecific.enumDescFunc = GroupType_EnumDescriptor,
-        .core.number = GroupInfo_FieldNumber_GroupType,
-        .core.hasIndex = 5,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "groupType",
+        .dataTypeSpecific.enumDescFunc = GroupType_EnumDescriptor,
+        .number = GroupInfo_FieldNumber_GroupType,
+        .hasIndex = 5,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "shieldStatus",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_ShieldStatus,
-        .core.hasIndex = 6,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, shieldStatus),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "shieldStatus",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_ShieldStatus,
+        .hasIndex = 6,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, shieldStatus),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueMessage = nil,
-        .core.name = "groupMemberListArray",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = GroupInfo_FieldNumber_GroupMemberListArray,
-        .core.hasIndex = GPBNoHasBit,
-        .core.offset = (uint32_t)offsetof(GroupInfo__storage_, groupMemberListArray),
-        .core.flags = GPBFieldRepeated,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "groupMemberListArray",
+        .dataTypeSpecific.clazz = Nil,
+        .number = GroupInfo_FieldNumber_GroupMemberListArray,
+        .hasIndex = GPBNoHasBit,
+        .offset = (uint32_t)offsetof(GroupInfo__storage_, groupMemberListArray),
+        .flags = (GPBFieldFlags)(GPBFieldRepeated | GPBFieldPacked),
+        .dataType = GPBDataTypeUInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -1969,10 +2130,12 @@ typedef struct GroupInfo__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(GroupInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -1980,15 +2143,27 @@ typedef struct GroupInfo__storage_ {
 
 @end
 
+int32_t GroupInfo_GroupType_RawValue(GroupInfo *message) {
+  GPBDescriptor *descriptor = [GroupInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:GroupInfo_FieldNumber_GroupType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetGroupInfo_GroupType_RawValue(GroupInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [GroupInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:GroupInfo_FieldNumber_GroupType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - UserTokenInfo
 
 @implementation UserTokenInfo
 
-@dynamic hasUserId, userId;
-@dynamic hasUserType, userType;
-@dynamic hasToken, token;
-@dynamic hasPushCount, pushCount;
-@dynamic hasPushType, pushType;
+@dynamic userId;
+@dynamic userType;
+@dynamic token;
+@dynamic pushCount;
+@dynamic pushType;
 
 typedef struct UserTokenInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -2004,56 +2179,51 @@ typedef struct UserTokenInfo__storage_ {
 + (GPBDescriptor *)descriptor {
   static GPBDescriptor *descriptor = nil;
   if (!descriptor) {
-    static GPBMessageFieldDescriptionWithDefault fields[] = {
+    static GPBMessageFieldDescription fields[] = {
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "userId",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UserTokenInfo_FieldNumber_UserId,
-        .core.hasIndex = 0,
-        .core.offset = (uint32_t)offsetof(UserTokenInfo__storage_, userId),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "userId",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UserTokenInfo_FieldNumber_UserId,
+        .hasIndex = 0,
+        .offset = (uint32_t)offsetof(UserTokenInfo__storage_, userId),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueEnum = ClientType_ClientTypeWindows,
-        .core.name = "userType",
-        .core.dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
-        .core.number = UserTokenInfo_FieldNumber_UserType,
-        .core.hasIndex = 1,
-        .core.offset = (uint32_t)offsetof(UserTokenInfo__storage_, userType),
-        .core.flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
-        .core.dataType = GPBDataTypeEnum,
+        .name = "userType",
+        .dataTypeSpecific.enumDescFunc = ClientType_EnumDescriptor,
+        .number = UserTokenInfo_FieldNumber_UserType,
+        .hasIndex = 1,
+        .offset = (uint32_t)offsetof(UserTokenInfo__storage_, userType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeEnum,
       },
       {
-        .defaultValue.valueString = nil,
-        .core.name = "token",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UserTokenInfo_FieldNumber_Token,
-        .core.hasIndex = 2,
-        .core.offset = (uint32_t)offsetof(UserTokenInfo__storage_, token),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeString,
+        .name = "token",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UserTokenInfo_FieldNumber_Token,
+        .hasIndex = 2,
+        .offset = (uint32_t)offsetof(UserTokenInfo__storage_, token),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeString,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "pushCount",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UserTokenInfo_FieldNumber_PushCount,
-        .core.hasIndex = 3,
-        .core.offset = (uint32_t)offsetof(UserTokenInfo__storage_, pushCount),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "pushCount",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UserTokenInfo_FieldNumber_PushCount,
+        .hasIndex = 3,
+        .offset = (uint32_t)offsetof(UserTokenInfo__storage_, pushCount),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
       {
-        .defaultValue.valueUInt32 = 0U,
-        .core.name = "pushType",
-        .core.dataTypeSpecific.className = NULL,
-        .core.number = UserTokenInfo_FieldNumber_PushType,
-        .core.hasIndex = 4,
-        .core.offset = (uint32_t)offsetof(UserTokenInfo__storage_, pushType),
-        .core.flags = GPBFieldRequired,
-        .core.dataType = GPBDataTypeUInt32,
+        .name = "pushType",
+        .dataTypeSpecific.clazz = Nil,
+        .number = UserTokenInfo_FieldNumber_PushType,
+        .hasIndex = 4,
+        .offset = (uint32_t)offsetof(UserTokenInfo__storage_, pushType),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
+        .dataType = GPBDataTypeUInt32,
       },
     };
     GPBDescriptor *localDescriptor =
@@ -2061,10 +2231,12 @@ typedef struct UserTokenInfo__storage_ {
                                      rootClass:[ImBaseDefineRoot class]
                                           file:ImBaseDefineRoot_FileDescriptor()
                                         fields:fields
-                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescriptionWithDefault))
+                                    fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(UserTokenInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_FieldsWithDefault];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -2072,12 +2244,24 @@ typedef struct UserTokenInfo__storage_ {
 
 @end
 
+int32_t UserTokenInfo_UserType_RawValue(UserTokenInfo *message) {
+  GPBDescriptor *descriptor = [UserTokenInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UserTokenInfo_FieldNumber_UserType];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetUserTokenInfo_UserType_RawValue(UserTokenInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [UserTokenInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:UserTokenInfo_FieldNumber_UserType];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - PushResult
 
 @implementation PushResult
 
-@dynamic hasUserToken, userToken;
-@dynamic hasResultCode, resultCode;
+@dynamic userToken;
+@dynamic resultCode;
 
 typedef struct PushResult__storage_ {
   uint32_t _has_storage_[1];
@@ -2093,20 +2277,20 @@ typedef struct PushResult__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userToken",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = PushResult_FieldNumber_UserToken,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(PushResult__storage_, userToken),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "resultCode",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = PushResult_FieldNumber_ResultCode,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(PushResult__storage_, resultCode),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -2117,8 +2301,10 @@ typedef struct PushResult__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(PushResult__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -2130,9 +2316,9 @@ typedef struct PushResult__storage_ {
 
 @implementation ShieldStatus
 
-@dynamic hasUserId, userId;
-@dynamic hasGroupId, groupId;
-@dynamic hasShieldStatus, shieldStatus;
+@dynamic userId;
+@dynamic groupId;
+@dynamic shieldStatus;
 
 typedef struct ShieldStatus__storage_ {
   uint32_t _has_storage_[1];
@@ -2149,29 +2335,29 @@ typedef struct ShieldStatus__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = ShieldStatus_FieldNumber_UserId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(ShieldStatus__storage_, userId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "groupId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = ShieldStatus_FieldNumber_GroupId,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(ShieldStatus__storage_, groupId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "shieldStatus",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = ShieldStatus_FieldNumber_ShieldStatus,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(ShieldStatus__storage_, shieldStatus),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -2182,8 +2368,10 @@ typedef struct ShieldStatus__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(ShieldStatus__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -2195,10 +2383,10 @@ typedef struct ShieldStatus__storage_ {
 
 @implementation OfflineFileInfo
 
-@dynamic hasFromUserId, fromUserId;
-@dynamic hasTaskId, taskId;
-@dynamic hasFileName, fileName;
-@dynamic hasFileSize, fileSize;
+@dynamic fromUserId;
+@dynamic taskId;
+@dynamic fileName;
+@dynamic fileSize;
 
 typedef struct OfflineFileInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -2216,38 +2404,38 @@ typedef struct OfflineFileInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "fromUserId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = OfflineFileInfo_FieldNumber_FromUserId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(OfflineFileInfo__storage_, fromUserId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "taskId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = OfflineFileInfo_FieldNumber_TaskId,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(OfflineFileInfo__storage_, taskId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "fileName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = OfflineFileInfo_FieldNumber_FileName,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(OfflineFileInfo__storage_, fileName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "fileSize",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = OfflineFileInfo_FieldNumber_FileSize,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(OfflineFileInfo__storage_, fileSize),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -2258,8 +2446,10 @@ typedef struct OfflineFileInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(OfflineFileInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -2271,11 +2461,11 @@ typedef struct OfflineFileInfo__storage_ {
 
 @implementation DepartInfo
 
-@dynamic hasDeptId, deptId;
-@dynamic hasPriority, priority;
-@dynamic hasDeptName, deptName;
-@dynamic hasParentDeptId, parentDeptId;
-@dynamic hasDeptStatus, deptStatus;
+@dynamic deptId;
+@dynamic priority;
+@dynamic deptName;
+@dynamic parentDeptId;
+@dynamic deptStatus;
 
 typedef struct DepartInfo__storage_ {
   uint32_t _has_storage_[1];
@@ -2294,38 +2484,38 @@ typedef struct DepartInfo__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "deptId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = DepartInfo_FieldNumber_DeptId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(DepartInfo__storage_, deptId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "priority",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = DepartInfo_FieldNumber_Priority,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(DepartInfo__storage_, priority),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "deptName",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = DepartInfo_FieldNumber_DeptName,
         .hasIndex = 2,
         .offset = (uint32_t)offsetof(DepartInfo__storage_, deptName),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeString,
       },
       {
         .name = "parentDeptId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = DepartInfo_FieldNumber_ParentDeptId,
         .hasIndex = 3,
         .offset = (uint32_t)offsetof(DepartInfo__storage_, parentDeptId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
@@ -2334,7 +2524,7 @@ typedef struct DepartInfo__storage_ {
         .number = DepartInfo_FieldNumber_DeptStatus,
         .hasIndex = 4,
         .offset = (uint32_t)offsetof(DepartInfo__storage_, deptStatus),
-        .flags = (GPBFieldFlags)(GPBFieldRequired | GPBFieldHasEnumDescriptor),
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldHasEnumDescriptor | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeEnum,
       },
     };
@@ -2345,8 +2535,10 @@ typedef struct DepartInfo__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(DepartInfo__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
@@ -2354,12 +2546,24 @@ typedef struct DepartInfo__storage_ {
 
 @end
 
+int32_t DepartInfo_DeptStatus_RawValue(DepartInfo *message) {
+  GPBDescriptor *descriptor = [DepartInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:DepartInfo_FieldNumber_DeptStatus];
+  return GPBGetMessageRawEnumField(message, field);
+}
+
+void SetDepartInfo_DeptStatus_RawValue(DepartInfo *message, int32_t value) {
+  GPBDescriptor *descriptor = [DepartInfo descriptor];
+  GPBFieldDescriptor *field = [descriptor fieldWithNumber:DepartInfo_FieldNumber_DeptStatus];
+  GPBSetMessageRawEnumField(message, field, value);
+}
+
 #pragma mark - PushShieldStatus
 
 @implementation PushShieldStatus
 
-@dynamic hasUserId, userId;
-@dynamic hasShieldStatus, shieldStatus;
+@dynamic userId;
+@dynamic shieldStatus;
 
 typedef struct PushShieldStatus__storage_ {
   uint32_t _has_storage_[1];
@@ -2375,20 +2579,20 @@ typedef struct PushShieldStatus__storage_ {
     static GPBMessageFieldDescription fields[] = {
       {
         .name = "userId",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = PushShieldStatus_FieldNumber_UserId,
         .hasIndex = 0,
         .offset = (uint32_t)offsetof(PushShieldStatus__storage_, userId),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
       {
         .name = "shieldStatus",
-        .dataTypeSpecific.className = NULL,
+        .dataTypeSpecific.clazz = Nil,
         .number = PushShieldStatus_FieldNumber_ShieldStatus,
         .hasIndex = 1,
         .offset = (uint32_t)offsetof(PushShieldStatus__storage_, shieldStatus),
-        .flags = GPBFieldRequired,
+        .flags = (GPBFieldFlags)(GPBFieldOptional | GPBFieldClearHasIvarOnZero),
         .dataType = GPBDataTypeUInt32,
       },
     };
@@ -2399,8 +2603,10 @@ typedef struct PushShieldStatus__storage_ {
                                         fields:fields
                                     fieldCount:(uint32_t)(sizeof(fields) / sizeof(GPBMessageFieldDescription))
                                    storageSize:sizeof(PushShieldStatus__storage_)
-                                         flags:GPBDescriptorInitializationFlag_None];
-    NSAssert(descriptor == nil, @"Startup recursed!");
+                                         flags:(GPBDescriptorInitializationFlags)(GPBDescriptorInitializationFlag_UsesClassRefs | GPBDescriptorInitializationFlag_Proto3OptionalKnown)];
+    #if defined(DEBUG) && DEBUG
+      NSAssert(descriptor == nil, @"Startup recursed!");
+    #endif  // DEBUG
     descriptor = localDescriptor;
   }
   return descriptor;
