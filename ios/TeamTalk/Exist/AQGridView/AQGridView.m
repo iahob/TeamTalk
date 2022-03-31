@@ -1225,9 +1225,8 @@ NSString * const AQGridViewSelectionDidChangeNotification = @"AQGridViewSelectio
 	// Instead, we have to manufacture a call to our super-super class here, grr
 	Method method = class_getInstanceMethod( [UIView class], @selector(hitTest:withEvent:) );
  	IMP imp = method_getImplementation( method );
- 	// return ( (UIView *)imp(self, @selector(hitTest:withEvent:), point, event) ); // -[UIView hitTest:withEvent:]
-    return [UIView init];
-     
+ 	return ( (UIView *)imp(self, @selector(hitTest:withEvent:), point, event) ); // -[UIView hitTest:withEvent:]
+
 }
 
 - (BOOL) _canSelectItemContainingHitView: (UIView *) hitView
