@@ -59,7 +59,7 @@ void CPushSessionHandler::OnRecvData(const char *szBuf, int32_t nBufSize)
 
 void CPushSessionHandler::_HandleHeartBeat(const char *szBuf, int32_t nBufSize)
 {
-    SPDLOG_DEBUG("HeartBeat");
+    SPDLOG_INFO("HeartBeat");
     push_session_ptr pSession = CSessionManager::GetInstance()->GetPushSessionBySockID(_GetSockID());
     if (pSession == nullptr)
     {

@@ -110,7 +110,7 @@ CFileServConn::~CFileServConn()
 
 void CFileServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t idx)
 {
-	SPDLOG_ERROR("Connecting to FileServer {}:{} ", server_ip, server_port);
+	SPDLOG_INFO("Connecting to FileServer {}:{} ", server_ip, server_port);
     
 	m_serv_idx = idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_file_server_conn_map);
@@ -150,7 +150,7 @@ void CFileServConn::OnConfirm()
 
 void CFileServConn::OnClose()
 {
-	SPDLOG_ERROR("onclose from file server handle={} ", m_handle);
+	SPDLOG_INFO("onclose from file server handle={} ", m_handle);
 	Close();
 }
 

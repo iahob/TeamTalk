@@ -144,7 +144,7 @@ CDBServConn::~CDBServConn()
 
 void CDBServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	SPDLOG_ERROR("Connecting to DB Storage Server {}:{} ", server_ip, server_port);
+	SPDLOG_INFO("Connecting to DB Storage Server {}:{} ", server_ip, server_port);
 
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_db_server_conn_map);
@@ -169,14 +169,14 @@ void CDBServConn::Close()
 
 void CDBServConn::OnConfirm()
 {
-	SPDLOG_ERROR("connect to db server success");
+	SPDLOG_INFO("connect to db server success");
 	m_bOpen = true;
 	g_db_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
 }
 
 void CDBServConn::OnClose()
 {
-	SPDLOG_ERROR("onclose from db server handle={}", m_handle);
+	SPDLOG_INFO("onclose from db server handle={}", m_handle);
 	Close();
 }
 

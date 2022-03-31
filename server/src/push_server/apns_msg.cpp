@@ -108,7 +108,7 @@ BOOL CAPNSGateWayMsg::SerializeToArray()
     __SetBodyLength(m_databuffer.GetWriteOffset() - GetHeadLength() - GetTailLength());
     WriteHead();
     bRet = TRUE;
-    SPDLOG_DEBUG("push msg buffer length: {}, payload length: {}.", GetDataBufferLength(), strPayload.length());
+    SPDLOG_INFO("push msg buffer length: {}, payload length: {}.", GetDataBufferLength(), strPayload.length());
     return bRet;
 }
 
@@ -166,7 +166,7 @@ string CAPNSGateWayMsg::_BuildPayload()
     
     payload_obj << "aps" << aps_obj;
     payload_obj << "custom" << GetCustomData();
-    SPDLOG_DEBUG("{}", payload_obj.json().c_str());
+    SPDLOG_INFO("{}", payload_obj.json().c_str());
     return payload_obj.json();
 }
 

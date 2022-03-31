@@ -39,7 +39,7 @@ BOOL CPushApp::Init()
         SSL_load_error_strings();
         
         m_bInit = TRUE;
-        SPDLOG_DEBUG("push app init successed.");
+        SPDLOG_INFO("push app init successed.");
     }
     else
     {
@@ -55,7 +55,7 @@ BOOL CPushApp::UnInit()
     if (m_bInit)
     {
         m_bInit = FALSE;
-        SPDLOG_DEBUG("push app uninit successed.");
+        SPDLOG_INFO("push app uninit successed.");
     }
     else
     {
@@ -115,7 +115,7 @@ BOOL CPushApp::Start()
                 return FALSE;
             }
         }
-        SPDLOG_DEBUG("push app start successed.");
+        SPDLOG_INFO("push app start successed.");
     }
     else
     {
@@ -146,7 +146,7 @@ BOOL CPushApp::Stop()
         CSessionManager::GetInstance()->RemoveAPNSClient();
         CSessionManager::GetInstance()->RemovePushServer();
         CSessionManager::GetInstance()->ClearPushSession();
-        SPDLOG_DEBUG("push app stop successed.");
+        SPDLOG_INFO("push app stop successed.");
     }
     else
     {

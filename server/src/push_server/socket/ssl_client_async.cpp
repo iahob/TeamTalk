@@ -100,7 +100,7 @@ void CSSLClientAsync::UnInitSSL()
         }
         else if (nRet == 1)
         {
-            SPDLOG_DEBUG("ssl shutdown successed.");
+            SPDLOG_INFO("ssl shutdown successed.");
         }
         else if (nRet < 0)
         {
@@ -173,7 +173,7 @@ void CSSLClientAsync::OnRecv()
             if (SSL_ERROR_WANT_READ == nErrorCode || SSL_ERROR_WANT_WRITE == nErrorCode)
             {
                 //用select/epoll/iocp的方式应该很少会有这个情况出现
-                SPDLOG_DEBUG("recv ssl data error, buffer is blocking.");
+                SPDLOG_INFO("recv ssl data error, buffer is blocking.");
             }
             else
             {
@@ -250,7 +250,7 @@ int32_t CSSLClientAsync::SendMsgAsync(const char *szBuf, int32_t nBufSize)
     {
         if (_GetWaitForCloseStatus() == TRUE)
         {
-            SPDLOG_DEBUG("send ssl data error, socket will be closed.");
+            SPDLOG_INFO("send ssl data error, socket will be closed.");
             delete pBufferLoop;
             pBufferLoop = NULL;
         }
@@ -325,7 +325,7 @@ int32_t CSSLClientAsync::SendMsgAsync(const char *szBuf, int32_t nBufSize)
     {
         delete pBufferLoop;
         pBufferLoop = NULL;
-        SPDLOG_DEBUG("send ssl data successed.");
+        SPDLOG_INFO("send ssl data successed.");
     }
     else
     {
@@ -341,7 +341,7 @@ int32_t CSSLClientAsync::SendBufferAsync()
     m_sendqueuemutex.Lock();
     if (m_sendqueue.size() == 0)
     {
-        SPDLOG_DEBUG("ssl send queue is empty.");
+        SPDLOG_INFO("ssl send queue is empty.");
         //待发送队列中为空，则删除写事件的注册,改成读事件
         m_pio->Remove_WriteEvent(this);
         m_sendqueuemutex.Unlock();
@@ -393,7 +393,7 @@ int32_t CSSLClientAsync::SendBufferAsync()
     }
     else
     {
-        SPDLOG_DEBUG("send ssl data from buffer successed.");
+        SPDLOG_INFO("send ssl data from buffer successed.");
         m_sendqueuemutex.Lock();
         delete pBufferLoop;
         pBufferLoop = NULL;

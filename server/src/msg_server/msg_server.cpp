@@ -47,7 +47,7 @@ int main(int argc, char* argv[])
 	signal(SIGPIPE, SIG_IGN);
 	srand(time(NULL));
 
-	SPDLOG_DEBUG("MsgServer max files can open: {} ", getdtablesize());
+	SPDLOG_INFO("MsgServer max files can open: {} ", getdtablesize());
 
 	CConfigFileReader config_file("msgserver.conf");
 

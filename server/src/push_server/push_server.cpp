@@ -34,7 +34,7 @@ BOOL CPushServer::Start()
     }
     
     m_pServer->Listen();
-    SPDLOG_DEBUG("push server start successed, ip: {}, port: {}.", GetListenIP().c_str(),GetPort());
+    SPDLOG_INFO("push server start successed, ip: {}, port: {}.", GetListenIP().c_str(),GetPort());
     return TRUE;
 }
 

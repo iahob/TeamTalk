@@ -77,7 +77,7 @@ void CTCPSessionAsync::OnRecv()
 		else
 		{
 			//用select/epoll/iocp的方式应该很少会有这个情况出现
-			SPDLOG_DEBUG("recv tcp data error, buffer is blocking.");
+			SPDLOG_INFO("recv tcp data error, buffer is blocking.");
 		}
 	}
 }
@@ -115,7 +115,7 @@ int32_t CTCPSessionAsync::SendBufferAsync()
 		if (EAGAIN == nError)
 #endif
 		{
-			SPDLOG_DEBUG("send tcp data, buffer is blocking.")
+			SPDLOG_INFO("send tcp data, buffer is blocking.")
 		}
 		else
 		{
@@ -163,7 +163,7 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
     {
         if (_GetWaitForCloseStatus() == TRUE)
         {
-            SPDLOG_DEBUG("send tcp data error, socket will be closed.");
+            SPDLOG_INFO("send tcp data error, socket will be closed.");
         }
         else
         {
@@ -172,7 +172,7 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
             }
             else
             {
-                SPDLOG_DEBUG("send tcp data, push data to buffer.");
+                SPDLOG_INFO("send tcp data, push data to buffer.");
                 CSimpleBuffer* pBufferLoop = new CSimpleBuffer();
                 pBufferLoop->Write(szBuf, nBufSize);
                 m_sendqueue.push(pBufferLoop);

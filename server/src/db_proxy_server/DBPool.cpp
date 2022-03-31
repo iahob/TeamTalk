@@ -362,7 +362,7 @@ int CDBPool::Init()
 		m_free_list.push_back(pDBConn);
 	}
 
-	SPDLOG_ERROR("db pool: {}, size: {}", m_pool_name.c_str(), (int)m_free_list.size());
+	SPDLOG_INFO("db pool: {}, size: {}", m_pool_name.c_str(), (int)m_free_list.size());
 	return 0;
 }
 
@@ -469,12 +469,12 @@ int CDBManager::Init()
 
 	for (uint32_t i = 0; i < instances_name.GetItemCnt(); i++) {
 		char* pool_name = instances_name.GetItem(i);
-		snprintf(host, 64, "{}_host", pool_name);
-		snprintf(port, 64, "{}_port", pool_name);
-		snprintf(dbname, 64, "{}_dbname", pool_name);
-		snprintf(username, 64, "{}_username", pool_name);
-		snprintf(password, 64, "{}_password", pool_name);
-        snprintf(maxconncnt, 64, "{}_maxconncnt", pool_name);
+		snprintf(host, 64, "%s_host", pool_name);
+		snprintf(port, 64, "%s_port", pool_name);
+		snprintf(dbname, 64, "%s_dbname", pool_name);
+		snprintf(username, 64, "%s_username", pool_name);
+		snprintf(password, 64, "%s_password", pool_name);
+        snprintf(maxconncnt, 64, "%s_maxconncnt", pool_name);
 
 		char* db_host = config_file.GetConfigName(host);
 		char* str_db_port = config_file.GetConfigName(port);

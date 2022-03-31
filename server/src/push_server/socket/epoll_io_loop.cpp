@@ -74,7 +74,7 @@ void CEpollIOLoop::Run()
 			}
             if (events[i].events & EPOLLIN)
 			{
-                SPDLOG_DEBUG("socket read event.");
+                SPDLOG_INFO("socket read event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
 				if (pIOStream != NULL)
 				{
@@ -97,7 +97,7 @@ void CEpollIOLoop::Run()
 			}//EPOLLIN
             if (events[i].events & EPOLLOUT)
 			{
-                SPDLOG_DEBUG("socket write event.");
+                SPDLOG_INFO("socket write event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
 				if (pIOStream != NULL)
 				{
@@ -111,7 +111,7 @@ void CEpollIOLoop::Run()
 			}//EPOLLOUT
             if (events[i].events & EPOLLERR)
 			{
-                SPDLOG_DEBUG("socket error event.");
+                SPDLOG_INFO("socket error event.");
 				CBaseIOStream* pIOStream = _GetHandlerBySock(sock);
                 if (pIOStream != NULL)
                 {
@@ -201,7 +201,7 @@ void CEpollIOLoop::Add_WriteEvent( CBaseIOStream* piostream )
 		ev.data.fd=piostream->GetSocket();
 		if (piostream->GetSockType() == SOCK_TCP_CLIENT && piostream->CheckConnect())
 		{
-            SPDLOG_DEBUG("add write event for check connect.");
+            SPDLOG_INFO("add write event for check connect.");
 			//用于判断是否connect成功
 			//对于111(Connection refused)(即连接一个不存在的IP)错误或者110(Connection timed out)
 			//(即连接一个IP存在，PORT未开放)来说,没有定义EPOLLERR,
@@ -212,7 +212,7 @@ void CEpollIOLoop::Add_WriteEvent( CBaseIOStream* piostream )
 		}
 		else
 		{
-            SPDLOG_DEBUG("add write event.");
+            SPDLOG_INFO("add write event.");
 			//可写事件
 			ev.events=EPOLLIN | EPOLLOUT | EPOLLERR;
 			epoll_ctl(m_eid, EPOLL_CTL_MOD, piostream->GetSocket(), &ev);

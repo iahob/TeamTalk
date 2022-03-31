@@ -64,7 +64,7 @@ bool CInterloginStrategy::dologin(const std::string &strName, const std::string 
                 char szMd5[33];
                 CMd5::MD5_Calculate(strInPass.c_str(), strInPass.length(), szMd5);
 		
-		SPDLOG_ERROR("dologin name={},inputPassMd5={},dbPassMd5=%s",tmpName.c_str(),szMd5,strResult.c_str());
+		SPDLOG_INFO("dologin name={},inputPassMd5={},dbPassMd5={}",tmpName.c_str(),szMd5,strResult.c_str());
 
                 string strOutPass(szMd5);
                 if(strOutPass == strResult)

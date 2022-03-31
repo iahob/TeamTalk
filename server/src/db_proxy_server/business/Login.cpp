@@ -95,7 +95,7 @@ void dologin(CImPdu* pPdu, uint32_t conn_uuid)
            }
 	}	        
 
-	SPDLOG_ERROR("{} request login.", strDomain.c_str());
+	SPDLOG_INFO("{} request login.", strDomain.c_str());
 
 	IM::BaseDefine::UserInfo cUser;
 

@@ -100,7 +100,7 @@ CloginServConn::~CloginServConn()
 
 void CloginServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	SPDLOG_ERROR("Connecting to loginServer {}:{} ", server_ip, server_port);
+	SPDLOG_INFO("Connecting to loginServer {}:{} ", server_ip, server_port);
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_login_server_conn_map);
 
@@ -123,7 +123,7 @@ void CloginServConn::Close()
 
 void CloginServConn::OnConfirm()
 {
-	SPDLOG_ERROR("connect to login server success ");
+	SPDLOG_INFO("connect to login server success ");
 	m_bOpen = true;
 	g_login_server_list[m_serv_idx].reconnect_cnt = MIN_RECONNECT_CNT / 2;
 

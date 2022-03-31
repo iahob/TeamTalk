@@ -126,7 +126,7 @@ CPushServConn::~CPushServConn()
 
 void CPushServConn::Connect(const char* server_ip, uint16_t server_port, uint32_t serv_idx)
 {
-	SPDLOG_ERROR("Connecting to Push Server {}:{} ", server_ip, server_port);
+	SPDLOG_INFO("Connecting to Push Server {}:{} ", server_ip, server_port);
     
 	m_serv_idx = serv_idx;
 	m_handle = netlib_connect(server_ip, server_port, imconn_callback, (void*)&g_push_server_conn_map);
@@ -161,7 +161,7 @@ void CPushServConn::OnConfirm()
 
 void CPushServConn::OnClose()
 {
-	SPDLOG_ERROR("onclose from push server handle={} ", m_handle);
+	SPDLOG_INFO("onclose from push server handle={} ", m_handle);
 	Close();
 }
 

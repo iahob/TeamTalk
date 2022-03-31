@@ -14,7 +14,7 @@
 
 void CPushServerHandler::OnClose(uint32_t nsockid)
 {
-    SPDLOG_DEBUG("push server closed, sockid: {}.", nsockid);
+    SPDLOG_INFO("push server closed, sockid: {}.", nsockid);
 }
 
 void CPushServerHandler::OnAccept(uint32_t nsockid, S_SOCKET sock, const char *szIP,int32_t nPort)
