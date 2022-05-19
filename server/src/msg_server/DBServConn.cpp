@@ -13,19 +13,16 @@
 #include "FileHandler.h"
 #include "PushServConn.h"
 #include "ImUser.h"
-#include "sercurity/security.h"
 #include "AttachData.h"
 #include "jsonxx.h"
 #include "IM.Other.pb.h"
 #include "IM.Buddy.pb.h"
 #include "IM.login.pb.h"
-#include "IM.Group.pb.h"
 #include "IM.Message.pb.h"
 #include "IM.Server.pb.h"
 #include "base/ImPduBase.h"
 #include "base/public_define.h"
 #include "base/slog.h"
-#include "../libbase/public_define.h"
 
 using namespace IM::BaseDefine;
 

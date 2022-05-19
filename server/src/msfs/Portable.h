@@ -15,7 +15,7 @@ typedef unsigned int 		u32;
 typedef long long 		s64;
 typedef unsigned long long 	u64;
 typedef unsigned int 		uint;
-typedef unsigned char 		byte;
+typedef unsigned char 		uint8;
 
 #ifndef LITTLE_ENDIAN
 #define LITTLE_ENDIAN

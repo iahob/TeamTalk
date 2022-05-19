@@ -115,7 +115,7 @@ int32_t CTCPSessionAsync::SendBufferAsync()
 		if (EAGAIN == nError)
 #endif
 		{
-			SPDLOG_INFO("send tcp data, buffer is blocking.")
+			SPDLOG_INFO("send tcp data, buffer is blocking.");
 		}
 		else
 		{
@@ -202,7 +202,7 @@ int32_t CTCPSessionAsync::SendMsgAsync( const char* szBuf, int32_t nBufSize )
 			m_sendqueuemutex.Unlock();
 			//有数据放入待发送队列，则注册为写事件
 			m_pio->Add_WriteEvent(this);
-			SPDLOG_INFO("send tcp data, buffer is blocking.")
+			SPDLOG_INFO("send tcp data, buffer is blocking.");
 		}
 		else
 		{

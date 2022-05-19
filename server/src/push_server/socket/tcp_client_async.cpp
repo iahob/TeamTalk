@@ -124,7 +124,7 @@ int32_t CTCPClientAsync::SendBufferAsync()
 		if (EAGAIN == nError)
 #endif
 		{
-			SPDLOG_INFO("send tcp data, buffer is blocking.")
+			SPDLOG_INFO("send tcp data, buffer is blocking.");
 		}
 		else
 		{

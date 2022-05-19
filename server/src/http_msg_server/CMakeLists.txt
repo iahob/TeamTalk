@@ -23,7 +23,7 @@ TARGET_LINK_LIBRARIES(http_msg_server base protobuf  pthread ssl crypto)
 target_include_directories(
         http_msg_server PRIVATE
         .
-        ../pkg
+        ../pkg/include
         ../pb/protocol
         /usr/local/include
          )
@@ -32,5 +32,5 @@ target_link_directories(
         http_msg_server PRIVATE
         .
         /usr/local/lib
-        ${CMAKE_SOURCE_DIR}/run/lib
- )
+        ../pkg/lib
+)

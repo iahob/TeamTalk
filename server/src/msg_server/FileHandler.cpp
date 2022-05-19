@@ -15,6 +15,7 @@
 #include "ImUser.h"
 #include "AttachData.h"
 #include "FileServConn.h"
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 
 CFileHandler* CFileHandler::s_handler_instance = NULL;

@@ -9,6 +9,7 @@
 #include "base/netlib.h"
 #include "base/ConfigFileReader.h"
 #include "base/version.h"
+#include "base/slog.h"
 
 // this callback will be replaced by imconn_callback() in OnConnect()
 void route_serv_callback(void* callback_data, uint8_t msg, uint32_t handle, void* pParam)

@@ -22,18 +22,18 @@ ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 
 ADD_EXECUTABLE(file_server ${SRC_LIST} )
 
-TARGET_LINK_LIBRARIES(file_server pthread base protobuf ssl crypto ${UUID_NAME})
+TARGET_LINK_LIBRARIES(file_server base )
  
 target_include_directories(file_server PRIVATE
         .
-        ../pkg
+        ../pkg/include
         ../pb/protocol
-        /usr/local/include
+       /usr/local/include
         )
 
 target_link_directories(
         file_server PRIVATE
         .
-        ${CMAKE_SOURCE_DIR}/run/lib
+        ../pkg/lib
         /usr/local/lib
 )

@@ -12,6 +12,7 @@
 #include "RouteServConn.h"
 #include "IM.Server.pb.h"
 #include "IM.Login.pb.h"
+#include "base/slog.h"
 using namespace ::IM::BaseDefine;
 
 CImUser::CImUser(string user_name)

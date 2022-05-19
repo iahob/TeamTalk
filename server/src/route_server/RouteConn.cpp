@@ -15,6 +15,7 @@
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
 #include "base/public_define.h"
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 
 //typedef hash_map<uint32_t /* user_id */, UserStat_t> UserStatMap_t;

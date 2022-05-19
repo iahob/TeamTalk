@@ -13,7 +13,7 @@ ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL
 -DAC_HAS_DEBUG -DLINUX_DAEMON -std=c++11)
 
-#INCLUDE_DIRECTORIES(./ ../libbase ../pb/protocol ../pkg/jsoncpp/ ${PB_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR})
+#INCLUDE_DIRECTORIES(./ ../base ../pb/protocol ../pkg/jsoncpp/ ${PB_INCLUDE_DIR} ${OPENSSL_INCLUDE_DIR})
 #LINK_DIRECTORIES(${SRC_DIR}/lib ${Slog_LIB_DIR} ${PB_LIB_DIR} ${OPENSSL_LIB_DIR})
 
 #ADD_XXXX必须在TARGET_LINK_LIBRARIES前面，否则会报错
@@ -25,7 +25,7 @@ TARGET_LINK_LIBRARIES(login_server base protobuf-lite pthread ssl crypto)
 target_include_directories(
         login_server PRIVATE
         .
-        ../pkg
+        ../pkg/include
         ../pb/protocol
         /usr/local/include
 )
@@ -34,5 +34,5 @@ target_link_directories(
         login_server PRIVATE
         .
         /usr/local/lib
-        ${CMAKE_SOURCE_DIR}/run/lib
+        ../pkg/lib
 )

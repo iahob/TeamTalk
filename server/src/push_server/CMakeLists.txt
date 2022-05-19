@@ -23,7 +23,7 @@ TARGET_LINK_LIBRARIES(push_server pthread protobuf ssl)
 target_include_directories(
         push_server PRIVATE
         .
-        ../pkg
+        ../pkg/include
         ../pb/protocol
         ../pkg/security
         /usr/local/include
@@ -33,5 +33,5 @@ target_link_directories(
         push_server PRIVATE
         .
         /usr/local/lib
-        ${CMAKE_SOURCE_DIR}/run/lib
+        ../pkg/lib
 )

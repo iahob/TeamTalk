@@ -22,7 +22,7 @@ TARGET_LINK_LIBRARIES(route_server base protobuf pthread ssl crypto)
 target_include_directories(
         route_server PRIVATE
         .
-        ../pkg
+        ../pkg/include
         ../pb/protocol
         ../pkg/security
         /usr/local/include
@@ -32,5 +32,5 @@ target_link_directories(
         route_server PRIVATE
         .
         /usr/local/lib
-        ${CMAKE_SOURCE_DIR}/run/lib
+        ../pkg/lib
 )

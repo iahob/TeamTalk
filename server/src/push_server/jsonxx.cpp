@@ -460,7 +460,7 @@ typedef unsigned char byte;
 std::string escape_string( const std::string &input, const bool quote = false ) {
     static std::string map[256], *once = 0;
     if( !once ) {
-        // libbase
+        // base
         for( int i = 0; i < 256; ++i ) {
             map[ i ] = std::string() + char(i);
         }

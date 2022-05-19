@@ -22,6 +22,7 @@
 #include "IM.Server.pb.h"
 #include "IM.SwitchService.pb.h"
 #include "IM.File.pb.h"
+#include "base/slog.h"
 using namespace IM::BaseDefine;
 
 static ConnMap_t g_route_server_conn_map;

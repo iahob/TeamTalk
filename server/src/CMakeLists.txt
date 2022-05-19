@@ -1,5 +1,5 @@
-add_subdirectory(libbase)
-add_subdirectory(libsecurity)
+add_subdirectory(base)
+add_subdirectory(security)
 add_subdirectory(file_server)
 add_subdirectory(db_proxy_server)
 add_subdirectory(http_msg_server)

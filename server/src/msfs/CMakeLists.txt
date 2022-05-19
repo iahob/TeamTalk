@@ -13,12 +13,12 @@ ADD_DEFINITIONS( -g -W -Wall -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO
 
 ADD_EXECUTABLE(msfs ${SRC_LIST})
 
-TARGET_LINK_LIBRARIES(msfs base)
+TARGET_LINK_LIBRARIES(msfs base )
 
 target_include_directories(
         msfs PRIVATE
         .
-        ../pkg
+        ../pkg/include
         /usr/local/include
 )
 
@@ -26,5 +26,5 @@ target_link_directories(
         msfs PRIVATE
         .
         /usr/local/lib
-        ${CMAKE_SOURCE_DIR}/run/lib
+        ../pkg/lib
 )
