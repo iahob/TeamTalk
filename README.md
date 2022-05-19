@@ -10,13 +10,6 @@ opensource im from mogojie(蘑菇街), this is a branch, see [origin](https://gi
 
 ![install-local](./doc/install-local.png)
 
-## Changed
-
-### Server
-
-### Windows
-
-- 适配vs2017
 
 ## Structure
 
@@ -24,7 +17,7 @@ opensource im from mogojie(蘑菇街), this is a branch, see [origin](https://gi
 - iOS：TTIOSClient工程，IOS客户端工程
 - Android：TTAndroidClient工程，android客户端工程
 - Windows：TTWinClient工程，windows客户端工程
-- Server: C++服务端工程，CentOs7下编译通过
+- Server: C++服务端工程 
     - login_server(C++): 负载均衡服务器（HTTP Server），根据最小连接算法，返回一个在线用户少MsgServer给客户端使用（主要是IP地址和端口）
     - msg_server(C++): 消息服务器（TCP Server），接收来自于客户端的TCP连接，转发客户端信令到db_proxy_server处理
     - route_server(C++): 路由服务器，为登录在不同MsgServer的用户提供消息转发功能
@@ -38,16 +31,4 @@ server：参考 [README.md](./server/src/README.md)
 windows: 参考 [README.md](./win-client/README.md)
 
 ## Run
-
-1. 下载客户端，这里已经编译好了windows版本
-- [百度网盘，不能多开](https://pan.baidu.com/s/1tjlN_BF1H9QcEEykGbwDbw)，提取码：kt6e
-- [多开版](https://pan.baidu.com/s/1DAgeWBooQkGlxHxN90HyZg)，提取码：6b74
-2. 解压，双击bin/teamtalk.exe
-3. 点击“设置”按钮，设置成自己的服务器IP
-```bash
-# http://access.teamtalk.im:8080/msg_server
-http://your-ip:8080/msg_server
-```
-
-4. 输入账号和密码
-5. 点击登录
+ 

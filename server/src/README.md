@@ -1,29 +1,16 @@
 # TeamTalk
 
-参考了这些开源项目：
-> xiaominfc TeamTalk(主要参考)：[https://github.com/xiaominfc/TeamTalk](TeamTalk)  
-> websocket_client：[https://github.com/xiaominfc/teamtalk_websocket_client](websocket_client)  
-> websocket_server：[https://github.com/xiaominfc/teamtalk_websocket_server](websocket_server：)  
-> Liuthx/TeamTalk（提取了编译、运行脚本，增加websocket_server）：[https://github.com/Liuthx/TeamTalk](TeamTalk)  
-
 ## 环境准备
 
-1.安装使用centos 7 1611版本及以上
+1.ubuntu gcc  cmake 
 
 ## 搭建IM
 
 ### 安装基础环境
-
-1.安装EPEL源
-
 ```bash
-> yum install -y epel-release
-```
-
-2.安装git（版本控制工具）、wget（http下载）、gcc/gcc-c++（c++编译器） 、unzip（zip包解压）
-
-```bash
-> yum install -y git wget gcc gcc-c++ unzip
+mkdir build
+cd build && cmake ..
+make && make install 
 ```
 
 ### 安装数据库
@@ -44,32 +31,6 @@
 
 ### 编译安装其他依赖项
 
-#### 获取项目
-
-
-```bash
-$ cd /home
-$ mkdir -p repo/github && cd repo/github
-$ git clone git@github.com:xmcy0011/TeamTalk.git
-```
-
-#### 安装依赖项
-
-``` bash
-cd /home/repo/github/TeamTalk/server/src/ && chmod 777 *.sh  # 赋予脚本执行权限  
-./make_hiredis.sh             # 编译redis  
-./make_protobuf.sh            # 编译protobuf  
-./make_log4cxx.sh             # 编译日志组件  
-./make_mariadb.sh             # 安装mariadb和头文件（其实上面yum已安装了，但是还有遗漏）
-```
-
-#### 编译IM
-
-```bash
-# 编译im，version 后面是版本号
-# 安装包在../im-server-2020.10.27.tar.gz
-> ./build.sh version test
-```
 
 ### 运行
 
